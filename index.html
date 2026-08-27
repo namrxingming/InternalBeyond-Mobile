@@ -478,12 +478,12 @@ body.theme-infernal .ibw-grain{opacity:0.08;filter:invert(1)}
 .ibw-brand{display:flex;align-items:center;gap:6px;font-size:0.66rem;font-weight:600;letter-spacing:0.02em;color:inherit;white-space:nowrap;opacity:0.92}
 .ibw-brand svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
 .ibw-eyebrow{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace;font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;opacity:0.62;padding-top:3px;white-space:nowrap}
-.ibw-name{align-self:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace;font-weight:600;font-size:clamp(1.3rem,6.2vw,1.85rem);letter-spacing:0.05em;line-height:1;transform:translateY(-6%);text-shadow:0 1px 0 rgba(255,255,255,0.55),0 -1px 0 rgba(0,0,0,0.08)}
-body.theme-infernal .ibw-name{text-shadow:0 1px 0 rgba(255,255,255,0.08),0 -1px 0 rgba(0,0,0,0.45)}
+.ibw-name{align-self:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-weight:600;font-size:clamp(1.62rem,7.6vw,2.3rem);letter-spacing:0.035em;line-height:1;transform:translateY(-6%);color:#22375a;text-shadow:0 1px 0 rgba(255,255,255,0.78),0 -1px 0 rgba(20,36,60,0.2),0 2px 2px rgba(20,36,60,0.14),0 5px 10px rgba(30,50,80,0.12)}
+body.theme-infernal .ibw-name{color:#eef3fb;text-shadow:0 1px 0 rgba(255,255,255,0.1),0 -1px 0 rgba(0,0,0,0.55),0 2px 3px rgba(0,0,0,0.35)}
 .ibw-field{display:flex;flex-direction:column;gap:3px;min-width:0}
 .ibw-value{font-size:0.72rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0.92}
-.ibw-holder{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace;font-size:0.7rem;letter-spacing:0.06em;font-weight:600}/* v156-p：#3 左下持卡人与右上 Wallet Card 同字体、字距收窄 */
-.ibw-for{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace;font-style:normal;font-weight:600;font-size:0.66rem;letter-spacing:0.04em;max-width:56%;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:0.9}/* v174：④与卡面其余字段同一套等宽字体，只调字号与字距 */
+.ibw-holder{font-family:'Noto Serif SC','Songti SC','STSong','Source Han Serif SC','Cormorant Garamond',Georgia,serif;font-size:0.76rem;letter-spacing:0.1em;font-weight:600;opacity:0.95}/* v159-p：左下持卡人（中文）改宋体系衬线（Noto Serif SC → 系统宋体回落），与卡号衬线同气质 */
+.ibw-for{font-family:'Cormorant Garamond','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-style:normal;font-weight:600;font-size:0.8rem;letter-spacing:0.035em;max-width:56%;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:0.92}/* v159-p：For 的英文走 Cormorant（截图同款），中文名自然回落到宋体系衬线；字号只略调 */
 .ibw-for[hidden]{display:none}
 @keyframes ibwFloat{0%{transform:rotateY(-11deg) rotateX(2.5deg)}50%{transform:rotateY(11deg) rotateX(-2deg)}100%{transform:rotateY(-11deg) rotateX(2.5deg)}}
 @keyframes ibwStamp{0%{transform:scale(1)}40%{transform:scale(0.965)}100%{transform:scale(1)}}
@@ -491,7 +491,7 @@ body.theme-infernal .ibw-name{text-shadow:0 1px 0 rgba(255,255,255,0.08),0 -1px 
 .pr-card .ibw-card{aspect-ratio:1.9;border-radius:14px;margin:-2px 0 11px;animation:none;transform:none;cursor:default}
 .pr-card .ibw-face{padding:5% 6%}
 .pr-card .ibw-brand{font-size:0.58rem}.pr-card .ibw-brand svg{width:11px;height:11px}
-.pr-card .ibw-eyebrow{font-size:0.5rem}.pr-card .ibw-name{font-size:1.05rem}.pr-card .ibw-value{font-size:0.62rem}.pr-card .ibw-holder{font-size:0.6rem}.pr-card .ibw-for{font-size:0.6rem}
+.pr-card .ibw-eyebrow{font-size:0.5rem}.pr-card .ibw-name{font-size:1.24rem}.pr-card .ibw-value{font-size:0.62rem}.pr-card .ibw-holder{font-size:0.64rem}.pr-card .ibw-for{font-size:0.7rem}/* v159-p：紧凑版随衬线换字微调 */
 .m.user+ .pr-card{margin-left:auto}
 
 .m.typing .m-text:empty::after{content:'\2026';animation:blink 1s infinite}
@@ -2091,12 +2091,7 @@ raf=requestAnimationFrame(frame);
         <div class="g-sub">
           <p><strong>附件</strong>：输入框左侧 <strong>+</strong> 按钮可附加图片（最多 4 张，发送前自动压缩至 1280px，需对应 API 开启视觉能力）或文本类文件（txt / md / json / csv / 代码等，最多 4 个）。文件全文随消息注入，超长自动截断；点消息里的文件标签可查看内容。</p>
           <p><strong>联网搜索</strong>：在该 API 的设置中开启后，请求会携带服务端搜索工具（Anthropic / Gemini / OpenAI 兼容端点支持）；端点不接受搜索参数时本轮自动去除并重发。</p>
-          <p><strong>图像生成</strong>：API 页 → 工具 → 启用图像生成后，所有对话中的 AI 都可生成图片（每条回复最多 1 张）：图片直接显示在聊天里并自动存入 ICode，成功图卡底注可点「查看提示词」回看 AI 当时输入的完整生图提示词。生图模型 / 地址 / 密钥留空时沿用当前对话 API，填写后统一改走全局配置；仅 OpenAI 兼容与 Gemini 接口支持。</p>
-          <p><strong>工具连续调用轮</strong>：外部工具、MCP、记忆检索、定位 / 天气 / 手机状态、蓝牙读取、查看动态等<strong>取数类</strong>指令的结果默认在同一条回复内直接回传并让 AI 续答——所以 TA 会连着发两条：第一条是发起调用，第二条是拿到结果后的回答。连续轮数在 API 页 → 全局设置 → 工具调用 →「工具连续调用轮数」调整（0–5 轮、默认 2；设为 0 时结果只随你的下一条消息回传，不再多出一条）。写记忆、留便笺、写日历、蓝牙写入、发动态 / 评论 / 转发、改签名、控制播放器这类<strong>动作类</strong>指令不会触发续答，成败同样随下一条消息告知 TA。续答进行中可按停止键中断。同一处的「续答触发范围」六枚按钮可逐类关掉续答（外部工具 / MCP / 蓝牙读取 / 记忆检索 / 定位天气手机状态 / 查看动态与日程）：熄灭的类别结果随下一条消息回传、不再多出一条；全部熄灭等同轮数设 0；ICode 工作区任务不受影响。<!-- v132-p → v133-p：+触发范围 --></p>
-          <p><strong>各工具的每回复上限</strong>：为防单条回复连发刷屏，部分工具有固定的每回复执行上限——记忆库写入 3 · 日历 2 · 播放器 1 · 生图 1 · 选项卡 1 · 动态 1（评论 2）· 签名 1，超出的不执行并告知 TA。可调的两处：蓝牙读写上限在 API 页 → 全局设置 → 工具调用；AI付 的每回复上限在 DIY 页 → AI付 分区 → AI付 卡内（默认 2）。</p>
-          <p><strong>蓝牙设备说明书</strong>：设置页 → 蓝牙设备，可为每台设备写一份说明书（设备是什么、各特征值对应什么功能、读写格式）。支持手动编辑、导入文本文档、从 ICode 工作区取文；按设备名（或地址）匹配，同名设备连接后自动注入给 AI，无需每轮手动发送。连 / 断一台配了说明书的设备会重建一次提示缓存，之后照常命中。</p>
-          <p><strong>语音消息</strong>：按住输入框右侧话筒按钮录音，松开发送，向上滑动 70px 取消（微信式）。配置了转写接口（API 页·工具分区）时自动附文字稿。</p>
-          <p><strong>AI付</strong>：DIY 页 → AI付 分区（底坞中间那格）开启并录入收款方后，AI 可用 &lt;ws_payreq/&gt; 发起一笔支付：聊天里出现 AI付 卡，你点「打开支付宝付款」亲手完成支付，再点「已完成支付」把结果回传给 TA。默认关闭；金额受单笔上限约束，收款方只能出自你的名单；每条回复的请求笔数上限默认 2，可在 AI付 卡内调整。分区顶部的 Wallet Card 是一张纯视觉的专属卡片：卡面中间是你 Space 名片的昵称（可在下方「镌刻」改写，留空即跟随名片），右下角可印上一位好友的名字（For …）；它不含任何账户信息、不发给 AI，只在你用 AI付 时随支付卡一起出示，随时可以重新镌刻。</p><!-- v97-m 任务7；v98-m 任务3：按拍板改用支付宝官方工具名「AI付」 -->
+          <p><strong>图像生成</strong>：API 页 → 工具 → 启用图像生成后，所有对话中的 AI 都可生成图片（每条回复最多 1 张）：图片直接显示在聊天里并自动存入 ICode，成功图卡底注可点「查看提示词」回看 AI 当时输入的完整生图提示词。生图模型 / 地址 / 密钥留空时沿用当前对话 API，填写后统一改走全局配置；仅 OpenAI 兼容与 Gemini 接口支持。</p><!-- v97-m 任务7；v98-m 任务3：按拍板改用支付宝官方工具名「AI付」 -->
           <p><strong>社交圈动态</strong>：Space（个人页）的动态分区与 Desk 的社交圈图标同属应用内社交圈；侧边导航 Memory 之后也有「Circle 社交圈」入口，点按直达同一页。你可发文字动态、附至多 1 张配图与定位（需浏览器定位权限），正文中的链接自动可点；每条动态的 ⋮ 可改可见范围、连同评论存入记忆库、或删除。<!-- v101-m 任务5：文案精简分段 --></p>
           <p>获授权的 AI 能在对话里发布、评论与主动翻看动态（放行方式在其独立配置里选「需我确认」或「自动同意」）；开启配图后还能为自己的动态生成插图；开启「允许 TA 撰写签名」后，TA 还能更新自己资料卡上的个性签名（改动即时生效，你可随时改回）。</p>
           <p><strong>流式回复</strong>：AI 的回复以流式逐字呈现，可中途停止，已生成的部分会保留。</p>
@@ -2114,7 +2109,63 @@ raf=requestAnimationFrame(frame);
           <p><strong>聊天记录管理</strong>：Data 页·备份，与电脑端一致——按对话多选导出 TXT 或删除（删除连带该对话的话题频道与摘要）。</p>
           <p><strong>归档</strong>：底部分区栏·归档，查看已归档的 API 档案并恢复。归档后聊天记录与 Auto Memory 全部保留。</p>
         </div>
-        <div class="g-name">Circle — InternetBeyond 社交圈</div>
+                <div class="g-name">Tools — 工具调用规则</div>
+        <p>TA 在对话里调用的每一样工具都走这套规则：取数类工具的结果回传后 TA 会接着答，动作类工具只回传成败；每样工具每条回复能执行几次有上限。</p>
+        <div class="g-sub">
+          <p><strong>工具连续调用轮</strong>：外部工具、MCP、记忆检索、定位 / 天气 / 手机状态、蓝牙读取、查看动态等<strong>取数类</strong>指令的结果默认在同一条回复内直接回传并让 AI 续答——所以 TA 会连着发两条：第一条是发起调用，第二条是拿到结果后的回答。连续轮数在 API 页 → 全局设置 → 工具调用 →「工具连续调用轮数」调整（0–5 轮、默认 2；设为 0 时结果只随你的下一条消息回传，不再多出一条）。写记忆、留便笺、写日历、蓝牙写入、发动态 / 评论 / 转发、改签名、控制播放器这类<strong>动作类</strong>指令不会触发续答，成败同样随下一条消息告知 TA。续答进行中可按停止键中断。同一处的「续答触发范围」六枚按钮可逐类关掉续答（外部工具 / MCP / 蓝牙读取 / 记忆检索 / 定位天气手机状态 / 查看动态与日程）：熄灭的类别结果随下一条消息回传、不再多出一条；全部熄灭等同轮数设 0；ICode 工作区任务不受影响。<!-- v132-p → v133-p：+触发范围 --></p>
+          <p><strong>各工具的每回复上限</strong>：为防单条回复连发刷屏，部分工具有固定的每回复执行上限——记忆库写入 3 · 日历 2 · 播放器 1 · 生图 1 · 选项卡 1 · 动态 1（评论 2）· 签名 1，超出的不执行并告知 TA。可调的两处：蓝牙读写上限在 API 页 → 全局设置 → 工具调用；AI付 的每回复上限在 DIY 页 → AI付 分区 → AI付 卡内（默认 2）。</p>
+          <p><strong>蓝牙设备说明书</strong>：设置页 → 蓝牙设备，可为每台设备写一份说明书（设备是什么、各特征值对应什么功能、读写格式）。支持手动编辑、导入文本文档、从 ICode 工作区取文；按设备名（或地址）匹配，同名设备连接后自动注入给 AI，无需每轮手动发送。连 / 断一台配了说明书的设备会重建一次提示缓存，之后照常命中。</p>
+        </div>
+        <div class="g-name">Voice — 语音消息与语音条</div>
+        <p>语音消息是你发给 TA 的；语音条是 TA 的消息末尾附带的一段朗读。两者的文字与声音各走各的接口：识别用「语音转写」，出声用「语音通话设置」里的那套声音。</p>
+        <div class="g-sub">
+          <p><strong>语音消息</strong>：按住输入框右侧话筒按钮录音，松开发送，向上滑动 70px 取消（微信式）。配置了转写接口（API 页·工具分区）时自动附文字稿。</p>
+          <p><strong>语音转写（识别接口）</strong>：API 页 → 工具 → 语音转写：填 Endpoint、Key 与模型（默认 whisper-1）。任何 OpenAI 兼容的 /v1/audio/transcriptions 接口都能用，SiliconFlow (硅基流动) 的 FunAudioLLM/SenseVoiceSmall 是可用的免费档。语音消息的文字稿与语音通话里「用嘴说」都靠它。</p>
+          <p><strong>语音条（TA 的语音）</strong>：语音通话设置 → 独立配置 → 该 AI → 语音条。开启后 TA 会在合适的消息末尾附一枚可点播的语音条，声音与语速沿用通话里给 TA 配的那套；可单独选外语版（英 / 日 / 韩）：气泡照常显示中文，语音条朗读同一段话的外语。开关切换后 TA 的下一条消息重建一次提示缓存，之后恢复稳定命中。</p>
+        </div>
+        <div class="g-name">Call — 语音通话</div>
+        <p>和 TA 打一通语音电话：你说的话由「语音转写」接口听成文字，TA 的回复逐句朗读、同时滚动字幕。三样东西配齐就能打——API（TA 的脑子）、语音转写（耳朵，可跳过）、TA 的声音（嗓子，默认用手机自带语音，零配置）。</p>
+        <div class="g-sub">
+          <p><strong>怎么拨</strong>：进 1 对 1 会话 → 抽屉「操作」→「Call 语音通话」（群聊不能打）。通话页居中是 TA 的头像与昵称，下方是字幕区，底部四个键：打字、挂断、静音、打断。右上角「⌄」收成悬浮小条，可以边通话边翻别的页面，点小条回到通话。</p>
+          <p><strong>说话</strong>：说完停顿约 0.7 秒自动发出，不用按键。TA 说话时你直接开口约半秒即打断（也可点头像、点波形或点「打断」键）。建议戴耳机：外放时部分机型的回声消除不稳，TA 的声音会被当成你在说话。</p>
+          <p><strong>打字模式</strong>：没配语音转写、麦克风被拒、或当前环境不支持收音时，通话页自动进打字模式：不收音，点「打字」键弹出输入条，发出去和说话走同一条管线，TA 照常出声回你。想改用嘴说，去 API 页 → 工具 → 语音转写 配好识别接口即可。</p>
+          <p><strong>设置页在哪</strong>：三个入口进的是同一页：Desk 桌面的「通话」图标；会话抽屉 →「语音通话设置」；API 页 → 工具 → 语音通话 →「打开设置」。底栏「全局配置」管所有 AI 的默认值，「独立配置」按 AI 单独覆盖，不配就跟随全局。</p>
+          <p><strong>TA 的声音（嗓子）</strong>：全局配置 → TA 的声音，三选一。系统语音：手机自带的语音引擎，零配置，可在下方选一个系统音色。云端音色：接语音合成接口，声音好得多，需要按下一节填参数。不出声：只看字幕。云端合成失败时自动回落系统语音，通话不会断。</p>
+        </div>
+        <div class="g-name">云端音色怎么填（逐家）</div>
+        <p>位置：语音通话设置 → 全局配置 → TA 的声音 → 云端音色。先选「云端服务商」（它决定请求格式，选错整套都不通），再填其余字段，最后点「试听一句」——能出声就成，出错的提示会直接写出原因。</p>
+        <div class="g-sub">
+          <p><strong>五个字段</strong>：云端服务商 = 请求格式；Endpoint = 接口地址；API Key = 密钥；模型 = 合成模型名；音色（voice）= 用哪个声音。GroupId 只有 MiniMax 用。各家对「模型」「音色」的写法互不相同，下面逐家给出，照抄即可。</p>
+          <p><strong>SiliconFlow (硅基流动)——首选</strong>：服务商选「OpenAI 兼容」，点「SiliconFlow 示例」自动填好 Endpoint（https://api.siliconflow.cn/v1）与模型（FunAudioLLM/CosyVoice2-0.5B），再补上你的 Key（sk- 开头）。音色的写法固定是「模型名:音色名」，例如 FunAudioLLM/CosyVoice2-0.5B:anna；系统音色有 alex / anna / bella / benjamin / charles / claire / david / diana。换模型时音色的前半段要跟着改成同一个模型名。</p>
+          <p><strong>OpenAI</strong>：服务商选「OpenAI 兼容」，点「OpenAI 示例」：Endpoint https://api.openai.com/v1，模型 gpt-4o-mini-tts（或 tts-1 / tts-1-hd），音色 alloy / echo / fable / onyx / nova / shimmer。需要海外网络。</p>
+          <p><strong>阿里云百炼 (DashScope)</strong>：服务商必须切到「阿里云 Qwen-TTS」，不要留在「OpenAI 兼容」。Endpoint 留空，Key 填百炼平台的 API-KEY（sk- 开头），模型填 qwen-tts 或 qwen-tts-latest（留空即 qwen-tts），音色填 Cherry / Serena / Ethan / Chelsie（留空即 Cherry）。这条通道只能用 Qwen-TTS 系列：cosyvoice-v1 / cosyvoice-v2 / cosyvoice-v3 / cosyvoice-v3.5-plus 这类 CosyVoice 模型在阿里云只开放 WebSocket 接口，手机上接不了，填了会报 404 或「未返回音频」。想要 CosyVoice 的声音，用上面的 SiliconFlow (硅基流动)。音色栏也不要写成「模型名:音色」——那是 SiliconFlow 专用写法。</p>
+          <p><strong>ElevenLabs</strong>：服务商选 ElevenLabs，Endpoint 留空，Key 填官网个人设置 → API Keys 里的密钥。音色必填，填的是 voice_id（Voices 页每个声音的那串 ID，不是名字）；模型留空即 eleven_multilingual_v2。</p>
+          <p><strong>MiniMax</strong>：服务商选 MiniMax，Endpoint 国内主站留空（海外账号填官网给的接口地址），Key 与 GroupId 都在账号后台「基本信息」里。模型留空即 speech-02-turbo，音色填官方音色 ID（如 female-shaonv）或你自己克隆的音色 ID。</p>
+          <p><strong>Azure (微软语音)</strong>：服务商选 Azure，Endpoint 填区域端点（如 https://eastasia.tts.speech.microsoft.com/cognitiveservices/v1，子域按你的语音资源所在区域改），Key 填该语音服务资源的密钥。模型不用填，音色填 Neural 音色名（如 zh-CN-XiaoxiaoNeural / zh-CN-YunxiNeural）。</p>
+          <p><strong>GPT-SoVITS / 自建网关</strong>：任何兼容 /v1/audio/speech 的地址都能接。点「GPT-SoVITS 网关示例」：在电脑上跑一个兼容网关，Endpoint 填它的地址（形如 http://电脑IP:9880/v1），手机要能访问到它（同一局域网或做了穿透），模型与音色按网关的要求填。</p>
+          <p><strong>拉取模型 / 音色列表</strong>：「音色」栏下方的按钮，与 API 页的「拉取模型列表」同一套做法。OpenAI 兼容接口拉的是模型列表（只列语音合成类，标不出就列全部），选中自动填进「模型」，SiliconFlow 下还会顺手把「音色」的前半段对齐成同一个模型名；ElevenLabs 与 Azure 拉的是音色列表，选中自动填 voice_id / 音色名；阿里云与 MiniMax 官方没有可拉的列表，按钮给出的是内置清单。拉取失败不影响使用，按上面手填即可。</p>
+          <p><strong>试听报错怎么看</strong>：HTTP 401 / 403：Key 错、过期或欠费。404：地址或模型名错（阿里云通道填了 CosyVoice 模型也报这个）。「网络或跨域拦截」：这家接口不允许从手机直连，换一家或走自建网关。「未返回音频」：模型名对了、音色名不对。「超时」：22 秒内没合成完，换更快的模型或缩短语速。</p>
+        </div>
+        <div class="g-name">通话里的其它设置</div>
+        <div class="g-sub">
+          <p><strong>独立配置</strong>：语音通话设置 → 独立配置 → 点某位 AI：「跟随全局 / 单独配置」二选一；单独配置时可给 TA 另配一整套声音、音量档与朗读语言，并各有一处试听。这一页还管 TA 的语音条、「允许 TA 主动打电话」、执笔 API 与「结束后压缩成通话记录」。</p>
+          <p><strong>朗读语言</strong>：选英 / 日 / 韩后，TA 每句先写中文字幕、再附同一句的外语原句；字幕区两行并列同时出现，只朗读外语。系统语音需要手机装有该语言的语音引擎；换语言后 TA 的下一条消息重建一次提示缓存。</p>
+          <p><strong>语速与音量</strong>：全局配置里的语速（0.85×–1.5×）与全局音量对通话、试听、语音条统一生效；独立配置可按 AI 覆盖音量档。</p>
+          <p><strong>语音打断</strong>：默认开：TA 说话时你开口约半秒即打断。外放误触发多就关掉它，关掉后只能点头像、波形或「打断」键打断。</p>
+          <p><strong>通话心跳</strong>：全局配置里的开关，默认关。打开后，你和 TA 都安静超过设定间隔（30 秒–2 分钟，默认 45 秒，再随机延后一些）时 TA 会主动说一句：单独生成、落成 TA 的主动消息，不改 system、不伪造你的发言。你一开口计数清零；连续 10 句都没等到你说话就不再开口，直到你再说话。识别、思考与朗读进行中不触发。</p>
+          <p><strong>TA 主动打电话</strong>：独立配置里开启后，定时推送掷中「打电话」时 TA 会打来：屏幕浮出来电卡，接听即进通话，「暂不」落成一张婉拒卡并告知 TA。权重在 API 页 → Presence 的动作权重里调。</p>
+          <p><strong>结束后压缩成通话记录</strong>：独立配置里的开关，默认关。开启后挂断即由执笔 API 把整通电话写成一段第三人称通话记录：原话仍显示在聊天里，但只有这段记录计入后续上下文，省下长通话的开销；会产生一次正常计费的调用。通话结束卡上的「Save memory」则是把这通电话以 TA 的第一人称写成一条记忆。</p>
+          <p><strong>通话中的工具</strong>：TA 调工具照常生效；需要你确认的调用会在通话页浮出「执行 / 跳过」小条。AI付 例外——支付要你亲手在支付宝完成，挂断后处理。</p>
+          <p><strong>记录与上下文</strong>：每轮通话内容都是正常聊天消息，挂断后文字稿留在记录里并附一条「[语音通话已结束]」标记。TA 看到的原话带「[语音通话]」前缀与一份本机生成的声学语气参考（情绪倾向 / 语速 / 音量），这是 TA 感知你此刻状态的依据。</p>
+        </div>
+        <div class="g-name">AI付 — 支付与 Wallet Card</div>
+        <p>让 TA 在聊天里发起一笔要你亲手确认的支付。入口：DIY 页 → AI付 分区（底坞中间那格）。默认关闭。</p>
+        <div class="g-sub">
+          <p><strong>开启</strong>：打开 AI付 开关，录入收款方名单（收款方只能出自这份名单），设置单笔上限。每条回复的请求笔数上限默认 2，可在 AI付 卡内调整。</p>
+          <p><strong>流程</strong>：TA 用一条支付请求发起：聊天里出现 AI付 卡 → 你点「打开支付宝付款」亲手完成支付 → 回到 IB 点「已完成支付」把结果回传给 TA。没有人替你付款，卡片只是把金额与收款方摆出来。</p>
+          <p><strong>Wallet Card</strong>：分区顶部那张卡是纯视觉的专属卡片：卡面中间是你 Space 名片的昵称（可在下方「镌刻」改写，留空即跟随名片），右下角可印上一位好友的名字（For …）。它不含任何账户信息、不发给 AI，只在你用 AI付 时随支付卡一起出示，随时可以重新镌刻。</p>
+        </div>
+<div class="g-name">Circle — InternetBeyond 社交圈</div>
         <p>应用内的公共社交圈，入口在 Desk 页应用矩阵。你与已授权的 AI 都可以发布动态、附带配图并互相评论；你发布的动态可细分可见范围（所有人 / 仅自己 / 仅指定 AI / 排除指定 AI），数据存入本机数据库并随备份往返，两端同一社交圈。</p>
         <div class="g-sub">
           <p><strong>开关层级</strong>：社交圈开关集中在 API 页 → InternetBeyond 社交圈卡。上半「全局设置」管总开关、AI 自动发布、最小间隔、自动评论与允许配图。<!-- v101-m 任务3：分段重排 --></p>
@@ -2190,15 +2241,6 @@ raf=requestAnimationFrame(frame);
           <p><strong>发送量控制</strong>：聊天界面与本机数据库保留完整过程；发给 AI 的历史副本会把已成功执行的大文件内容折叠成很短的归档标记（失败或未确认的操作保留原文），避免几万字的文件长期占用后续对话的上下文。</p>
           <p><strong>GitHub 分区</strong>：ICode 底部分区栏第二格。填入 GitHub 访问令牌（PAT，需勾选 repo 权限）连接后，可列出你名下最近更新的 50 个仓库、逐级浏览目录并预览文件。<!-- v101-m 任务3：分段重排 --></p>
           <p>「导入到工作区」会新建一个「GH·仓库名」项目供 AI 在对话里读改；改完回本分区「从工作区推回」，系统自动获取远端最新版本，按你填写的说明一次性提交到所选分支。令牌只保存在本机浏览器，不进导出备份、不提供给任何 AI；超过 500 KB 的文件与二进制文件会拒绝导入。</p>
-        </div>
-        <div class="g-name">语音通话与语音条</div>
-        <p>和 TA 打一通真正的语音电话：在 1 对 1 会话抽屉的「操作」里点「Call 语音通话」。你开口说话，停顿约一秒自动发出；TA 的回复会一句句读给你听，同时滚动中文字幕。</p>
-        <div class="g-sub">
-          <p><strong>开始之前</strong>：通话的「耳朵」用的是语音输入的转写接口，配好它才能用嘴说；「嗓子」默认用手机系统语音，也可以在通话设置里接入云端音色（OpenAI 兼容 / ElevenLabs / MiniMax 等）。麦克风被拒绝、或当前浏览器不支持语音识别时，通话页会自动转「打字模式」，照样能一来一回。</p>
-          <p><strong>通话设置</strong>：API 页 → 工具 → 语音通话设置，或会话抽屉 → 设置 → 语音通话设置。全局配置管默认声音、朗读语言（外语模式：歌词区外语原句与中文字幕两行并列同时出现）、语速、语音打断与通话心跳（打开后你和 TA 都安静超过设定间隔时 TA 会主动说一句，走定时推送同一条侧路、不伪造你的发言也不改 system；你一开口计数清零，连续 10 句没等到你说话就停到你再开口）；独立配置里可以给每位 AI 单独指定一套声音并试听。</p>
-          <p><strong>TA 也能打给你</strong>：在某位 AI 的独立配置里开启「主动打电话」后，TA 可以在合适的时机给你打来——屏幕上会出现来电卡，接听即进通话，暂不接也不会丢失消息。</p>
-          <p><strong>语音条</strong>：独立配置里逐位开启。开启后 TA 会在合适的消息末尾附一枚可点播的语音条（也支持外语版：气泡照常中文，语音条播同一段话的英 / 日 / 韩语）。</p>
-          <p><strong>通话记录</strong>：挂断后通话内容保留在聊天里；如在通话设置里开启「结束后压缩成通话记录」，会整理成一张摘要卡并把原话摘出上下文，省下后续对话的开销（默认关闭）。此功能会用你配置的 API 生成摘要，产生一次正常计费的调用。</p>
         </div>
         <div class="g-name">DIY — 创意工坊</div>
         <p>配置 AI 的扩展能力。</p>
@@ -2911,7 +2953,7 @@ self.addEventListener(&#x27;fetch&#x27;,function(e){
           <div class="f-group" id="call-gid-g" style="display:none"><label>GroupId（MiniMax 必填）</label><input id="call-gid" placeholder="账号后台「基本信息」里的 GroupId"></div>
           <div class="f-group"><label>模型</label><input id="call-model" placeholder="FunAudioLLM/CosyVoice2-0.5B"></div>
           <div class="f-group"><label>音色（voice）</label><input id="call-voice" placeholder="FunAudioLLM/CosyVoice2-0.5B:anna"></div>
-          <div class="f-row" id="call-presets"><div class="f-group"><button class="btn wide" id="call-preset-sf" type="button">SiliconFlow 示例</button></div><div class="f-group"><button class="btn wide" id="call-preset-oa" type="button">OpenAI 示例</button></div></div>
+          <div class="f-group" id="call-list-g"><button class="btn wide" id="call-list-fetch" type="button">拉取模型 / 音色列表</button><div class="sel" id="call-list-wrap" style="margin-top:8px;display:none"><select id="call-list"><option value="">— 选中即填入 —</option></select></div><p class="hint" id="call-list-hint" style="margin:6px 0 0;display:none"></p></div><div class="f-row" id="call-presets"><div class="f-group"><button class="btn wide" id="call-preset-sf" type="button">SiliconFlow 示例</button></div><div class="f-group"><button class="btn wide" id="call-preset-oa" type="button">OpenAI 示例</button></div></div>
           <div class="f-group" id="call-preset-sv-g"><button class="btn wide" id="call-preset-sv" type="button">GPT-SoVITS 网关示例</button></div>
           <p class="hint" id="call-cloud-hint">任何 OpenAI 兼容的 /v1/audio/speech 接口都能接：SiliconFlow 的 CosyVoice2、OpenAI 的 tts，自建 GPT-SoVITS 一类网关也行——这就是给「AI 声音」留的口子。请求由应用内浏览器直接发出，接口需允许跨域（CORS）；合成失败会自动回落系统语音。注意：阿里百炼（dashscope）的 CosyVoice 只有 WebSocket 且要求握手头鉴权，浏览器直连不通，别把它的地址填在这里。</p>
         </div>
@@ -4929,11 +4971,13 @@ function mpAi(cfg){
 }
 function chatPref(){return (_mp&&_mp.chat)||{mdMode:'full',bubbleSplit:false}}
 /* 共用设置（与电脑版同一条记录、同一套字段） */
-let _vt=null,_ms=null,_ibt=null,_out=null,_cs=null;
+let _vt=null,_ms=null,_ibt=null,_out=null,_cs=null,_vtFromDb=false,_ibtFromDb=false,_csFromDb=false;
 async function loadVT(force){
-  if(_vt&&!force)return _vt;
-  let r=null;try{r=await dbGet('apiSettings','voiceTrans')}catch(e){}
+  if(_vt&&_vtFromDb&&!force)return _vt;
+  let r=null,ok=false;try{if(typeof db==='undefined'||!db)throw 0;r=await dbGet('apiSettings','voiceTrans');ok=true}catch(e){ok=false}
+  if(!ok&&_vt)return _vt;
   _vt=Object.assign({id:'voiceTrans',endpoint:'',apiKey:'',model:'whisper-1'},r||{});
+  _vtFromDb=ok;
   return _vt;
 }
 function vtReady(){return !!(_vt&&_vt.apiKey&&_vt.model)}
@@ -4945,8 +4989,10 @@ async function loadMS(force){
   return v;
 }
 async function loadIBT(force){
-  if(_ibt&&!force)return _ibt;
-  let r=null;try{r=await dbGet('apiSettings','ibTools')}catch(e){}
+  if(_ibt&&_ibtFromDb&&!force)return _ibt;
+  let r=null,ok=false;try{if(typeof db==='undefined'||!db)throw 0;r=await dbGet('apiSettings','ibTools');ok=true}catch(e){ok=false}
+  if(!ok&&_ibt)return _ibt;
+  _ibtFromDb=ok;
   _ibt=Object.assign({id:'ibTools',enabled:false,confirm:true,tools:[]},r||{});
   if(!Array.isArray(_ibt.tools))_ibt.tools=[];
   return _ibt;
@@ -4961,8 +5007,10 @@ async function loadOUT(force){
   return _out;
 }
 async function loadCS(force){
-  if(_cs&&!force)return _cs;
-  let r=null;try{r=await dbGet('apiSettings','calendarSettings')}catch(e){}
+  if(_cs&&_csFromDb&&!force)return _cs;
+  let r=null,ok=false;try{if(typeof db==='undefined'||!db)throw 0;r=await dbGet('apiSettings','calendarSettings');ok=true}catch(e){ok=false}
+  if(!ok&&_cs)return _cs;
+  _csFromDb=ok;
   _cs=Object.assign({id:'calendarSettings',noPetals:false,bootMini:true,allowNotes:true,perm:{},meetSet:{},holiday:false},r||{});
   if(!_cs.perm)_cs.perm={};
   if(!_cs.meetSet)_cs.meetSet={};
@@ -11556,7 +11604,7 @@ function _orientApply(){try{
 (function _sysWire(){/* 元素在静态 HTML 中，模块位于文末，直接绑定（与 _lkWire 同款惯例） */
   var el;
   function _dd(){_mp.presence=_mp.presence||{};_mp.presence.dnd=_mp.presence.dnd||{on:false,from:23,to:8};return _mp.presence.dnd}
-  el=$('pres-dnd');if(el)el.addEventListener('click',async function(){await loadMP();var dd=_dd();dd.on=!dd.on;await saveMP();sw2(el,dd.on);toast(dd.on?'勿扰时段已开启':'勿扰时段已关闭')});
+  el=$('pres-dnd');if(el)el.addEventListener('click',async function(){var elD=this;await loadMP();var dd=_dd();dd.on=!dd.on;sw2(elD,dd.on);await saveMP();toast(dd.on?'勿扰时段已开启':'勿扰时段已关闭')});
   el=$('pres-dnd-from');if(el)el.addEventListener('change',async function(){var v=parseInt(this.value)||0;await loadMP();_dd().from=v;await saveMP()});
   el=$('pres-dnd-to');if(el)el.addEventListener('change',async function(){var v=parseInt(this.value)||0;await loadMP();_dd().to=v;await saveMP()});
   el=$('notif-on');if(el)el.addEventListener('click',async function(){
@@ -11579,7 +11627,7 @@ function _orientApply(){try{
   el=$('ui-bigtouch');if(el)el.addEventListener('click',async function(){var el9=this;try{await loadMP();_mp.ui=_mp.ui||{};_mp.ui.bigTouch=!_mp.ui.bigTouch;sw2(el9,!!_mp.ui.bigTouch);await saveMP();_uiApply();toast(_mp.ui.bigTouch?'触控目标已放大':'触控目标恢复标准')}catch(e){toast('设置保存失败，请重试');try{await loadMP();sw2(el9,!!(_mp.ui&&_mp.ui.bigTouch))}catch(e2){}}});
   setTimeout(function(){try{if(window.IBNative&&window.IBNative.available){var _bg=$('pres-bg');var _row=_bg&&_bg.closest('.tog');if(_row)_row.style.display=''}}catch(e){}},1200);/* v116-p：壳内显露「后台 Presence（App）」开关（桥在文末激活，故延时探测；浏览器 / PWA 保持隐藏） */
 })();
-var IB_VER='v158-p',IB_VER_DATE='2026-08-27';
+var IB_VER='v160-p',IB_VER_DATE='2026-08-27';
 (function _appVerDraw(){var e=document.getElementById('app-ver');if(e)e.textContent='InternalBeyond Mobile '+IB_VER+'（'+IB_VER_DATE+'）'})();
 function _lkVeilOff(){try{var v=document.getElementById('lk-preveil');if(v){v.classList.add('off');setTimeout(function(){try{v.remove()}catch(e){}},420)}}catch(e){}}/* fix-r4：预遮罩揭幕（任务 8） */
 async function _lkBoot(){try{await loadBgs()}catch(e){}var lk=_lkCfg();try{localStorage.setItem('ib_lockOn',lk&&lk.on?'1':'0')}catch(e){}/* v101-m：启动后把 DB 真值回写同步镜像 */if(lk&&lk.on)_lkShow();else _lkVeilOff()}
@@ -11863,7 +11911,7 @@ async function requestLetterM(){
     }else{
       reqBlock+='请以书信的形式写一封真诚、温暖且有深度的留言给网站主人。';
       reqBlock+=recentPosts.length?'可以评论上面提供的日志内容，分享你的感想，给予鼓励或提出有趣的问题。':'这次没有提供任何日志内容：不要提及、评论或虚构对方的日志，从上面的资料、你们的聊天记录和你对TA的了解出发来写。';
-      reqBlock+='只写上面素材里真实出现的事，没有提供的经历、日志、约定一概不要编造，也不要假装记得没给你的内容；素材少就写得轻一点、短一点。';
+      reqBlock+='没有提供的经历、日志、约定一概不要编造，也不要假装记得没给你的内容。';
       reqBlock+='信件语言使用简体中文。不要与之前任何人发的信件内容重复。';
       reqBlock+='长度适中（400~2000字符均可，根据你读取内容的信息量来定）。以"'+((about&&about.name)||'朋友')+'"开头。';
     }
@@ -18792,18 +18840,39 @@ function _callEffMerge(cs,fid){
 /* ═══ v138-a：语音通话（Call）模块 ═══ */
 
 /* ── 设置（apiSettings/callSettings，随备份往返；电脑端不读不写，互导无害） ── */
-let _callS=null;
+let _callS=null,_callFromDb=false,_callDefSnap='';
+function _callDef(){return {id:'callSettings',on:true,tts:'sys',sysVoice:'',rate:1,bargein:true,ep:'',key:'',model:'',voice:'',provider:'oai',gid:'',lang:'',perApi:{}}}
+function _callMergeDirty(mem,base){/* v159-p：把「默认骨架 + 用户此后改过的键」里真正改过的部分并回库记录（顶层按值比对、perApi 按 fid 逐键比对） */
+  var snap=null;try{snap=_callDefSnap?JSON.parse(_callDefSnap):null}catch(e){snap=null}
+  if(!mem||!base)return;var sv=snap||{};
+  Object.keys(mem).forEach(function(k){if(k==='id'||k==='perApi')return;var a=mem[k],b=sv[k];if(JSON.stringify(a)!==JSON.stringify(b))base[k]=a});
+  var mp=mem.perApi||{},sp=(sv.perApi)||{};base.perApi=base.perApi||{};
+  Object.keys(mp).forEach(function(f){var pm=mp[f]||{},ps=sp[f]||null;Object.keys(pm).forEach(function(k){if(!ps||JSON.stringify(pm[k])!==JSON.stringify(ps[k])){base.perApi[f]=base.perApi[f]||{};base.perApi[f][k]=pm[k]}})});
+}
+function _ibcWhenDb(fn){var n=0;(function w(){try{if(typeof db!=='undefined'&&db){fn();return}}catch(e){}if(++n<150)setTimeout(w,200)})()}
 async function loadCALL(force){
-  if(_callS&&!force)return _callS;
-  let r=null,_rdBad=false;try{r=await dbGet('apiSettings','callSettings')}catch(e){_rdBad=true}
-  if(_rdBad&&_callS)return _callS;
-  const _prev=_callS;
-  _callS=Object.assign({id:'callSettings',on:true,tts:'sys',sysVoice:'',rate:1,bargein:true,ep:'',key:'',model:'',voice:'',provider:'oai',gid:'',lang:'',perApi:{}},r||{});/* v138-c：①③新键 provider/gid/lang；v142-a：#2 perApi 每 API 单独配置 */
+  if(_callS&&_callFromDb&&!force)return _callS;
+  let r=null,_rdBad=false;try{if(typeof db==='undefined'||!db)throw new Error('db not ready');r=await dbGet('apiSettings','callSettings')}catch(e){_rdBad=true}
+  if(_rdBad){
+    if(_callS)return _callS;
+    _callS=_callDef();_callFromDb=false;try{_callDefSnap=JSON.stringify(_callS)}catch(e){_callDefSnap=''}
+    return _callS;
+  }
+  const _prev=_callS,_prevDb=_callFromDb;
+  _callS=Object.assign(_callDef(),r||{});/* v138-c：①③新键 provider/gid/lang；v142-a：#2 perApi 每 API 单独配置 */
   if(!_callS.perApi||typeof _callS.perApi!=='object')_callS.perApi={};
-  try{if(_prev&&_prev.perApi)Object.keys(_prev.perApi).forEach(function(k9){var a9=_prev.perApi[k9],b9=_callS.perApi[k9];if(!a9)return;if(!b9){_callS.perApi[k9]=a9;return}['procall','vbOn','vbLang','use'].forEach(function(f9){if(b9[f9]==null&&a9[f9]!=null)b9[f9]=a9[f9]})})}catch(e){}
+  if(_prev&&!_prevDb){try{_callMergeDirty(_prev,_callS)}catch(e){}}/* 内存里是默认骨架：只把用户在骨架上改过的键带过来 */
+  else{try{if(_prev&&_prev.perApi)Object.keys(_prev.perApi).forEach(function(k9){var a9=_prev.perApi[k9],b9=_callS.perApi[k9];if(!a9)return;if(!b9){_callS.perApi[k9]=a9;return}['procall','vbOn','vbLang','use'].forEach(function(f9){if(b9[f9]==null&&a9[f9]!=null)b9[f9]=a9[f9]})})}catch(e){}}
+  _callFromDb=true;_callDefSnap='';
   return _callS;
 }
 async function saveCALL(){if(!_callS)return;
+  if(!_callFromDb){
+    const mem=_callS;let r=null,ok=false;try{if(typeof db==='undefined'||!db)throw new Error('db not ready');r=await dbGet('apiSettings','callSettings');ok=true}catch(e){ok=false}
+    if(!ok){toast('设置没能保存，请稍后重试');return}
+    _callS=Object.assign(_callDef(),r||{});if(!_callS.perApi||typeof _callS.perApi!=='object')_callS.perApi={};
+    try{_callMergeDirty(mem,_callS)}catch(e){}_callFromDb=true;_callDefSnap='';
+  }
   try{await dbPut('apiSettings',_callS)}catch(e){try{await dbPut('apiSettings',_callS)}catch(e2){toast('设置没能保存，请重试');return}}
   try{var _bk=await dbGet('apiSettings','callSettings');
     var _n9=_callS.perApi?Object.keys(_callS.perApi).length:0,_m9=(_bk&&_bk.perApi)?Object.keys(_bk.perApi).length:0;
@@ -18928,6 +18997,8 @@ const CSS=''
 +'color:#e9effc;background:linear-gradient(178deg,#131c31 0%,#0d1426 46%,#080d1b 100%)}'
 +'body:not(.theme-infernal) #ibcall{color:#122644;background:linear-gradient(180deg,#aecae6 0%,#c5d9ee 34%,#dee9f6 66%,#f3f7fc 100%)}'
 +'#ibcall[hidden]{display:none}'
++'#ibcall:not(.mini){will-change:opacity;isolation:isolate}'
++'body.ibcall-full #cv-msgs>*{visibility:hidden}'/* v159-p：全屏通话期间底下聊天列表只排版不绘制（收成小条时恢复），流式落字不再逐字重绘被盖住的列表 */
 +'#ibcall::before{content:"";position:absolute;inset:-10%;pointer-events:none;z-index:0;'
 +'background:radial-gradient(46% 34% at 22% 24%,rgba(120,170,226,0.26),transparent 72%),radial-gradient(40% 30% at 78% 58%,rgba(96,140,204,0.2),transparent 72%),radial-gradient(34% 26% at 52% 86%,rgba(140,178,224,0.14),transparent 72%)}'
 +'body:not(.theme-infernal) #ibcall::before{background:'
@@ -18968,7 +19039,9 @@ const CSS=''
 +'@media (prefers-reduced-motion:reduce){#ibcall .ibc-ava,#ibcall .ibc-ava::before,#ibcall .ibc-breath{animation:none!important;transition:none!important}#ibcall .ibc-breath{opacity:0.35}}'/* v157-a #3：清单随光效改组更新 */
 +'#ibcall .ibc-name{font-family:var(--serif);font-weight:600;font-size:1.62rem;letter-spacing:0.05em;margin-top:-2px;'
 +'text-shadow:0 1px 0 rgba(255,255,255,0.08),0 2px 6px rgba(0,0,0,0.55),0 0 14px rgba(var(--glow),0.24)}'/* #4 社交圈名片同族衬线＋站内字效（ph-cn 同配方放大） */
-+'body:not(.theme-infernal) #ibcall .ibc-name{text-shadow:0 1px 0 rgba(255,255,255,0.85),0 2px 4px rgba(var(--shA),0.42),0 4px 9px rgba(var(--shB),0.2),0 -1px 1px rgba(30,52,92,0.22)}'
++'body:not(.theme-infernal) #ibcall .ibc-name{color:#4f6a93;text-shadow:0 1px 0 rgba(255,255,255,0.92),0 2px 5px rgba(120,152,200,0.3),0 4px 10px rgba(120,152,200,0.16)}'/* v159-p：明亮模式昵称改低饱和蓝灰，描影只留白高光与淡蓝柔影，不再压黑 */
++'body:not(.theme-infernal) #ibcall{color:#4b6690}body:not(.theme-infernal) #ibcall .ibc-timer{color:#6c84aa;opacity:0.92}body:not(.theme-infernal) #ibcall .ibc-en{color:#7b91b5;opacity:0.88}body:not(.theme-infernal) #ibcall .ibc-sub{color:#6d84a8}'/* v159-p：明亮模式基色 / 计时 / 状态词 / 提示行统一降到蓝灰 */
++'body:not(.theme-infernal) #ibcall .ibc-ly{color:#6b82a8;opacity:0.62}body:not(.theme-infernal) #ibcall .ibc-ly.cur{color:#3f5b87;opacity:1}'/* v159-p：歌词区 TA 的句子：平句蓝灰、当前句低饱和藏青，不再是墨黑 */
 +'#ibcall .ibc-en{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI","PingFang SC","Noto Sans SC",sans-serif;font-style:normal;font-weight:400;font-size:0.8rem;letter-spacing:0.16em;opacity:0.55;margin:0 0 2px;min-height:1.2em;text-align:center}'/* v166-a：①状态词改无衬线正体 *//* v157-a #1：状态词换衬线斜体、0.4em 大字距收到 0.13em *//* v156-a #2b：字号 0.64→0.8rem、整行下移约 10px */
 +'#ibcall .ibc-wavew{flex:none;width:min(100%,440px);height:52px;padding:0 10px;margin-top:12px}'/* v156-a #2b：随状态行同步下移 */
 +'#ibcall .ibc-wavew canvas{display:block;width:100%;height:100%}'
@@ -18982,9 +19055,9 @@ const CSS=''
 +'#ibcall .ibc-ly .ibc-ly-sub{display:block;font-size:inherit;line-height:inherit;letter-spacing:inherit;opacity:1;margin-top:3px}'
 +'body:not(.theme-infernal) #ibcall .ibc-ly.cur{text-shadow:0 2px 12px rgba(255,255,255,0.65)}'
 +'#ibcall .ibc-ly.me{font-family:"Noto Sans SC",sans-serif;font-size:0.84rem;letter-spacing:0.02em;opacity:0.6;color:#7fb2e4}'
-+'body:not(.theme-infernal) #ibcall .ibc-ly.me{color:#3d6ea9}'
++'body:not(.theme-infernal) #ibcall .ibc-ly.me{color:#6f93c2}'/* v159-p：我方句子同步降一档 */
 +'#ibcall .ibc-ly.me.cur{opacity:0.95;font-size:0.9rem;color:#a6ccf2;text-shadow:none}'
-+'body:not(.theme-infernal) #ibcall .ibc-ly.me.cur{color:#2a6bb0}'/* v158-a #2：当前句＝明亮主题 acc 本色 */
++'body:not(.theme-infernal) #ibcall .ibc-ly.me.cur{color:#4577b3}'/* v158-a #2：当前句＝明亮主题 acc 本色 */
 +'#ibcall .ibc-flex{display:none}'
 +'#ibcall .ibc-sub{flex:none;width:min(100%,500px);min-height:1.3em;font-size:0.76rem;line-height:1.7;opacity:0.55;text-align:center;padding:0 6px}'
 +'#ibcall .ibc-btns{flex:none;display:flex;align-items:flex-end;justify-content:center;gap:26px;width:100%;padding:8px 0 22px}'
@@ -19099,6 +19172,7 @@ function _ibcNavHang(nid,nth){
 function setMini(on){
   _min9=!!on;
   try{UI.root.classList.toggle('mini',_min9)}catch(e){}
+  try{document.body.classList.toggle('ibcall-full',!!isOpen&&!_min9);if(_min9){var _bx9=document.getElementById('cv-msgs');if(_bx9)_bx9.scrollTop=_bx9.scrollHeight}}catch(e){}/* v159-p：收成小条＝聊天列表恢复绘制并滚到底 */
   try{
     if(!_pill)return;
     if(_min9){
@@ -19205,6 +19279,7 @@ async function openCall(){
   cloudDead=false;sysDead=false;muted=false;turns=0;t0=Date.now();
   hbLastUser=t0;hbLastAi=0;hbCount=0;hbBusy=false;hbGen++;avLvl=0;/* v174：①③复位 */
   isOpen=true;
+  try{document.body.classList.add('ibcall-full')}catch(e){}/* v159-p：全屏通话标记 */
   _lyrReset();/* v154-a：#2 新通话清空歌词流 */
   try{_lyrShowMe=(cs.lyrMe!==false)}catch(e){_lyrShowMe=true}/* v155-a：#6 我方句子显隐（全局设置） */
   try{UI.mute.classList.remove('on');UI.mute.innerHTML=MIC_ON}catch(e){}
@@ -19714,7 +19789,7 @@ function loop(){
   g.clearRect(0,0,W,H);
   const N=56,gap=W/N,bw=Math.max(2,gap*0.42),r=Math.min(bw/2,H*0.08);
   const base=Math.max(1.5,H*0.05),amp=H*0.44*(0.1+0.9*waveLvl);
-  g.fillStyle=accCol;
+  g.fillStyle=_ibcBarFill(g,W,H);/* v159-p：明亮模式改白＋浅蓝（中央偏白、两端浅蓝），暗色照旧主题强调色 */
   for(let i2=0;i2<N;i2++){
     const t=i2/(N-1),cx2=t*2-1;
     const env=0.2+0.8*Math.exp(-cx2*cx2*3.1);
@@ -19730,7 +19805,9 @@ function loop(){
   g.globalAlpha=1;
 }
 
-var _avwGrd=null,_avwGrdKey='';
+var _avwGrd=null,_avwGrdKey='',_avwGlow=null,_barGrd=null,_barGrdKey='';
+function _ibcLight(){try{return !document.body.classList.contains('theme-infernal')}catch(e){return true}}
+function _ibcBarFill(g,W,H){if(!_ibcLight())return accCol;var key=W+'|'+H;if(_barGrdKey!==key||!_barGrd){_barGrd=g.createLinearGradient(0,0,W,0);_barGrd.addColorStop(0,'#a9c6ea');_barGrd.addColorStop(0.5,'#ffffff');_barGrd.addColorStop(1,'#a9c6ea');_barGrdKey=key}return _barGrd}/* v159-p：明亮模式声波条白→浅蓝 */
 function _ibcRgb(c,fb){try{var m=String(c||'').trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);if(m){var h=m[1];if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];return parseInt(h.slice(0,2),16)+','+parseInt(h.slice(2,4),16)+','+parseInt(h.slice(4,6),16)}var r=String(c||'').match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);if(r)return r[1]+','+r[2]+','+r[3]}catch(e){}return fb}
 function _ibcDrawAvWave(lvlT){
   var cv=UI.avw;if(!cv||!cv.width)return;
@@ -19740,8 +19817,8 @@ function _ibcDrawAvWave(lvlT){
   if(!rm)avPh+=0.014+avLvl*0.075;
   var W=cv.width,H=cv.height,mid=H/2,dark=false;
   try{dark=document.body.classList.contains('theme-infernal')}catch(e){}
-  var col=_ibcRgb(accCol,dark?'150,190,232':'86,128,184'),key=W+'|'+col;/* v174：③曲线颜色跟下方声波条同一色源（accCol），只是更淡，不再偏白偏亮 */
-  if(_avwGrdKey!==key||!_avwGrd){_avwGrd=g.createLinearGradient(0,0,W,0);_avwGrd.addColorStop(0,'rgba('+col+',0)');_avwGrd.addColorStop(0.14,'rgba('+col+',1)');_avwGrd.addColorStop(0.86,'rgba('+col+',1)');_avwGrd.addColorStop(1,'rgba('+col+',0)');_avwGrdKey=key}
+  var col=dark?_ibcRgb(accCol,'150,190,232'):'255,255,255',colG=dark?col:'158,196,238',key=W+'|'+col+'|'+colG;/* v159-p：明亮模式改白线＋浅蓝柔光；暗色照旧跟主题强调色（v174 ③） */
+  if(_avwGrdKey!==key||!_avwGrd){_avwGrd=g.createLinearGradient(0,0,W,0);_avwGrd.addColorStop(0,'rgba('+col+',0)');_avwGrd.addColorStop(0.14,'rgba('+col+',1)');_avwGrd.addColorStop(0.86,'rgba('+col+',1)');_avwGrd.addColorStop(1,'rgba('+col+',0)');_avwGlow=g.createLinearGradient(0,0,W,0);_avwGlow.addColorStop(0,'rgba('+colG+',0)');_avwGlow.addColorStop(0.14,'rgba('+colG+',1)');_avwGlow.addColorStop(0.86,'rgba('+colG+',1)');_avwGlow.addColorStop(1,'rgba('+colG+',0)');_avwGrdKey=key}
   g.clearRect(0,0,W,H);
   var A=H*0.36*(0.12+0.88*avLvl),N=84,dpr=W/Math.max(1,cv.clientWidth||W);
   var L=[{f:1.55,k:1,p:0,sp:1},{f:1.15,k:0.78,p:2.1,sp:-0.8},{f:1.95,k:0.62,p:4.2,sp:1.35}];
@@ -19751,8 +19828,8 @@ function _ibcDrawAvWave(lvlT){
     for(var j=0;j<=N;j++){var t=j/N,x=t*W,env=Math.pow(Math.sin(Math.PI*t),1.15);
       var y=mid+A*ln.k*env*Math.sin(2*Math.PI*ln.f*t+ln.p+avPh*ln.sp);
       if(j)g.lineTo(x,y);else g.moveTo(x,y)}
-    g.lineWidth=5.5*dpr;g.globalAlpha=0.05+0.1*avLvl;g.stroke();
-    g.lineWidth=(li?1.3:1.6)*dpr;g.globalAlpha=(li?0.3:0.42)+0.3*avLvl;g.stroke();
+    g.strokeStyle=_avwGlow||_avwGrd;g.lineWidth=(dark?5.5:6.5)*dpr;g.globalAlpha=dark?(0.05+0.1*avLvl):(0.14+0.2*avLvl);g.stroke();
+    g.strokeStyle=_avwGrd;g.lineWidth=(li?1.3:1.6)*dpr;g.globalAlpha=dark?((li?0.3:0.42)+0.3*avLvl):((li?0.62:0.82)+0.18*avLvl);g.stroke();/* v159-p：明亮模式白线需更实、浅蓝柔光略宽略亮才看得出 */
   }
   g.globalAlpha=1;
 }
@@ -19768,6 +19845,7 @@ function cleanupAudio(){
 }
 async function endCall(reason){
   if(!isOpen)return;isOpen=false;
+  try{document.body.classList.remove('ibcall-full');var _bx8=document.getElementById('cv-msgs');if(_bx8)_bx8.scrollTop=_bx8.scrollHeight}catch(e){}/* v159-p */
   speakGen++;try{if(ttsAc)ttsAc.abort()}catch(e){}
   const dur=Math.max(1,Math.round((Date.now()-t0)/1000));
   const myTurns=turns,c=cfg,th=threadId;
@@ -20020,7 +20098,7 @@ function _ibcFillVoices(){try{
   sel.innerHTML=h;
   sel.value=cur;if(sel.value!==cur)sel.value='';
 }catch(e){}}
-try{(async function(){
+try{_ibcWhenDb(function(){(async function(){
   const cs=await loadCALL();
   sw2($('call-on'),cs.on!==false);
   sw2($('call-barge'),cs.bargein!==false);
@@ -20035,7 +20113,7 @@ try{(async function(){
   if($('call-gid'))$('call-gid').value=cs.gid||'';/* v138-c：① */
   const lg9=$('call-lang');if(lg9){lg9.value=cs.lang||'';if(lg9.value!==(cs.lang||''))lg9.value=''}/* v138-c：③ */
   _ibcCloudVis();_ibcFillVoices();
-})()}catch(e){}
+})().catch(function(){})})}catch(e){}
 try{if('speechSynthesis' in window&&speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',_ibcFillVoices)}catch(e){}
 try{var _co=$('call-on');if(_co)_co.addEventListener('click',async function(){await loadCALL();_callS.on=_callS.on===false?true:false;sw2(_co,_callS.on);await saveCALL();toast(_callS.on?'语音通话已开启（下一条消息重建一次缓存）':'语音通话已关闭（下一条消息重建一次缓存）')})}catch(e){}
 try{var _cb=$('call-barge');if(_cb)_cb.addEventListener('click',async function(){await loadCALL();_callS.bargein=_callS.bargein===false?true:false;sw2(_cb,_callS.bargein);await saveCALL()})}catch(e){}
@@ -20076,6 +20154,35 @@ try{var _psv=$('call-preset-sv');if(_psv)_psv.addEventListener('click',async fun
   toast('GPT-SoVITS 走「OpenAI 兼容网关」：在电脑上跑一个兼容 /v1/audio/speech 的转发（社区有现成项目），把它的地址填进 Endpoint；手机要能访问到它（同一局域网或做了穿透），模型 / 音色按你网关的要求填');
 })}catch(e){}/* v138-c：①GPT-SoVITS 网关示例（本质仍是 OpenAI 兼容） */
 try{var _cts=$('call-test');if(_cts)_cts.addEventListener('click',function(){IBCALL.test()})}catch(e){}
+
+async function _ibcListFetch(){
+  const btn=$('call-list-fetch'),wrap=$('call-list-wrap'),sel=$('call-list'),hint=$('call-list-hint');if(!btn||!sel||!wrap||!hint)return;
+  await loadCALL();const pv=_callS.provider||'oai',key=String($('call-key')&&$('call-key').value||_callS.key||'').trim(),ep=String($('call-ep')&&$('call-ep').value||_callS.ep||'').trim();
+  const show=function(items,note){sel.innerHTML='<option value="">— 选中即填入 —</option>'+items.map(function(it){return '<option value="'+esc(it.v)+'">'+esc(it.t)+'</option>'}).join('');wrap.style.display='';hint.style.display='';hint.textContent=note||''};
+  const fail=function(msg){wrap.style.display='none';hint.style.display='';hint.textContent=msg};
+  btn.disabled=true;btn.textContent='拉取中…';
+  try{
+    if(pv==='ali'){show([{v:'m:qwen-tts',t:'模型 · qwen-tts（默认）'},{v:'m:qwen-tts-latest',t:'模型 · qwen-tts-latest'},{v:'v:Cherry',t:'音色 · Cherry（默认）'},{v:'v:Serena',t:'音色 · Serena'},{v:'v:Ethan',t:'音色 · Ethan'},{v:'v:Chelsie',t:'音色 · Chelsie'}],'阿里云这条通道只有 Qwen-TTS 系列，官方没有可拉取的列表，这是内置清单；CosyVoice 系列在此通道不可用，要它的声音去 SiliconFlow。');return}
+    if(pv==='mm'){show([{v:'m:speech-02-turbo',t:'模型 · speech-02-turbo（默认）'},{v:'m:speech-02-hd',t:'模型 · speech-02-hd'},{v:'m:speech-01-turbo',t:'模型 · speech-01-turbo'},{v:'v:female-shaonv',t:'音色 · female-shaonv（默认）'},{v:'v:female-yujie',t:'音色 · female-yujie'},{v:'v:female-tianmei',t:'音色 · female-tianmei'},{v:'v:male-qn-qingse',t:'音色 · male-qn-qingse'},{v:'v:male-qn-jingying',t:'音色 · male-qn-jingying'},{v:'v:presenter_male',t:'音色 · presenter_male'},{v:'v:audiobook_female_1',t:'音色 · audiobook_female_1'}],'MiniMax 官方没有可拉取的列表，这是常用系统音色的内置清单；自己克隆的音色 ID 直接手输到「音色」。');return}
+    if(pv==='el'){if(!key)throw new Error('先填 API Key');let base=ep.replace(/\/+$/,'')||'https://api.elevenlabs.io';if(!/\/v\d+$/i.test(base))base+='/v1';const r=await fetch(base+'/voices',{headers:{'xi-api-key':key}});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();const vs=((j&&j.voices)||[]).map(function(v){return {v:'v:'+v.voice_id,t:'音色 · '+(v.name||v.voice_id)+(v.category?'（'+v.category+'）':'')}});show(vs.concat([{v:'m:eleven_multilingual_v2',t:'模型 · eleven_multilingual_v2（默认）'},{v:'m:eleven_flash_v2_5',t:'模型 · eleven_flash_v2_5'},{v:'m:eleven_turbo_v2_5',t:'模型 · eleven_turbo_v2_5'}]),'共 '+vs.length+' 个音色，选中自动填 voice_id；模型按需选。');return}
+    if(pv==='az'){if(!key)throw new Error('先填密钥');let base=ep.replace(/\/+$/,'');if(!base)throw new Error('先在 Endpoint 填区域端点');base=base.replace(/\/cognitiveservices\/v1$/i,'');const r=await fetch(base+'/cognitiveservices/voices/list',{headers:{'Ocp-Apim-Subscription-Key':key}});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();const vs=(Array.isArray(j)?j:[]).filter(function(v){return v&&v.ShortName}).sort(function(a,b){var az=/^zh-/i.test(a.Locale)?0:1,bz=/^zh-/i.test(b.Locale)?0:1;return az-bz||String(a.ShortName).localeCompare(String(b.ShortName))}).map(function(v){return {v:'v:'+v.ShortName,t:'音色 · '+v.ShortName+(v.LocalName?'（'+v.LocalName+'）':'')}});show(vs,'共 '+vs.length+' 个音色，中文排前；选中自动填入「音色」。');return}
+    if(!key)throw new Error('先填 API Key');
+    const cands=(typeof _modelListReqCustom==='function'?_modelListReqCustom(ep||'https://api.siliconflow.cn/v1',key):[]).filter(function(c){return c.kind==='openai'});
+    let list=null;
+    for(let i=0;i<cands.length&&!list;i++){const c=cands[i];try{const ac=new AbortController();const tm=setTimeout(function(){ac.abort()},7000);const r=await fetch(c.url,{headers:c.headers,signal:ac.signal});clearTimeout(tm);if(!r.ok)continue;const j=await r.json();const L=_modelListParse('openai',j);if(L.length)list=L}catch(e){}}
+    if(!list)throw new Error('没有拿到模型列表');
+    const tts=list.filter(function(m){return /tts|speech|voice|cosy|sovits|fish|sambert|chattts|melo|kokoro|audio/i.test(m.id)});
+    const use=tts.length?tts:list;
+    show(use.map(function(m){return {v:'m:'+m.id,t:'模型 · '+m.id}}),(tts.length?'只列出语音合成类模型（'+tts.length+' 个）':'接口没标出语音模型，列出全部 '+list.length+' 个')+'；选中自动填入「模型」。音色各家没有统一列表：SiliconFlow 系统音色 alex / anna / bella / benjamin / charles / claire / david / diana，写法「模型名:音色名」。');
+  }catch(e){fail('拉取失败：'+String(e&&e.message||e).slice(0,80)+'。不影响使用，按 GUIDE「云端音色怎么填」手填即可。')}
+  finally{btn.disabled=false;btn.textContent='拉取模型 / 音色列表'}
+}
+try{var _clf=$('call-list-fetch');if(_clf)_clf.addEventListener('click',function(){_ibcListFetch().catch(function(){})})}catch(e){}
+try{var _cls=$('call-list');if(_cls)_cls.addEventListener('change',async function(){const v=String(_cls.value||'');if(!v)return;await loadCALL();
+  if(v.indexOf('m:')===0){_callS.model=v.slice(2);if($('call-model'))$('call-model').value=_callS.model;
+    try{if(/siliconflow/i.test(String(_callS.ep||''))){const vo=String(_callS.voice||'');const mm=vo.match(/^(.+):([^:]+)$/);_callS.voice=mm?(_callS.model+':'+mm[2]):(vo?vo:(_callS.model+':anna'));if($('call-voice'))$('call-voice').value=_callS.voice}}catch(e){}/* SiliconFlow 音色写法「模型:音色」，换模型时前半段跟着对齐 */
+  }else if(v.indexOf('v:')===0){_callS.voice=v.slice(2);if($('call-voice'))$('call-voice').value=_callS.voice}
+  await saveCALL();toast('已填入'+(v.indexOf('m:')===0?'模型':'音色')+'，点「试听一句」验证');_cls.value=''})}catch(e){}
 
 var _ibcsBuilt=false,_ibcsSty=false,_ibcsVoiceOpts='<option value="">自动（跟随系统）</option>',_ibcsTab='g',_ibcsDetC=null;
 function _ibcsStyle(){
