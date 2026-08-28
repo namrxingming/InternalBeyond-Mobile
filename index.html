@@ -3499,6 +3499,9 @@ self.addEventListener(&#x27;fetch&#x27;,function(e){
       <div class="tog"><div class="tog-m"><div class="tog-t">启用联网搜索</div><div class="tog-s">AI 可在对话中检索实时网页信息。不支持的模型会自动跳过。</div></div><div class="sw2" id="aset-web"></div></div>
       <div class="tog"><div class="tog-m"><div class="tog-t">提示缓存（Prompt Caching）</div><div class="tog-s">自动优化缓存命中率以降低输入费用。中转站报 400 错误时可关闭。</div></div><div class="sw2" id="aset-cache"></div></div>
       <div class="tog"><div class="tog-m"><div class="tog-t">长效缓存（1 小时 TTL）</div><div class="tog-s">缓存保留从 5 分钟延长至 1 小时，适合慢节奏聊天。仅 Anthropic 官方 API 生效。</div></div><div class="sw2" id="aset-cache1h"></div></div>
+      <div class="tog"><div class="tog-m"><div class="tog-t">分类器拦截后自动回退（Claude Fable 5 / Opus 5）</div><div class="tog-s">不开＝被拦只在聊天里提示，换个说法再发；开＝被拦的那一轮由回退模型在同一次请求里接手，按接手模型计费，聊天里会提示接手模型。仅 Claude (Anthropic) 官方 API 生效，用别的模型不必打开。</div></div><div class="sw2" id="aset-fb-on"></div></div>
+      <div class="f-group" id="aset-fb-g" style="display:none"><label>回退方式</label><div class="sel"><select id="aset-fb"><option value="default">官方默认路由（Anthropic 按拦截类别选模型）</option><option value="list">指定回退模型</option></select></div></div>
+      <div class="f-group" id="aset-fb-models-g" style="display:none"><label>回退模型 <span class="lb-note">最多 3 个，逗号分隔</span></label><input id="aset-fb-models" placeholder="claude-opus-4-8"></div>
     </div>
     <div class="set-card">
       <div class="sc-t">Context — 上下文</div>
@@ -7502,13 +7505,14 @@ function closeConvToVt(){
   if(window.visualViewport){window.visualViewport.addEventListener('resize',()=>setTimeout(pinIfNear,60))}
   ta.addEventListener('focus',()=>setTimeout(pinIfNear,260));
 })();
-var _IB_SW_FALLBACK={'ib-on':1,'ib-autopost':1,'ib-autocmt':1,'ib-img':1,'aset-stream':1,'aset-think':1,'aset-vision':1,'aset-web':1,'aset-cache':1,'aset-cache1h':1,'aset-memw':1,'aset-am':1,'aset-am-mute':1,'aset-ib':1,'aset-ib-post':1,'aset-ib-cmt':1,'aset-ib-img':1,'aset-hb':1};
+var _IB_SW_FALLBACK={'ib-on':1,'ib-autopost':1,'ib-autocmt':1,'ib-img':1,'aset-stream':1,'aset-think':1,'aset-vision':1,'aset-web':1,'aset-cache':1,'aset-cache1h':1,'aset-fb-on':1,'aset-memw':1,'aset-am':1,'aset-am-mute':1,'aset-ib':1,'aset-ib-post':1,'aset-ib-cmt':1,'aset-ib-img':1,'aset-hb':1};
 document.addEventListener('click',async function(ev){try{
   var el=ev.target&&ev.target.closest?ev.target.closest('.sw2'):null;
   if(!el||!el.id||!_IB_SW_FALLBACK[el.id]||el.dataset.wired==='1')return;
   var on=!el.classList.contains('on');sw2(el,on);
   if(el.id==='aset-cache'&&!on)sw2($('aset-cache1h'),false);
   if(el.id==='aset-cache1h'&&on)sw2($('aset-cache'),true);
+  if(el.id==='aset-fb-on')_fbRowM();
   var k={'ib-on':'on','ib-autopost':'autoPost','ib-autocmt':'autoCmt','ib-img':'allowImg'}[el.id];
   if(k){await loadMP();_mp.ib=_mp.ib||{};_mp.ib[k]=on;await saveMP();}
 }catch(e){}});
@@ -7861,7 +7865,14 @@ function _histHasImgM(h){try{return (h||[]).some(function(m){return m&&Array.isA
 function _stripHistImgsM(h){return (h||[]).map(function(m){var n=(m&&m.images&&m.images.length)||0;if(!n)return m;var mm=Object.assign({},m);delete mm.images;var note='[本条消息原附带'+n+'张图片，但当前 API 不支持图片识别，图片未发送]';mm.content=String(mm.content||'')+'\n'+note;return mm})}
 /* 提示缓存：手机端追平电脑版。undefined 视为开启，只有显式 false 才关闭。 */
 function _ccObjM(cfg){return (cfg&&cfg.cacheTtl1h&&cfg.promptCache!==false)?{type:'ephemeral',ttl:'1h'}:{type:'ephemeral'}}
-function _ccBetaM(hdrs,cfg){if(hdrs&&cfg&&cfg.cacheTtl1h&&cfg.promptCache!==false)hdrs['anthropic-beta']='extended-cache-ttl-2025-04-11';return hdrs}
+function _anthBetaAddM(hdrs,name){if(!hdrs||!name)return hdrs;var cur=String(hdrs['anthropic-beta']||'').split(',').map(function(x){return x.trim()}).filter(Boolean);if(cur.indexOf(name)<0)cur.push(name);hdrs['anthropic-beta']=cur.join(',');return hdrs}/* v161-p：anthropic-beta 多值合并（逗号分隔、去重），长效缓存与分类器回退两个 beta 共用一行 */
+function _ccBetaM(hdrs,cfg){if(hdrs&&cfg&&cfg.cacheTtl1h&&cfg.promptCache!==false)_anthBetaAddM(hdrs,'extended-cache-ttl-2025-04-11');return hdrs}
+function _anthFallbacksM(cfg){var m=cfg&&cfg.fallbackMode;if(m==='default')return 'default';if(m==='list'){var arr=String(cfg.fallbackModels||'').split(/[,，;；\s]+/).map(function(x){return x.trim()}).filter(Boolean).slice(0,3).map(function(x){return{model:x}});return arr.length?arr:null}return null}
+function _fbRowM(){try{var sw=$('aset-fb-on'),s=$('aset-fb'),g0=$('aset-fb-g'),g=$('aset-fb-models-g');if(!sw||!s||!g0||!g)return;if(!s._fbB){s._fbB=1;s.addEventListener('change',_fbRowM)}var on=sw.classList.contains('on');g0.style.display=on?'':'none';g.style.display=(on&&s.value==='list')?'':'none'}catch(e){}}
+function _anthFbNoteM(fin){/* v161-p：回退接手 → 提示接手模型；被拦且无人接手 → 抛错，聊天按请求失败展示（半截内容按未完成处理，与官方口径一致） */
+  try{if(fin&&fin.fb&&fin.fb.to){toast('这一轮被 '+(fin.fb.from||'原模型')+' 的安全分类器拦下，已由 '+fin.fb.to+' 接手回答');console.info('[IB] 服务端回退：'+JSON.stringify(fin.fb)+' stop='+(fin.r||''))}}catch(e){}
+  if(fin&&String(fin.r||'').toLowerCase()==='refusal'){var sd=fin.sd||{},cat=(sd&&sd.category)?String(sd.category):'',ex=(sd&&sd.explanation)?String(sd.explanation):'';throw new Error('这一轮被模型的安全分类器拦下'+(cat?'（'+cat+'）':'')+(ex?'：'+ex.slice(0,200).replace(/[.。]\s*$/,''):'')+'。换个说法再发一次。')}
+}
 function _injectAnthropicMsgCacheM(chatMsgs,cfg){
   if(!chatMsgs||chatMsgs.length<=1)return;
   if(cfg&&cfg.promptCache===false)return;
@@ -7957,6 +7968,14 @@ async function callAI(cfg,hist,sys,onDelta,signal,pa){
   const _grabU=j=>{try{
     if(!j)return;
     try{
+      if(j.type==='message_start'&&j.message&&j.message.model)_fin.model=String(j.message.model);
+      else if(j.type==='message'&&j.model)_fin.model=String(j.model);
+      var _sd=(j.delta&&j.delta.stop_details)||(j.type==='message'&&j.stop_details)||null;if(_sd&&typeof _sd==='object')_fin.sd=_sd;
+      var _fbk=(j.type==='content_block_start'&&j.content_block&&j.content_block.type==='fallback')?j.content_block:null;
+      if(!_fbk&&j.type==='message'&&Array.isArray(j.content))_fbk=j.content.find(function(x){return x&&x.type==='fallback'})||null;
+      if(_fbk)_fin.fb={from:(_fbk.from&&_fbk.from.model)||'',to:(_fbk.to&&_fbk.to.model)||''};
+    }catch(_e){}
+    try{
       var _fr=(j.choices&&j.choices[0]&&(j.choices[0].finish_reason||j.choices[0].finishReason))
         ||(j.candidates&&j.candidates[0]&&j.candidates[0].finishReason)
         ||(j.delta&&j.delta.stop_reason)||j.stop_reason||(j.message&&j.message.stop_reason)||'';
@@ -7987,6 +8006,7 @@ async function callAI(cfg,hist,sys,onDelta,signal,pa){
       else b.system=sys;
     }
     _ccBetaM(headers,cfg);
+    const _fbq=(pa&&pa._noFb)?null:_anthFallbacksM(cfg);if(_fbq){b.fallbacks=_fbq;_anthBetaAddM(headers,'server-side-fallback-2026-07-01')}
     if(_anthNative)b.thinking=_anthThinkShape(model);/* v151-p #1：形参只随「未勾选」的聊天主链下发；勾选＝上方标签方案，二者互斥，绝不思考两遍 */
     if(useWS)b.tools=(b.tools||[]).concat([{type:'web_search_20250305',name:'web_search',max_uses:3}]);
     body=JSON.stringify(b);
@@ -8019,6 +8039,10 @@ async function callAI(cfg,hist,sys,onDelta,signal,pa){
     if(res.status>=400&&res.status<500&&!(pa&&pa._noImg)&&_errImgRejectM(errTxt)&&_histHasImgM(_hist0)){
       if(_errImgSizeM(errTxt)){try{toast('图片体积超过该 API 限制，已改为文字说明重发')}catch(e2){}}else if(_errImgCapRejectM(errTxt)){_visionDeadMarkM(cfg)}else{try{toast('该 API 拒收了本次图片（疑似格式或链路问题），已改为文字说明重发；未记入不支持名单')}catch(e2){}}
       return callAI(cfg,_hist0,_sys0,onDelta,signal,Object.assign({},pa||{},{_noImg:true}));
+    }
+    /* v161-p：端点不接受 fallbacks（400 且报错提到该参数，多见于中转）→ 去掉回退参数重发一次 */
+    if(fmt==='anthropic'&&res.status===400&&/fallbacks?/i.test(errTxt)&&!(pa&&pa._noFb)){
+      return callAI(cfg,_hist0,_sys0,onDelta,signal,Object.assign({},pa||{},{_noFb:true}));
     }
     /* 端点不接受搜索参数（4xx 且报错涉及 search；鉴权错除外）→ 去掉搜索参数重发一次 */
     if(useWS&&res.status>=400&&res.status<500&&res.status!==401&&res.status!==403&&/search/i.test(errTxt)){
@@ -8073,7 +8097,8 @@ async function callAI(cfg,hist,sys,onDelta,signal,pa){
     if(_tagThink){const p=(_tkAny?_parseThinkAny:_parseThinking)(at);if(p.thinking){ak=(ak?ak+'\n':'')+p.thinking;at=p.reply}}
     ak=ak.replace(/^\s+/,'');/* v69-m t11 */
     if(_u.seen){try{_tkRecord(cfg,{i:_u.i,cr:_u.cr,cw:_u.cw,o:_u.o})}catch(e){}}
-    return{t:at,k:ak,u:_u.seen?{i:_u.i,o:_u.o,cr:_u.cr,cw:_u.cw}:null,fin:_fin.r};
+    if(fmt==='anthropic')_anthFbNoteM(_fin);/* v161-p */
+    return{t:at,k:ak,u:_u.seen?{i:_u.i,o:_u.o,cr:_u.cr,cw:_u.cw}:null,fin:_fin.r,fb:_fin.fb||null,model:_fin.model||''};
   }
   const j=await res.json();
   _grabU(j);
@@ -8082,7 +8107,8 @@ async function callAI(cfg,hist,sys,onDelta,signal,pa){
   full.k=(full.k||'').replace(/^\s+/,'');/* v69-m t11 */
   if(_u.seen){try{_tkRecord(cfg,{i:_u.i,cr:_u.cr,cw:_u.cw,o:_u.o})}catch(e){}}
   full.u=_u.seen?{i:_u.i,o:_u.o,cr:_u.cr,cw:_u.cw}:null;
-  full.fin=_fin.r;
+  full.fin=_fin.r;full.fb=_fin.fb||null;full.model=_fin.model||'';
+  if(fmt==='anthropic')_anthFbNoteM(_fin);/* v161-p */
   onDelta(full.t,full.k);
   return full;
 }
@@ -10206,12 +10232,13 @@ $('aset-ava-menu').addEventListener('click',e=>{
 });
 document.addEventListener('click',()=>{const m=$('aset-ava-menu');if(m&&!m.hidden)m.hidden=true});
 $('aset-temp').addEventListener('input',e=>{$('aset-temp-val').textContent=Number(e.target.value).toFixed(1);rangeFill(e.target)});
-['aset-stream','aset-think','aset-vision','aset-web','aset-cache','aset-cache1h','aset-memw','aset-am','aset-am-mute','aset-ib','aset-ib-post','aset-ib-cmt','aset-ib-img'].forEach(id=>{
+['aset-stream','aset-think','aset-vision','aset-web','aset-cache','aset-cache1h','aset-fb-on','aset-memw','aset-am','aset-am-mute','aset-ib','aset-ib-post','aset-ib-cmt','aset-ib-img'].forEach(id=>{
   $(id).dataset.wired='1';/* v117-p：#12 保险丝标记 */
   $(id).addEventListener('click',()=>{
     const on=!$(id).classList.contains('on');sw2($(id),on);
     if(id==='aset-cache'&&!on)sw2($('aset-cache1h'),false);
     if(id==='aset-cache1h'&&on)sw2($('aset-cache'),true);
+    if(id==='aset-fb-on')_fbRowM();
   });
 });
 let _apiView='live';/* v55-m t3：live=在用 / arch=归档区（逻辑照电脑端） */
@@ -10369,6 +10396,7 @@ function openAset(c){
   sw2($('aset-am-mute'),!!(c&&c.amRecordOnly));
   sw2($('aset-cache'),c?c.promptCache!==false:true);
   sw2($('aset-cache1h'),!!(c&&c.cacheTtl1h));
+  try{sw2($('aset-fb-on'),!!(c&&c.fallbackMode&&c.fallbackMode!=='off'));$('aset-fb').value=(c&&c.fallbackMode==='list')?'list':'default';$('aset-fb-models').value=(c&&c.fallbackModels)||'';_fbRowM()}catch(e){}/* v161-p：分类器回退设置回填 */
   sw2($('aset-memw'),!!(c&&c.memWrite));/* v74-m r5：记忆库写入权限回填（默认关） */
   const _ib9=(c&&c.beyond)||{};/* v72-m 9a：Beyond 权限回填 */
   sw2($('aset-ib'),!!_ib9.on);
@@ -10419,6 +10447,7 @@ $('aset-save').addEventListener('click',async()=>{
     webSearch:$('aset-web').classList.contains('on'),
     promptCache:$('aset-cache').classList.contains('on'),
     cacheTtl1h:$('aset-cache1h').classList.contains('on'),
+    fallbackMode:($('aset-fb-on')&&$('aset-fb-on').classList.contains('on'))?(($('aset-fb')&&$('aset-fb').value)||'default'):'off',fallbackModels:($('aset-fb-models')&&$('aset-fb-models').value.trim())||'',/* v161-p：两端共用字段（电脑端同轮加入保存对象） */
     memWrite:$('aset-memw').classList.contains('on'),
     beyond:{on:$('aset-ib').classList.contains('on'),vis:$('aset-ib-vis').value==='user'?'user':'all',post:$('aset-ib-post').classList.contains('on'),cmt:$('aset-ib-cmt').classList.contains('on'),img:$('aset-ib-img').classList.contains('on'),view:($('aset-ib-view')&&$('aset-ib-view').value==='auto')?'auto':'ask'}/* v72-m 9a：两端共用（电脑端白名单已同轮加入 beyond） */
   };
@@ -11627,7 +11656,7 @@ function _orientApply(){try{
   el=$('ui-bigtouch');if(el)el.addEventListener('click',async function(){var el9=this;try{await loadMP();_mp.ui=_mp.ui||{};_mp.ui.bigTouch=!_mp.ui.bigTouch;sw2(el9,!!_mp.ui.bigTouch);await saveMP();_uiApply();toast(_mp.ui.bigTouch?'触控目标已放大':'触控目标恢复标准')}catch(e){toast('设置保存失败，请重试');try{await loadMP();sw2(el9,!!(_mp.ui&&_mp.ui.bigTouch))}catch(e2){}}});
   setTimeout(function(){try{if(window.IBNative&&window.IBNative.available){var _bg=$('pres-bg');var _row=_bg&&_bg.closest('.tog');if(_row)_row.style.display=''}}catch(e){}},1200);/* v116-p：壳内显露「后台 Presence（App）」开关（桥在文末激活，故延时探测；浏览器 / PWA 保持隐藏） */
 })();
-var IB_VER='v160-p',IB_VER_DATE='2026-08-27';
+var IB_VER='v163-p',IB_VER_DATE='2026-08-28';
 (function _appVerDraw(){var e=document.getElementById('app-ver');if(e)e.textContent='InternalBeyond Mobile '+IB_VER+'（'+IB_VER_DATE+'）'})();
 function _lkVeilOff(){try{var v=document.getElementById('lk-preveil');if(v){v.classList.add('off');setTimeout(function(){try{v.remove()}catch(e){}},420)}}catch(e){}}/* fix-r4：预遮罩揭幕（任务 8） */
 async function _lkBoot(){try{await loadBgs()}catch(e){}var lk=_lkCfg();try{localStorage.setItem('ib_lockOn',lk&&lk.on?'1':'0')}catch(e){}/* v101-m：启动后把 DB 真值回写同步镜像 */if(lk&&lk.on)_lkShow();else _lkVeilOff()}
@@ -19798,7 +19827,7 @@ function loop(){
     const x=gap*i2+(gap-bw)/2,y=mid-h;
     if(env>0.86&&waveLvl>0.08){const gw=bw*2.1,gx=x-(gw-bw)/2;g.globalAlpha=0.09+0.2*waveLvl;
       if(g.roundRect){g.beginPath();g.roundRect(gx,y,gw,h*2,gw/2);g.fill()}else g.fillRect(gx,y,gw,h*2)}
-    g.globalAlpha=0.24+0.66*env*(0.35+0.65*waveLvl);
+    g.globalAlpha=(0.24+(_ibcLight()?0.14:0))+0.66*env*(0.35+0.65*waveLvl);
     if(g.roundRect){g.beginPath();g.roundRect(x,y,bw,h*2,r);g.fill()}
     else g.fillRect(x,y,bw,h*2);
   }
@@ -19807,7 +19836,7 @@ function loop(){
 
 var _avwGrd=null,_avwGrdKey='',_avwGlow=null,_barGrd=null,_barGrdKey='';
 function _ibcLight(){try{return !document.body.classList.contains('theme-infernal')}catch(e){return true}}
-function _ibcBarFill(g,W,H){if(!_ibcLight())return accCol;var key=W+'|'+H;if(_barGrdKey!==key||!_barGrd){_barGrd=g.createLinearGradient(0,0,W,0);_barGrd.addColorStop(0,'#a9c6ea');_barGrd.addColorStop(0.5,'#ffffff');_barGrd.addColorStop(1,'#a9c6ea');_barGrdKey=key}return _barGrd}/* v159-p：明亮模式声波条白→浅蓝 */
+function _ibcBarFill(g,W,H){if(!_ibcLight())return accCol;var key=W+'|'+H;if(_barGrdKey!==key||!_barGrd){_barGrd=g.createLinearGradient(0,0,W,0);_barGrd.addColorStop(0,'#9dbbe2');_barGrd.addColorStop(0.5,'#f7faff');_barGrd.addColorStop(1,'#9dbbe2');_barGrdKey=key}return _barGrd}/* v159-p：明亮模式声波条白→浅蓝 */
 function _ibcRgb(c,fb){try{var m=String(c||'').trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);if(m){var h=m[1];if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];return parseInt(h.slice(0,2),16)+','+parseInt(h.slice(2,4),16)+','+parseInt(h.slice(4,6),16)}var r=String(c||'').match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);if(r)return r[1]+','+r[2]+','+r[3]}catch(e){}return fb}
 function _ibcDrawAvWave(lvlT){
   var cv=UI.avw;if(!cv||!cv.width)return;
@@ -19817,7 +19846,7 @@ function _ibcDrawAvWave(lvlT){
   if(!rm)avPh+=0.014+avLvl*0.075;
   var W=cv.width,H=cv.height,mid=H/2,dark=false;
   try{dark=document.body.classList.contains('theme-infernal')}catch(e){}
-  var col=dark?_ibcRgb(accCol,'150,190,232'):'255,255,255',colG=dark?col:'158,196,238',key=W+'|'+col+'|'+colG;/* v159-p：明亮模式改白线＋浅蓝柔光；暗色照旧跟主题强调色（v174 ③） */
+  var col=dark?_ibcRgb(accCol,'150,190,232'):'255,255,255',colG=dark?col:'255,255,255',key=W+'|'+col+'|'+colG;/* v159-p：明亮模式改白线＋浅蓝柔光；暗色照旧跟主题强调色（v174 ③） */
   if(_avwGrdKey!==key||!_avwGrd){_avwGrd=g.createLinearGradient(0,0,W,0);_avwGrd.addColorStop(0,'rgba('+col+',0)');_avwGrd.addColorStop(0.14,'rgba('+col+',1)');_avwGrd.addColorStop(0.86,'rgba('+col+',1)');_avwGrd.addColorStop(1,'rgba('+col+',0)');_avwGlow=g.createLinearGradient(0,0,W,0);_avwGlow.addColorStop(0,'rgba('+colG+',0)');_avwGlow.addColorStop(0.14,'rgba('+colG+',1)');_avwGlow.addColorStop(0.86,'rgba('+colG+',1)');_avwGlow.addColorStop(1,'rgba('+colG+',0)');_avwGrdKey=key}
   g.clearRect(0,0,W,H);
   var A=H*0.36*(0.12+0.88*avLvl),N=84,dpr=W/Math.max(1,cv.clientWidth||W);
