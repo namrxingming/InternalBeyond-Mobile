@@ -1,16 +1,5 @@
 <!DOCTYPE html>
 
-<!-- v201-p 修订单（与手机端同轮同文；缓存链、协议常量、发送组装一字未动）：①记忆注入行三端同文升级——标题 · 概述 · 正文摘录：正文整条装得下就整条给；装不下则找命中当前消息关键词的那一段，以命中点为中心裁一窗、前后退到句末、两头缀「……」；没命中退回从头截。只影响自动注入，检索记忆库指令不走这里。②收藏夹纸条与名片改轻透明液态玻璃，减少动效时回到实色；名片去掉个性签名，只留「昵称's」。③直接双击打开 index（file://）：fetch 读不到 apps/catalog.json 时改用 <script> 读 apps/catalog.js，观影室等 APP 不用起本地服务器也能装。IB_VER 联动 v201-p。 -->
-<!-- v190-p 修订单（与手机端同轮同文；缓存链、协议常量、发送组装一字未动）：①收藏夹：Chat 抽屉新增「收藏夹」入口（话题频道之上），长按消息多一项「收藏」，语音消息发出即自动收进；存 apiSettings（id fav_<msgId>，app:'fav'）随备份往返、电脑端不读不坏；收藏页＝ib-ov2 面板，便笺墙（虚线时间线、纸胶带、当前对话 / 全部两页签），每张标来源日期时间、发言人、主线 / 频道名，长文折叠可展开，语音可回听，× 移除。②语音条精致化：胶囊底更轻、播放钮成圆、我方语音带主题色，文字稿与译文 / 正文之间虚线分隔。③Visual 新增「Bind — 更多绑定」卡：导航抽屉不透明度、聊天输入条不透明度、卡片描边强度、站点背景模糊。④Display 新增「聊天正文字体：跟随全站 / 衬线」，只换气泡正文。⑤API 页下栏「工具」改名「多模态设置」。⑥写入 Blog 卡片副标显示日志标题（执行后《标题》 → 分类，执行前为标签里的 title）。⑦相遇纪念日进 Presence：核对确认 _hbNoteTry → buildCalBlock → loadCal 已并入 _meetMilestonesM，开了「相遇纪念日提醒」的 TA 在当天与前后一天被「主动提醒日程」拾取（网页版靠前台定时器与网页通知，退后台由系统决定），零改动。IB_VER 联动 v190-p。 -->
-<!-- v187-p 修订单（本轮只做这一件事，缓存链、协议常量、发送组装一字未动）：Blog 写入——进阶指令新增「启用 Blog 写入」：<ws_blog_write title>Markdown</ws_blog_write> 落进 Blog 里以 TA 名字命名的分类、署它的名（aiWritten / author / authorName）；每条回复最多 1 篇；这类日志不进 Blog 列表注入、不进任何提示缓存，只有用户按标题点名且开了日志检索才会被读到，回执标明作者；提示词三端同文；开关切换后重建一次提示缓存。IB_VER 对齐 v187-p。 -->
-<!-- v181-p 修订单（与电脑端 v77 同轮；各项与手机端同轮同文）：①推翻上两轮思考链改动——严格档注入词、逐轮提醒与 GUIDE 提示逐字恢复 v178-p 原文；常规档提示词整段重写：<thinking> 内改为「此刻真实的内心活动」——第一人称自言自语、先有反应再有念头、短句碎句可只一句、不站旁观位写「该如何回应」、正文与思考不必一致、不罗列记忆档案；标签机制、流式截流、收尾解析、计费与缓存策略一字未动；关闭思考链＝抓取推理模型原生思考的链路两轮从未被改动、本轮亦零改动。②豆包 TTS 根修——上轮所打方舟 /api/v3/tts 端点不存在（TTS 属火山引擎「语音技术」独立产品线，非方舟），原分支为死代码；整段改走 openspeech.bytedance.com/api/v1/tts 官方协议：Key 栏填 appid:access_token（也认 | 分隔）、音色栏=voice_type（必填）、模型栏=cluster（默认 volcano_tts）、Header Authorization:"Bearer;"+token、响应 code===3000 时 data 为 base64 解码回 ArrayBuffer；保留 CapacitorHttp 回退分支（套壳运行时生效，纯浏览器自动跳过）；浏览器直连成败仍取决于火山是否放行跨域（CORS）；下拉更名「豆包（火山引擎语音）」。连带补两处遗留：设置卡占位/提示联动分支当时并未实现（选豆包落 OpenAI 兼容占位），本轮补齐；per-API 音色白名单与下拉漏 doubao，/^(el|mm|az|ali)$/ 补为含 doubao 并加下拉项。③通话语音条——云端音色通话逐句留档（上限 200 句，成员切换先冲刷），通话结束或被打断（保留已读句）时挂回本次通话对应的 AI 消息气泡，呈紧凑小语音条、点按回听（与普通语音消息播放互斥）；设置卡音色行后新增「语音留档」开关（默认开）；留档随备份走，通话多时备份体积会相应增长；callAudio 字段不进 API 历史。④写一封信——信箱页「接收信件」旁新增「✎ 写一封信」：液态玻璃便笺浮层（胶带/横线纸/落款），自动草稿（输入 700ms 防抖＋切后台＋关闭时保存，每 AI 一份，背板误触只晃动提示不关闭）；寄出即随本次信件请求走回信口径（读完来信对着写回信、不编造未提供内容、400~2000 字、diablo 彩蛋轮豁免），来信与回信同刻落库、回信记 replyTo、信封抬头 To→Re、来信作为一张可滑动便笺贴在回信左上（正文环绕让位）、删回信连带清来信、草稿与来信不作为信封列出。⑤GUIDE：思考链、信箱两段随之更新。 -->
-<!-- v180-p 修订单（与电脑端 v76 同轮）：①思考链提示词重写——勾选「思考链」时注入的 <thinking> 引导，从「回复草稿 / 过程摘要 / 理解与回应思路」改为「只有自己看得见的心里话」：第一人称、真实念头与情绪、短句可跳跃，明确不是回复计划；标签机制与计费缓存一字未动，仅换文案；严格档与逐轮提醒同步改口。②GUIDE / 提示文案随之更新。③清理历史修订单注释里的一处冗余引用。 -->
-<!-- v174-p 修订单（自手机端移植：群聊导演模式＋群语音/视频通话整包）：①群聊设置新增三枚开关（存 groups 记录）：导演模式 director（每轮只由 1～2 位接话——被 @ / 被点名必答按出现顺序，上一轮向用户提问的成员优先——扫上一轮整段 AI 消息取最后一位提问者，其余「最久没说话」补一位再随机补足；静默成员仅被 @ 出场；成员没话说可输出 <ws_pass/> 跳过本轮；关闭＝全员依次）、发言顺序随机 shuffle、冷场自燃 idleMin（固定 5 分钟：群聊页停留且无人说话，随机一位未静默成员起话头；连续两条自燃没人接即停；通话中不触发）。②群语音/视频通话：会话抽屉 Voice Call / Video Call 对群放开；朗读队列每句带成员 fid/nm，出队按该成员取音色与字幕署名；换人复位游标与去重；群通话中 langMode 强制关闭（不支持外语模式）；群视频画面只发识图成员、群里不做礼物、快照按快门成员署名（snapBy）；通话记录 / Save memory 认群（执笔取群里第一位配好 Key 的未静默成员，第一人称、记在该成员名下）；通话心跳在群里不点火。③记忆可见性：1对1 的「私密」改为仅执笔者可见（only+visibleTo，与 ws_mem_write 同逻辑）——原 private 谁都不注入、连执笔者本人都看不到；群聊维持旧口径。④记忆库写入提示词 tags 提为必写（三端同文；协议常量变化＝切换后重建一次提示缓存）。⑤GUIDE 与通话设置卡文案同步群口径。 -->
-<!-- v171-p 修订单（与电脑端 v70 同轮；缓存链结构、system 组装、协议常量一字未动）：①礼物幻觉根因——TA 送礼落库的那条消息是 role:user、正文 [TA 送出了礼物：X]，进 API 历史后弱模型把「TA」读成用户自己，挂断后 system 里的【视频通话】【送礼物】又已摘除，于是 DeepSeek 一类模型坚信礼物是用户送的。修法：新增 _giftLineM / _giftSumLineM / _snapLineM 三个文字口径函数（按 friendId 反查 TA 名、_about 取用户名，写死「谁送给谁」）——buildHist 的 API 副本对礼物消息换 [礼物记录] X 在视频通话中向 Y 送出了礼物「…」，对结束标记追加 [视频通话中 X 送给 Y 的礼物：…（共 N 件）]（读 callEnd.gifts），对 [视频通话快照] 写明拍摄者；新落库的礼物消息正文直接是这句；doShot 落库带 snap:'ai'（与电脑端同字段）。同一口径接入对话摘要、从聊天生成记忆、写信素材、主动消息的「最近的聊天记录」上下文与通话心跳上下文，这些地方此前同样写成「用户名：[TA 送出了礼物…]」。②压缩开着的路径：结束卡里的文字稿快照只存 id/role/content/timestamp、丢了 gift——重读快照生成记录时礼物行退化成「用户名：[TA 送出了礼物…]」；现快照保留 gift / snap。文字稿礼物行改「X：（向 Y 送出礼物：小心心）」、快照行改「（X 拍了一张画面快照）」、AI 行剥掉 <ws_vgift/> <ws_vsnap/> 标签；执笔任务按视频 / 语音称呼通话，稿里有礼物时执笔与 Save memory 两段任务各加一句「礼物是 X 送给 Y 的，不是反过来」。③GUIDE 与设置页那句「按（送出礼物 X ×n）计入」改为新口径。缓存：逐条确定性改写、不动前缀阶梯；含礼物 / 结束卡 / 快照的旧对话装上后首条重建一次，之后稳定。 -->
-<!-- v170-p 修订单（与电脑端 v69 同轮；缓存链、system 组装一字未动）：①_VGIFT_INSTR_BLOCK 错字修正——「如果对方很想要某个理由」→「某个礼物」（用户确认为笔误；仅此二字，与电脑端逐字同文，注入条件与开关不变）。②高三档礼物贴图上新——夏日烟火 / 流星雨 / 银河铁道之夜的 ic 由占位 SVG 换成用户提供的三张贴图（透明 PNG 裁边缩至长边 ≤176px、WebP 带透明通道内嵌 base64、单张 ≤16KB，格式与花束同款）；气泡 / 礼物卡 / 统计面板 / 结束卡同源生效，与电脑端逐字节同图。③_ibGiftIcon 硬化——<img> 贴图直返，渐变 id 唯一化只对 SVG 执行，防 seq 数字误插 base64。④IB_VER 联动 v170-p。 -->
-<!-- v168-p 修订单（与电脑端 v67 同轮；缓存链、system 组装一字未动，视频协议常量只改一个词）：①礼物 / 留影标签 &lt;ws_vgift/&gt; &lt;ws_vsnap/&gt; 此前只执行不剥离，AI 气泡里裸奔代码——segmentAiText 展示层剥离、_stPaintNow 流式期同样不画（落库与 API 历史一字不动，历史里的旧标签也不再显示）。②命名统一（GUIDE 与设置同步）：「TA 主动打电话 / 允许 TA 主动打电话」→「主动来电」，「AI 看画面」→「图像抓取频率」（档位改「关闭 / 每轮一帧 / 每 30 秒一帧 / 每 60 秒一帧」），「AI 自主拍照」→「留影」，「通话里显示我说的话」→「弹幕展示用户输入内容」（默认仍为开）；GUIDE 里 <ws_call/> <ws_vsnap/> <ws_vgift/> 三处标签改转义写法（此前被浏览器当成未知元素吞掉、读者看不到标签名）。③视频协议段「手机会拍一张快照」改「界面会拍一张快照」，与电脑端同文。④跨端备份互认：画质档位本端存 l/m/h、电脑端存 384/512/768，互导后一律回落均衡档——新增 _vidQNormM 同时认两种写法（设置页与抓帧都走它）。⑤修订单与注释里的历史版本引用顺手整理。⑥视频通话专属设置卡此前没有任何读写绑定（v164-p 移植时漏掉）：默认镜头 / 图像抓取频率 / 画面画质 / 留影 / 礼物系统 / TA 的声音（视频）/ 我的输入（视频）改了不生效、开关也翻不动，礼物系统在本端根本开不起来；补齐回填与保存。 -->
-<!-- v164-p 修订单（与手机端同轮；PWA 移植视频通话与礼物系统）：①视频通话——聊天抽屉「操作」新增「Video Call 视频通话」（仅 1 对 1）：本机摄像头铺底、左上 TA 徽章、左下直播式弹幕区、右上翻转镜头与相机键（夹住当前帧随下一句发出，缩略图可换帧 / 取消）、右上「⌄」收成可拖动小画面窗；与语音通话入口 / 状态完全独立（接不通不转语音、通话中无互切），识别 / 朗读 / 记录 / 记忆共用同一引擎；每轮文字稿带「[视频通话]」前缀，挂断附「[视频通话已结束]」标记、结束卡 VIDEO CALL 角标。②AI 看画面（默认关；每轮 / 30 秒 / 60 秒）、画质三档、AI 自主拍照 <ws_vsnap/>、视频专属「TA 的声音（只用弹幕）」「我的输入（只用打字）」；不识图 API 自动注入「收不到画面」口径。③礼物系统（默认关，仅视频通话）——五档 小心心 / 花束 / 夏日烟火 / 流星雨 / 银河铁道之夜，一次一件、每条回复最多一枚；按档专属送礼气泡、聊天居中礼物卡（右侧玻璃贴图槽）、右上统计芯片、结束卡礼物行；三档起全屏画布特效（流星雨泛光），收成小窗后在聊天页照放，挂断 / 切后台 / 离开对话即停。④TA 主动来电可语音可视频（<ws_call kind="video"/> 或来意「视频｜」前缀），来电横幅 / 来电卡 / 接听按种类走。⑤通话内语音净化器改通用（指令族整段剥除、未闭合截断、未知标签只去标记）；通话记录压缩收集器不再被礼物 / 快照消息截断。⑥设置：通话设置三入口统一命名（Desk「通话配置」、抽屉 / API 页「通话设置」、页标题「Call 语音与视频通话」），全局页顶部注明共用、「通话心跳」独立成卡、「视频通话专属」挪至页末；GUIDE 新增「Video Call — 视频通话」分块。 -->
-<!-- v154-p 修订单（缓存阶梯窗口一字未动）：①Wallet Card——DIY 页底坞新增「AI付」独立分区（居中，MCP 与外部工具之间），AI付 设置卡自 MCP 分区拎出；分区顶部一张纯视觉的专属卡片：哑光低饱和渐变＋纸感颗粒＋静态斜向柔光，只见正面的 ±11° 缓慢摆动（点卡暂停），右上 Wallet Card、中间 Space 名片昵称（下方「镌刻」区可改写、留空即跟随名片，随时可改、不锁死）、右下 For 好友昵称（选好友或自定义）；存 mobilePrefs.pay.card，不进电脑端、不发给 AI；聊天里的 AI付 支付卡顶部随卡出示（紧凑版）。AI付 本身零改动（走 https / alipays 深链跳支付宝，不发网络请求，无需跨域中转）。②Desk 编辑态——长按图标进入：全部条目虚线框＋左上角「−」快速隐藏（与 设置 → Desk 同一份 hidden 表，随时可在那里重新显示）、拖排照旧（编辑态里按住 140ms 即拖）、点条目本体不跳转、点空白或右上「完成」退出、换页/切区自动退出。③日志批注——选 AI 下拉改不透明底：原式 backdrop-filter 套在已有 backdrop-filter 的浮条里失效，半透明底把正文透出来、名单叠在字上看不清。④Voice 导航页退役（页、坞、图标、页内挂载函数一并撤）——API 页 → 工具 里「语音通话」区块挪到最上方并改 fx 精致卡（右上角声波底纹），「打开」改回全屏设置面板，会话抽屉入口不变。⑤记忆库——编辑器补「概述」字段（此前无处编辑、保存也不写入 summary）。⑥定时推送 roll 入「打电话」——该 AI 开了「主动来电」且语音通话未关时，主动开口那一步约 1/3 概率改为来电：TA 只写一句来意，落一条 <ws_call/> 主动消息（来电卡随消息渲染）并弹来电横幅；点通知回到应用的那次不拨（手机端下轮再做）。⑦版本号与说明自 API 页 → 工具 → PWA 卡迁到 Data → 说明。⑧通话结束卡 Save memory 钮：暗色撤 --acc 混色（视觉模块偏绿时跟着发绿）改固定深海蓝，明亮改天蓝（饱和微升、整体更淡）。⑨通话补修（上轮遗漏项）：返回会话列表＝挂断并提示（手机端 #4 同款，PWA 此前只移植了 openConv 那一处）；segmentAiText 补 call 分支解析 say；「语音通话已关闭」提示改指 API 页 → 工具；写信素材里已压缩通话原话两侧一律不进（此前只排除用户侧）。⑩版本联动 v154-p / IB_VER。 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -36,7 +25,7 @@
 <!-- v122-p 修订单（联合修复轮 2）：①回传信箱补建——_gwFeedQ 全文使用 5 处却从未声明，严格模式下任何一次投递/取件都抛 ReferenceError 且被 try 吞掉：天气/定位/手机状态/AI付 的结果自 v83 起从未真正回传给 AI；主脚本顶部补上声明，链路当场复活。②<ws_phone/> 进正式渲染清单——WS_OPEN_RE / WS_META / segmentAiText 分支 / 卡标题分支 / WS_ICON 五处补齐，定稿重渲染后不再裸奔原文。③社交圈进群聊——群聊按成员开关（IB 总开关＋该成员 beyond.on）注入与 1对1 完全同一份 _ibBeyondInstrM 常量块（System 段，开关不变则字节不变、缓存前缀稳定）与 buildBeyondTail/_bxInboxTail 数据块（走末条用户消息，零缓存代价），提示词零改动；群聊回复补挂 procIbOps，动作成败经 _gwFeedQ 在群内回传；ws_beyond_view 属确认管线，群聊维持不执行。④自动发布改轮转——ibAutoTick 新增 ibf_rr 记账，本次扫描从上次被选中那位的下一位开始；定时推送径的发动态同步记账。⑤定时推送提醒治理——ib_hb_rmday 按日记账：同一位 AI 每天至多主动提醒 1 次日程/节日，其余推送落回普通开口；_hbFireFor 普通开口补带当前时间与【今天与临近的日子】日历背景参考（知道就行、不主动播报），撞车判定前移到便笺写入之前。⑥版本联动 v122-p。 -->
 <meta name="referrer" content="no-referrer">
 <!-- v99-m 任务1（部署到 PWA 后的隐私）：CSP——禁止加载任何外部脚本与样式，从浏览器层面根治「在线渠道自动注入统计信标」（文件顶部的净化哨兵此前只能在信标节点插进 DOM 之后再删掉，属于事后补救）。connect-src 保持放开，否则 AI 接口会被一并挡下。v100-m：按用户要求恢复全站原字体，故在 style-src / font-src 单独放行 Google Fonts 两个域名——这是白名单里仅有的第三方来源，且只允许样式表与字体文件，脚本仍然一律禁止。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src * data: blob:; media-src * data: blob:; connect-src * data: blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob: https://u.y.qq.com https://lp.open.weixin.qq.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src * data: blob:; media-src * data: blob:; connect-src * data: blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -1553,6 +1542,8 @@ body.theme-infernal .pw-bar{background:linear-gradient(180deg,rgba(255,255,255,0
 .ncm-qr{display:flex;justify-content:center;padding:6px 0 10px}.ncm-qr canvas{width:200px;height:200px;border-radius:12px;image-rendering:pixelated;border:1px solid var(--line)}
 .ncm-st{text-align:center;font-size:0.78rem;color:var(--tx2);margin:2px 0 4px;cursor:pointer}
 .ncm-inl{display:flex;gap:8px}.f-group .ncm-inl input{flex:1;min-width:0}.f-group .ncm-inl .btn{flex:none;white-space:nowrap;padding:0 14px;font-size:0.72rem;letter-spacing:0.04em}
+
+.qqm-qr{display:flex;justify-content:center;padding:6px 0 10px;flex-wrap:wrap;gap:8px}.qqm-qr img,.qqm-qr canvas{width:200px;height:200px;border-radius:12px;border:1px solid var(--line);display:block;background:#fff;object-fit:contain}.qqm-qr img[hidden]{display:none}
 .pwl-hd{padding:4px 4px 8px;font-family:var(--disp);font-weight:300;font-size:0.62rem;letter-spacing:0.16em;color:var(--tx3)}.pwl-ar{font-style:normal;font-size:0.72rem;color:var(--tx3);margin-left:6px}
 /* 迷你播放器悬浮窗 + MUSIC 爱心新款 */
 #ma-mate svg{stroke-width:1.5}#ma-mate.on{color:var(--acc)}#ma-mate.on svg{fill:currentColor;fill-opacity:0.28;stroke:currentColor}
@@ -1576,6 +1567,9 @@ body.ib-reduce .mpw-disc{animation:none}body.ib-reduce .mpw-arm{transition:none}
 @keyframes mpw-spin{to{transform:rotate(360deg)}}
 
 body.ib-reduce #music-app .ma-cvbg{filter:none;opacity:0.22}body.ib-reduce #music-app .ma-head,body.ib-reduce #music-app .ma-duo-in{-webkit-backdrop-filter:none;backdrop-filter:none}body.ib-reduce #music-app.playing .ma-vinyl{animation:none}body.ib-reduce #music-app .ma-arm{transition:none}body.ib-reduce #music-app .ma-beat{animation:none}
+/* v206-p：迷你播放器超长文字改整段滚动循环（减少动效时仍是省略号） */
+.mpw-t.mq,.mpw-s.mq,.mpw-l.mq{text-overflow:clip}.mq .mq-tr{display:inline-flex;gap:28px;white-space:nowrap;animation:mpwMq var(--mqd,8s) linear infinite;will-change:transform}body.ib-reduce .mq .mq-tr{animation:none}
+@keyframes mpwMq{from{transform:translateX(0)}to{transform:translateX(calc(-1 * var(--mqw,200px)))}}
 .mpw-m{flex:1;min-width:0}
 .mpw-t{font-family:var(--sys);font-weight:600;font-size:0.76rem;line-height:1.25;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mpw-s{margin-top:1px;font-size:0.6rem;letter-spacing:0.04em;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2163,6 +2157,8 @@ raf=requestAnimationFrame(frame);
         <p><strong>一起听</strong>：歌名右侧的小按钮。未配对时点它邀请一位 AI，选定后自动开启共享正在播放；配对后界面上方出现你和 TA 的头像对，下方实时累计一起听的时长，点头像对可「去聊天」或「结束一起听」。TA 会在对话中被告知你正与 TA 一起听这首歌，聊天里的听歌卡片也能一键跳回此界面。</p>
         <p><strong>网易云音乐模式</strong>：顶栏右上角「＋」现在是音源选择：本地音乐（本机文件，原来的样子）/ 网易云音乐。浏览器不能直接访问网易云接口，所以要经过你自己部署的跨域中转：默认沿用 DIY → MCP 卡「跨域中转」填的那条（Worker 代码要换成 GUIDE → DIY 里的新版，白名单里加 music.163.com），也可以在网易云登录页单独填一条只给网易云用；网易云和 MCP 共用一条完全没问题，填过的地址不用重填。之后登录自己的账号——扫码（用另一台设备上的网易云 App 扫）、手机号（密码或短信验证码）、或粘贴电脑浏览器里的 MUSIC_U——歌单、红心、每日推荐、私人 FM、听歌排行（本周 / 全部）与搜歌都能直接载入队列播放；VIP 曲目能不能完整播放取决于这个账号，播放地址取不到时会退回网易云的公开直链（只有普通音质）。歌词按网易云的逐句歌词显示，「一起听」与「正在播放注入」照常。底栏末位的播放队列在此模式下显示网易云队列，「网易云歌单」按钮回到歌单页。账号只存在本机，不进备份、不发给任何 AI；请求经你自己的中转发往网易云，中转看得到 Cookie，务必只用自己部署的。两档各自独立，切换时停止当前播放，「＋」里选本地音乐即回到本地曲库。</p>
         <p><strong>网易云 · AI 控制</strong>：Presence「允许 AI 控制播放器」开着时，网易云页底部的「AI 控制」块可逐项开放：点歌（搜索并播放）、切换歌单 / 每日推荐 / 私人 FM / 听歌排行、红心、加进 · 移出歌单、新建歌单、改歌单简介；默认只开前两项，写入类操作会真实改动你的网易云账号。开着的项写进 TA 的系统能力行，切换后 TA 的下一条消息重建一次提示缓存；聊到音乐时你的歌单名单会随消息附给 TA。</p>
+                <p><strong>QQ 音乐模式</strong>：「＋」音源的第三档。登录三条路——微信扫码（用微信「扫一扫」；只有这一台手机时，截图后在扫一扫里选相册）、QQ 扫码（同样支持相册）、或粘贴凭证（电脑浏览器登录 y.qq.com → F12 → Application → Cookies，复制 uin 与 qqmusic_key 两项）。登录后我喜欢、自建歌单、收藏的歌单、猜你喜欢、雷达推荐、热歌榜 / 新歌榜与搜歌都能直接载入队列播放；绿钻曲目能不能完整播放取决于这个账号，音质四档（流畅 / 标准 / 高品质 / 无损）按账号权限自动往下降。歌词按 QQ 音乐的逐句歌词显示（带翻译），封面进锁屏媒体卡，「一起听」「正在播放注入」与迷你播放器照常。底栏末位的播放队列在此模式下显示 QQ 音乐队列，「QQ 音乐歌单」按钮回到歌单页。账号只存在本机，不进备份、不发给任何 AI。听歌、搜歌、歌单请求由浏览器直接发往 QQ 音乐官方接口（它允许网页直连，不需要跨域中转、也从你自己的 IP 发出）；只有扫码登录要经你的跨域中转——微信扫码用现有中转即可，QQ 扫码要把 Worker 换成 GUIDE → DIY 里的 v4 版，粘贴凭证完全不需要中转。三档各自独立，切换时停止当前播放。凭证有期限，失效时会自动续一次，续不上就重新登录。<!-- v206-p --></p>
+        <p><strong>QQ 音乐 · AI 控制</strong>：与网易云同一套——Presence「允许 AI 控制播放器」开着时，QQ 音乐页底部「AI 控制」块可逐项开放：点歌、切换歌单（含我喜欢 / 猜你喜欢 / 雷达 / 榜单）、红心（加进「我喜欢」）、加进 · 移出自建歌单、新建歌单；QQ 音乐没有改简介这一项。默认只开前两项，写入类操作会真实改动你的 QQ 音乐账号。</p>
         <p><strong>迷你播放器</strong>：歌名右侧「一起听」爱心旁的小图标。打开后离开 MUSIC 界面，屏幕上会留一枚液态玻璃小唱机——有封面就整盘贴着封面转、唱臂落盘，旁边是曲名、歌手和当前一句歌词；点它回到 MUSIC，按住可以拖到屏幕任意位置（位置记住）。MUSIC 打开、锁屏中或没有曲目时自动收起；开了「减少动效」它就是不透明的、唱片不转。开关记住，下次打开还在。</p>
         <p><strong>手机不给力时</strong>：开 Visual 里的「减少动效」，听歌界面会整套走轻量路径——封面大模糊背景改静态淡色、玻璃条不再实时模糊、黑胶不转、唱臂与心跳不动，迷你播放器也不透明；网易云的播放队列超过 60 首时分批画出来，不会一次卡住。</p>
         <p><strong>日历 App（Desk 图标）</strong>：照桌面端 Calendar 悬浮窗的日程页设计。顶部是你与 AI 的双人名片：两枚头像并排、由一条单色连线牵起（线条绕成一笔画的爱心；流光沿「头像环 → 爱心 → 另一枚头像环」的闭合轨道巡回，头尾相接），下方依次是「你 & TA」、Together for N days、相遇纪念日与周年倒计时；‹ › 切换本站与每位 AI（与本站那张右侧是站点图标）；下方日程按「今天 / 7 天内 / 之后 / 已过去」分组成卡片列表：每行左侧「日期叶」显示下一次发生的月 / 日并按类型着色（计划蓝、纪念与生日粉、备忘灰、相遇金），标题行右侧是倒计时胶囊，第二行以小胶囊列出类型 / 日期 / 重复 / 提醒 / 时间，备注单独成行；右上「＋」新建、点行编辑、点 ✕ 删除，与桌面月历挂件和 AI 的日历标签共用同一份数据。</p><p><strong>底部分区栏</strong>：每个页面各自不同，用于在该页面内部切换分区。Home 页在 Desk 桌面、Space 名片与 Circle AI 名片三个面板间切换，设置从第四格进入。</p>
@@ -2205,7 +2201,7 @@ raf=requestAnimationFrame(frame);
         <div class="g-sub">
           <p><strong>附件</strong>：输入框左侧 <strong>+</strong> 按钮可附加图片（最多 4 张，发送前自动压缩至 1280px，需对应 API 开启视觉能力）或文本类文件（txt / md / json / csv / 代码等，最多 4 个）。文件全文随消息注入，超长自动截断；点消息里的文件标签可查看内容。</p>
           <p><strong>联网搜索</strong>：在该 API 的设置中开启后，请求会携带服务端搜索工具（Anthropic / Gemini / OpenAI 兼容端点支持）；端点不接受搜索参数时本轮自动去除并重发。</p>
-          <p><strong>图像生成</strong>：API 页 → 多模态设置 → 启用图像生成后，所有对话中的 AI 都可生成图片（每条回复最多 1 张）：图片直接显示在聊天里并自动存入 ICode，成功图卡底注可点「查看提示词」回看 AI 当时输入的完整生图提示词。生图模型 / 地址 / 密钥留空时沿用当前对话 API，填写后统一改走全局配置；仅 OpenAI 兼容与 Gemini 接口支持。</p><!-- v97-m 任务7；v98-m 任务3：按拍板改用支付宝官方工具名「AI付」 -->
+          <p><strong>图像生成</strong>：API 页 → 多模态 → 启用图像生成后，所有对话中的 AI 都可生成图片（每条回复最多 1 张）：图片直接显示在聊天里并自动存入 ICode，成功图卡底注可点「查看提示词」回看 AI 当时输入的完整生图提示词。生图模型 / 地址 / 密钥留空时沿用当前对话 API，填写后统一改走全局配置；仅 OpenAI 兼容与 Gemini 接口支持。</p><!-- v97-m 任务7；v98-m 任务3：按拍板改用支付宝官方工具名「AI付」 -->
           <p><strong>社交圈动态</strong>：Space（个人页）的动态分区与 Desk 的社交圈图标同属应用内社交圈；侧边导航 Memory 之后也有「Circle 社交圈」入口，点按直达同一页。你可发文字动态、附至多 1 张配图与定位（需浏览器定位权限），正文中的链接自动可点；每条动态的 ⋮ 可改可见范围、连同评论存入记忆库、或删除。<!-- v101-m 任务5：文案精简分段 --></p>
           <p>获授权的 AI 能在对话里发布、评论与主动翻看动态（放行方式在其独立配置里选「需我确认」或「自动同意」）；开启配图后还能为自己的动态生成插图；开启「允许 TA 撰写签名」后，TA 还能更新自己资料卡上的个性签名（改动即时生效，你可随时改回）。</p>
           <p><strong>流式回复</strong>：AI 的回复以流式逐字呈现，可中途停止，已生成的部分会保留。</p>
@@ -2228,14 +2224,15 @@ raf=requestAnimationFrame(frame);
         <p>TA 在对话里调用的每一样工具都走这套规则：取数类工具的结果回传后 TA 会接着答，动作类工具只回传成败；每样工具每条回复能执行几次有上限。</p>
         <div class="g-sub">
           <p><strong>工具连续调用轮</strong>：外部工具、MCP、记忆检索、定位 / 天气 / 手机状态、蓝牙读取、查看动态等<strong>取数类</strong>指令的结果默认在同一条回复内直接回传并让 AI 续答——所以 TA 会连着发两条：第一条是发起调用，第二条是拿到结果后的回答。连续轮数在 API 页 → 全局设置 → 工具调用 →「工具连续调用轮数」调整（0–5 轮、默认 2；设为 0 时结果只随你的下一条消息回传，不再多出一条）。写记忆、留便笺、写日历、蓝牙写入、发动态 / 评论 / 转发、改签名、控制播放器这类<strong>动作类</strong>指令不会触发续答，成败同样随下一条消息告知 TA。续答进行中可按停止键中断。同一处的「续答触发范围」六枚按钮可逐类关掉续答（外部工具 / MCP / 蓝牙读取 / 记忆检索 / 定位天气手机状态 / 查看动态与日程）：熄灭的类别结果随下一条消息回传、不再多出一条；全部熄灭等同轮数设 0；ICode 工作区任务不受影响。<!-- v132-p → v133-p：+触发范围 --></p>
+                    <p><strong>写入 Blog 与生图也走续答</strong>：「写入 Blog」和「生图」执行完不算动作类，会像取数类一样让 TA 接着答一句——写完日志再说几句、画完再解释——同样受「工具连续调用轮数」约束：轮数设 0 时写完就停，回执随你的下一条消息回传。它们不在「续答触发范围」六枚按钮之内，想单独关只能靠轮数。六枚按钮各管什么：外部工具＝DIY 里自建的 HTTP 工具；MCP＝所有 MCP 工具（含联网搜索预设）；蓝牙读取＝bt_read / bt_status；记忆检索＝检索记忆库；定位 / 天气 / 手机状态＝三枚权限开关对应的调取；查看动态 / 查询日程＝查看动态流、查询日程与查看闹钟。<!-- v206-p --></p>
           <p><strong>各工具的每回复上限</strong>：为防单条回复连发刷屏，部分工具有固定的每回复执行上限——记忆库写入 3 · 日历 2 · 播放器 1 · 生图 1 · 选项卡 1 · 动态 1（评论 2）· 签名 1，超出的不执行并告知 TA。可调的两处：蓝牙读写上限在 API 页 → 全局设置 → 工具调用；AI付 的每回复上限在 DIY 页 → AI付 分区 → AI付 卡内（默认 2）。</p>
           <p><strong>蓝牙设备说明书</strong>：设置页 → 蓝牙设备，可为每台设备写一份说明书（设备是什么、各特征值对应什么功能、读写格式）。支持手动编辑、导入文本文档、从 ICode 工作区取文；按设备名（或地址）匹配，同名设备连接后自动注入给 AI，无需每轮手动发送。连 / 断一台配了说明书的设备会重建一次提示缓存，之后照常命中。<!-- v137-p 任务2 --></p>
         </div>
         <div class="g-name">Voice — 语音消息与语音条</div>
         <p>语音消息是你发给 TA 的；语音条是 TA 的消息末尾附带的一段朗读。两者的文字与声音各走各的接口：识别用「语音转写」，出声用「通话设置」里的那套声音。</p>
         <div class="g-sub">
-          <p><strong>语音消息</strong>：按住输入框右侧话筒按钮录音，松开发送，向上滑动 70px 取消（微信式）。配置了转写接口（API 页 → 多模态设置）时自动附文字稿。聊天里的样子：语音胶囊自成一个气泡（长短按秒数），文字稿另起一个气泡；长按语音消息可「去语音条文字」只留干净的胶囊（再按一次恢复，文字稿仍在库里、仍进上下文）。TA 的语音条同款，胶囊下多一条等长虚线，外语版在中间夹一个原文小气泡。</p>
-          <p><strong>语音转写（识别接口）</strong>：API 页 → 多模态设置 → 语音转写：填 Endpoint、Key 与模型（默认 whisper-1），或直接在「沿用 API 配置」里选一个已配好的 API、在「常用模型」里选一个转写模型（图像生成卡同样有这两枚下拉）。千问的 qwen3-asr-flash 不走 transcriptions 接口而走 chat 音频输入，选它即自动切换；图像生成同样接了千问 Qwen-Image（百炼原生接口）与豆包 Seedream（火山方舟 OpenAI 兼容接口）。任何 OpenAI 兼容的 /v1/audio/transcriptions 接口都能用，SiliconFlow (硅基流动) 的 FunAudioLLM/SenseVoiceSmall 是可用的免费档。语音消息的文字稿与语音通话里「用嘴说」都靠它。</p>
+          <p><strong>语音消息</strong>：按住输入框右侧话筒按钮录音，松开发送，向上滑动 70px 取消（微信式）。配置了转写接口（API 页 → 多模态）时自动附文字稿。聊天里的样子：语音胶囊自成一个气泡（长短按秒数），文字稿另起一个气泡；长按语音消息可「去语音条文字」只留干净的胶囊（再按一次恢复，文字稿仍在库里、仍进上下文）。TA 的语音条同款，胶囊下多一条等长虚线，外语版在中间夹一个原文小气泡。</p>
+          <p><strong>语音转写（识别接口）</strong>：API 页 → 多模态 → 语音转写：填 Endpoint、Key 与模型（默认 whisper-1），或直接在「沿用 API 配置」里选一个已配好的 API、在「常用模型」里选一个转写模型（图像生成卡同样有这两枚下拉）。千问的 qwen3-asr-flash 不走 transcriptions 接口而走 chat 音频输入，选它即自动切换；图像生成同样接了千问 Qwen-Image（百炼原生接口）与豆包 Seedream（火山方舟 OpenAI 兼容接口）。任何 OpenAI 兼容的 /v1/audio/transcriptions 接口都能用，SiliconFlow (硅基流动) 的 FunAudioLLM/SenseVoiceSmall 是可用的免费档。语音消息的文字稿与语音通话里「用嘴说」都靠它。</p>
           <p><strong>语音条（TA 的语音）</strong>：通话设置 → 独立配置 → 该 AI → 语音条。开启后 TA 会在合适的消息末尾附一枚可点播的语音条，声音与语速沿用通话里给 TA 配的那套；可单独选外语版（英 / 日 / 韩）：气泡照常显示中文，语音条朗读同一段话的外语。开关切换后 TA 的下一条消息重建一次提示缓存，之后恢复稳定命中。开了语音条的 TA 在共读间 / 观影室的频道里同样会发语音条。</p>
         </div>
         <div class="g-name">Call — 语音通话</div>
@@ -2386,10 +2383,10 @@ raf=requestAnimationFrame(frame);
         <div class="g-sub">
           <p><strong>外部工具</strong>：添加 HTTP 接口让 AI 在对话中调用外部操作（如 Home Assistant 等）。每个工具配置名称、URL、请求方法和参数。支持调用前确认。请求由浏览器直接发出，目标接口需允许跨域（CORS）。</p>
           <p><strong>MCP 服务器</strong>：连接 MCP 服务器后自动发现可用工具，调用方式与外部工具一致。支持多服务器并行接入，每个服务器可独立启用或禁用其工具。连接失败时请检查跨域（CORS）设置。DIY 页内置<strong>麦当劳</strong>与<strong>瑞幸咖啡</strong>两张官方预设：点「添加」自动填好别名与官方端点（mcp.mcd.cn / gwmcp.lkcoffee.com），再到对应开放平台登录领取个人 Token 填入令牌栏、点「连接」即可接入（令牌随请求以 Authorization: Bearer 发送，只存在你的设备与备份里）；这两家工具的调用结果会渲染成对应品牌主题的小卡片（菜单 / 订单 / 取餐码 / 优惠券自动排版，四种状态各有其形）。用不上可点预设卡右上角 ✕ 隐藏，已添加的服务器也随时可删。补充：麦当劳 / 瑞幸这两枚官方端点<strong>未对浏览器放行跨域</strong>（实测预检即 403 / 401、响应不带 Access-Control-Allow-Origin），与令牌对错无关——浏览器会直接拦下（报「网络错误，可能是 CORS 未放行」），需在 MCP 卡的「跨域中转」栏填入自建转发（见下一段），直连失败时自动改走中转。</p>
-          <p><strong>跨域中转（CORS 代理）</strong>：给浏览器环境准备的自建转发。原理：请求先发给你自己的中转服务，由它在服务器侧转发到目标端点并补上 CORS 响应头（服务器对服务器不受浏览器跨域限制）。推荐 Cloudflare Worker（免费额度足够）：新建 Worker → 粘贴下方代码 → 部署，把「https://你的名字.workers.dev/?u=」填进 MCP 卡的「跨域中转」栏即可；地址里含 {url} 则按占位符替换，否则在末尾拼接编码后的目标地址。令牌等请求头会原样经过你的 Worker、不落任何第三方，因此<strong>务必只用自己部署的中转、不要用公共代理</strong>。下面是新版代码（MUSIC 的网易云模式也走这条中转：它会把 X-IB-Cookie / X-IB-Referer / X-IB-UA 换成真实请求头、把 Set-Cookie 放进 X-IB-Set-Cookie 回传、并把你的真实 IP 以 X-Real-IP 转给目标；旧版 Worker 连 MCP 照旧、连不上网易云——把代码整段换掉即可，MCP 那边不受影响；换的时候把你原来的白名单主机和口令填回代码开头的 ALLOW / KEY，白名单里加上 music.163.com）。Worker 代码：<code style="display:block;white-space:pre-wrap;word-break:break-all;font-size:0.74em;line-height:1.65;margin-top:6px;padding:8px 10px;border-radius:10px;background:rgba(120,140,170,0.12)">const ALLOW=[];/* 目标主机白名单，留空＝不限制；想收紧就填，如 [&quot;music.163.com&quot;,&quot;mcp.example.com&quot;] */
+          <p><strong>跨域中转（CORS 代理）</strong>：给浏览器环境准备的自建转发。原理：请求先发给你自己的中转服务，由它在服务器侧转发到目标端点并补上 CORS 响应头（服务器对服务器不受浏览器跨域限制）。推荐 Cloudflare Worker（免费额度足够）：新建 Worker → 粘贴下方代码 → 部署，把「https://你的名字.workers.dev/?u=」填进 MCP 卡的「跨域中转」栏即可；地址里含 {url} 则按占位符替换，否则在末尾拼接编码后的目标地址。令牌等请求头会原样经过你的 Worker、不落任何第三方，因此<strong>务必只用自己部署的中转、不要用公共代理</strong>。下面是新版代码（v4；MUSIC 的网易云模式与 QQ 音乐的扫码登录也走这条中转：它会把 X-IB-Cookie / X-IB-Referer / X-IB-UA 换成真实请求头、把 Set-Cookie 放进 X-IB-Set-Cookie 回传、并把你的真实 IP 以 X-Real-IP 转给目标；v4 比 v3 只多认一个 X-IB-Redirect 头并回传 X-IB-Status / X-IB-Location——QQ 音乐的「QQ 扫码」要它，其余功能 v3 照用不必换；旧版（v2 及以前）连 MCP 照旧、连不上网易云——把代码整段换掉即可，MCP 那边不受影响；换的时候把你原来的白名单主机和口令填回代码开头的 ALLOW / KEY，白名单里加上 music.163.com，用 QQ 音乐扫码登录的再加 open.weixin.qq.com、ssl.ptlogin2.qq.com、ssl.ptlogin2.graph.qq.com、graph.qq.com）。Worker 代码：<code style="display:block;white-space:pre-wrap;word-break:break-all;font-size:0.74em;line-height:1.65;margin-top:6px;padding:8px 10px;border-radius:10px;background:rgba(120,140,170,0.12)">const ALLOW=[];/* 目标主机白名单，留空＝不限制；想收紧就填，如 [&quot;music.163.com&quot;,&quot;open.weixin.qq.com&quot;,&quot;ssl.ptlogin2.qq.com&quot;,&quot;ssl.ptlogin2.graph.qq.com&quot;,&quot;graph.qq.com&quot;,&quot;mcp.example.com&quot;] */
 const KEY=&quot;&quot;;/* 可选口令：填了以后地址要写成 https://你的名字.workers.dev/?k=口令&amp;u= */
 const C=(r)=&gt;({&quot;Access-Control-Allow-Origin&quot;:&quot;*&quot;,&quot;Access-Control-Allow-Methods&quot;:&quot;*&quot;,&quot;Access-Control-Allow-Headers&quot;:(r&amp;&amp;r.headers.get(&quot;access-control-request-headers&quot;))||&quot;*&quot;,&quot;Access-Control-Expose-Headers&quot;:&quot;*&quot;});
-export default{async fetch(r){if(r.method===&quot;OPTIONS&quot;)return new Response(null,{status:204,headers:C(r)});const q=new URL(r.url).searchParams,u=q.get(&quot;u&quot;);if(!u)return new Response(&quot;missing u&quot;,{status:400});if(KEY&amp;&amp;q.get(&quot;k&quot;)!==KEY)return new Response(&quot;forbidden&quot;,{status:403});let t;try{t=new URL(u)}catch(e){return new Response(&quot;bad u&quot;,{status:400})}if(ALLOW.length&amp;&amp;!ALLOW.includes(t.hostname))return new Response(&quot;host not allowed&quot;,{status:403});const h=new Headers(r.headers);[&quot;origin&quot;,&quot;referer&quot;,&quot;host&quot;,&quot;cf-connecting-ip&quot;,&quot;x-forwarded-for&quot;,&quot;x-real-ip&quot;,&quot;cf-ray&quot;,&quot;cf-visitor&quot;,&quot;cf-ipcountry&quot;,&quot;cf-worker&quot;].forEach(k=&gt;h.delete(k));const ip=r.headers.get(&quot;cf-connecting-ip&quot;);if(ip){h.set(&quot;X-Real-IP&quot;,ip);h.set(&quot;X-Forwarded-For&quot;,ip)}for(const[a,b]of[[&quot;x-ib-cookie&quot;,&quot;cookie&quot;],[&quot;x-ib-referer&quot;,&quot;referer&quot;],[&quot;x-ib-ua&quot;,&quot;user-agent&quot;]]){const v=h.get(a);if(v!=null){h.set(b,v);h.delete(a)}}const p=await fetch(t,{method:r.method,headers:h,body:[&quot;GET&quot;,&quot;HEAD&quot;].includes(r.method)?undefined:r.body});const o=new Headers();p.headers.forEach((v,k)=&gt;{if(k!==&quot;set-cookie&quot;)o.append(k,v)});let sc=[];try{sc=typeof p.headers.getSetCookie===&quot;function&quot;?p.headers.getSetCookie():[]}catch(e){}if(!sc.length&amp;&amp;p.headers.get(&quot;set-cookie&quot;))sc=[p.headers.get(&quot;set-cookie&quot;)];if(sc.length)o.set(&quot;X-IB-Set-Cookie&quot;,sc.join(&quot;, &quot;));for(const[k,v]of Object.entries(C(r)))o.set(k,v);return new Response(p.body,{status:p.status,headers:o})}};</code></p>
+export default{async fetch(r){if(r.method===&quot;OPTIONS&quot;)return new Response(null,{status:204,headers:C(r)});const q=new URL(r.url).searchParams,u=q.get(&quot;u&quot;);if(!u)return new Response(&quot;missing u&quot;,{status:400});if(KEY&amp;&amp;q.get(&quot;k&quot;)!==KEY)return new Response(&quot;forbidden&quot;,{status:403});let t;try{t=new URL(u)}catch(e){return new Response(&quot;bad u&quot;,{status:400})}if(ALLOW.length&amp;&amp;!ALLOW.includes(t.hostname))return new Response(&quot;host not allowed&quot;,{status:403});const h=new Headers(r.headers);[&quot;origin&quot;,&quot;referer&quot;,&quot;host&quot;,&quot;cf-connecting-ip&quot;,&quot;x-forwarded-for&quot;,&quot;x-real-ip&quot;,&quot;cf-ray&quot;,&quot;cf-visitor&quot;,&quot;cf-ipcountry&quot;,&quot;cf-worker&quot;].forEach(k=&gt;h.delete(k));const ip=r.headers.get(&quot;cf-connecting-ip&quot;);if(ip){h.set(&quot;X-Real-IP&quot;,ip);h.set(&quot;X-Forwarded-For&quot;,ip)}for(const[a,b]of[[&quot;x-ib-cookie&quot;,&quot;cookie&quot;],[&quot;x-ib-referer&quot;,&quot;referer&quot;],[&quot;x-ib-ua&quot;,&quot;user-agent&quot;]]){const v=h.get(a);if(v!=null){h.set(b,v);h.delete(a)}}const manual=h.get(&quot;x-ib-redirect&quot;)===&quot;manual&quot;;h.delete(&quot;x-ib-redirect&quot;);const p=await fetch(t,{method:r.method,headers:h,body:[&quot;GET&quot;,&quot;HEAD&quot;].includes(r.method)?undefined:r.body,redirect:manual?&quot;manual&quot;:&quot;follow&quot;});const o=new Headers();p.headers.forEach((v,k)=&gt;{if(k!==&quot;set-cookie&quot;)o.append(k,v)});let sc=[];try{sc=typeof p.headers.getSetCookie===&quot;function&quot;?p.headers.getSetCookie():[]}catch(e){}if(!sc.length&amp;&amp;p.headers.get(&quot;set-cookie&quot;))sc=[p.headers.get(&quot;set-cookie&quot;)];if(sc.length)o.set(&quot;X-IB-Set-Cookie&quot;,sc.join(&quot;, &quot;));o.set(&quot;X-IB-Status&quot;,String(p.status));const loc=p.headers.get(&quot;location&quot;);if(loc)o.set(&quot;X-IB-Location&quot;,loc);for(const[k,v]of Object.entries(C(r)))o.set(k,v);return new Response(p.body,{status:(manual&amp;&amp;p.status&gt;=300&amp;&amp;p.status&lt;400)?200:p.status,headers:o})}};</code></p>
           <p><strong>联网搜索</strong>：同一处还内置 <strong>Parallel</strong> 与 <strong>Exa</strong> 两张联网搜索预设（两家官方公开端点，无需令牌、允许浏览器直连）。点「添加」即自动入列并连接，之后 AI 在对话里需要时会自己调用搜索 / 抓网页工具（默认仍会先询问你是否允许，可在 MCP 卡关掉「调用前询问」）。公开端点有限流，重度使用可到对方官网领取 API key 填入该服务器的令牌栏。<!-- v131-p --></p>
           <p><strong>生活服务</strong>：同一处还有 <strong>滴滴出行</strong> 与 <strong>高德地图</strong> 两张官方预设。点「添加」自动填好端点，再到 mcp.didichuxing.com（滴滴账号或 App 扫码激活 MCP Key）/ 高德开放平台（Web 服务 Key）领取 Key 填入令牌栏、点「连接」；这两家的 Key 走 URL 查询串，会自动拼接。滴滴给出估价、打车链接、下单、查订单与司机位置、取消以及地点搜索与路线规划（taxi_create_order 会产生真实订单，请开着「调用前询问」，或先用 …/mcp-servers-sandbox 试）；高德给出地理编码、天气、四种路线与地点搜索。注意：这两家是否放行浏览器跨域尚未确定，网页版连不上时改用 App 端。<!-- v179-p --></p>
           <p><strong>连接 GitHub 仓库（MCP 进阶方案）</strong>：只需要读改仓库文件时，用 ICode 页 → GitHub 分区的内置直连即可，无需本方案。以下面向想让 AI 通过 MCP 直接调用 GitHub 接口的进阶用法。<!-- v101-m 任务3：步骤拆行 --></p>
@@ -3044,7 +3041,7 @@ self.addEventListener(&#x27;fetch&#x27;,function(e){
         <div class="f-group" style="margin:8px 0 6px"><label>工具连续调用轮数 <span class="lb-note">（默认 2；0 = 关闭续答）</span></label>
           <div class="sel"><select id="out-tools"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="5">5</option></select></div></div>
         <div class="f-group" style="margin:10px 0 6px"><label>蓝牙每回复调用上限 <span class="lb-note">（默认 4；0 = 不限）</span></label>
-          <div class="sel"><select id="out-btcap"><option value="0">0（不限）</option><option value="2">2</option><option value="4">4</option><option value="6">6</option><option value="10">10</option></select></div></div><p class="hint">连续调用轮数：取数类指令（外部工具 / MCP / 记忆检索 / 定位 天气 手机状态 / 蓝牙读取 / 查看动态等）的结果立即回传，TA 在同一条回复后接着作答、并可再次调用，最多此轮数；动作类指令（写记忆 / 留便笺 / 写日历 / 蓝牙写入 / 发动态 / 播放器等）不触发续答，成败随你的下一条消息回传；设为 0 时取数类同样随下一条消息回传。蓝牙上限：同一条回复内 bt_read＋bt_write 的合计次数，超出的不执行并告知 TA；bt_status 查询不计数；开启「调用确认」后你点「执行」的调用不受限。</p>
+          <div class="sel"><select id="out-btcap"><option value="0">0（不限）</option><option value="2">2</option><option value="4">4</option><option value="6">6</option><option value="10">10</option></select></div></div><p class="hint">连续调用轮数：取数类指令（外部工具 / MCP / 记忆检索 / 定位 天气 手机状态 / 蓝牙读取 / 查看动态等）的结果立即回传，TA 在同一条回复后接着作答、并可再次调用，最多此轮数；动作类指令（写记忆 / 留便笺 / 写日历 / 蓝牙写入 / 发动态 / 播放器等）不触发续答，成败随你的下一条消息回传；设为 0 时取数类同样随下一条消息回传。蓝牙上限：同一条回复内 bt_read＋bt_write 的合计次数，超出的不执行并告知 TA；bt_status 查询不计数；开启「调用确认」后你点「执行」的调用不受限。写入 Blog 与生图执行完也会续答一次（不算动作类、也不在下方六枚按钮之列），只受轮数约束。</p>
         <div class="f-group" style="margin:10px 0 4px"><label>续答触发范围 <span class="lb-note">（点亮＝该类结果立即续答；熄灭＝随下一条消息回传）</span></label>
           <div id="out-trig" style="display:flex;flex-wrap:wrap;gap:7px;margin-top:8px"><button type="button" class="btn on" data-k="http">外部工具</button><button type="button" class="btn on" data-k="mcp">MCP</button><button type="button" class="btn on" data-k="bt">蓝牙读取</button><button type="button" class="btn on" data-k="mem">记忆检索</button><button type="button" class="btn on" data-k="env">定位 / 天气 / 手机状态</button><button type="button" class="btn on" data-k="view">查看动态 / 查询日程</button></div></div><p class="hint" style="margin-bottom:0">熄灭的类别结果随你的下一条消息回传、不再另起一条；全部熄灭等同轮数设 0。ICode 工作区任务不受此处影响，始终连续执行。</p>
       </div>
@@ -4030,12 +4027,16 @@ self.addEventListener(&#x27;fetch&#x27;,function(e){
   <div class="sheet" id="sheet-masrc"><h3>MUSIC SOURCE</h3>
     <div class="mate-row" id="masrc-local"><span class="ncm-ico"><svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h3l2 2h6A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5z"/></svg></span><div class="ncm-rm"><b>本地音乐</b><small>本机音频与歌词文件；点击添加</small></div><span class="ncm-chk"></span></div>
     <div class="mate-row" id="masrc-ncm"><span class="ncm-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2.4M12 18.1v2.4M3.5 12h2.4M18.1 12h2.4"/></svg></span><div class="ncm-rm"><b>网易云音乐</b><small id="masrc-ncm-s">登录账号，听自己的歌单</small></div><span class="ncm-chk"></span></div>
-    <p class="hint" style="margin-top:10px">两档各自独立：本地曲库与网易云队列互不干扰，切换时停止当前播放。</p>
+    <div class="mate-row" id="masrc-qqm"><span class="ncm-ico"><svg viewBox="0 0 24 24"><path d="M9.5 17.5V6.6l9.5-2.1v10.4"/><circle cx="6.8" cy="17.6" r="2.6"/><circle cx="16.3" cy="15" r="2.6"/></svg></span><div class="ncm-rm"><b>QQ 音乐</b><small id="masrc-qqm-s">登录账号，听自己的歌单</small></div><span class="ncm-chk"></span></div><p class="hint" style="margin-top:10px">三档各自独立：本地曲库、网易云与 QQ 音乐的队列互不干扰，切换时停止当前播放。</p>
     <div class="sheet-btns"><button class="btn" data-close="1">关闭</button></div>
   </div>
   <div class="sheet" id="sheet-ncm"><h3>NETEASE CLOUD MUSIC</h3>
     <div id="ncm-body"></div>
     <div class="sheet-btns"><button class="btn" id="ncm-tolocal">回到本地音乐</button><button class="btn" data-close="1">关闭</button></div>
+  </div>
+  <div class="sheet" id="sheet-qqm"><h3>QQ MUSIC</h3>
+    <div id="qqm-body"></div>
+    <div class="sheet-btns"><button class="btn" id="qqm-tolocal">回到本地音乐</button><button class="btn" data-close="1">关闭</button></div>
   </div>
   <div class="sheet" id="sheet-mate">
     <h3>LISTEN TOGETHER</h3>
@@ -5649,7 +5650,7 @@ const DOCKS={
   letters:[{k:'box',t:'信箱',i:'note'}],
   chat:[{k:'list',t:'对话',i:'list'},{k:'grp',t:'群聊',i:'list'},{k:'fav',t:'收藏夹',i:'star',act:'fav'},{k:'arch',t:'归档',i:'arch'}],/* v194-p：+收藏夹（act 直开收藏页，不切分区） *//* v58-m：老按日「记录」分区移除，聊天记录管理统一在 Data·备份（照电脑端） *//* v49i-m：群聊独立分类 */
   memory:[{k:'lib',t:'记忆库',i:'lib'},{k:'am',t:'Auto Memory',i:'am'}],
-  api:[{k:'list',t:'独立配置',i:'frd'},{k:'global',t:'全局设置',i:'globe'},{k:'presence',t:'Presence',i:'heart'},{k:'tools',t:'多模态设置',i:'tool'},{k:'data',t:'数据',i:'io',act:'gotodata'}],
+  api:[{k:'list',t:'独立配置',i:'frd'},{k:'global',t:'全局设置',i:'globe'},{k:'presence',t:'Presence',i:'heart'},{k:'tools',t:'多模态',i:'tool'},{k:'data',t:'数据',i:'io',act:'gotodata'}],
   diy:[{k:'mcp',t:'MCP',i:'mcp'},{k:'pay',t:'AI付',i:'pay'},{k:'tool',t:'外部工具',i:'tool'}],/* v154-p：#1 AI付 自 MCP 分区拎出，独立坞位居中 */
  icode:[{k:'ws',t:'工作区',i:'mod'},{k:'gh',t:'GitHub',i:'api'}],/* v12 任务⑥：ICode 下栏新增 GitHub 分区 */
   beyond:[{k:'feed',t:'动态',i:'bey'}],/* v72-m 9b：Internet Beyond */
@@ -5819,7 +5820,7 @@ var IBApps=(function(){
         mark:async function(o){if(!_activeCfg)throw new Error('先打开一个对话');return _ibAppMarkM(id,o||{})},/* 手机端：落一条标记消息（封档线样式），不触发回复 */
         nudge:async function(o){o=o||{};if(!_activeCfg)throw new Error('先打开一个对话');if(_activeCfg._group)throw new Error('群聊不支持主动开口');try{if(_sendKeys.has(_keyOf(_activeCfg.id,_activeThread?_activeThread.id:'')))return false}catch(e){}var mid=await _ibAppMarkM(id,o);if(!mid)return false;if(o.tail)try{window._ibAppTailM={id:mid,text:String(o.tail).slice(0,6000)}}catch(e){}try{genReply(_activeCfg)}catch(e){}return true}/* 手机端：标记＋tail 后触发一次 TA 开口（仅 1对1；发送锁被占时静默不发） */
       },
-      blog:{render:function(t){try{return mdRenderHtml(String(t||''))}catch(e){return _e(t)}},/* 手机端：Blog 同一套 Markdown 渲染 */list:async function(){try{return (await dbGetAll('posts')).filter(function(p){return p&&typeof p.content==='string'&&!isLockedPost(p)}).sort(function(a,b){return (b.created||0)-(a.created||0)}).map(function(p){return {id:p.id,title:p.title||'无标题',subtitle:p.subtitle||'',category:p.category||'',created:p.created||0,chars:String(p.content||'').length,excerpt:String(p.content||'').replace(/\s+/g,' ').trim().slice(0,120)}})}catch(e){return []}},
+      blog:{render:function(t){try{return mdRenderHtml(String(t||''))}catch(e){return _e(t)}},/* 手机端：Blog 同一套 Markdown 渲染 */list:async function(){try{var out=[];await new Promise(function(res){try{var req=db.transaction('posts').objectStore('posts').openCursor();req.onsuccess=function(){var c=req.result;if(!c){res();return}var p=c.value;try{if(p&&typeof p.content==='string'&&!isLockedPost(p))out.push({id:p.id,title:p.title||'无标题',subtitle:p.subtitle||'',category:p.category||'',created:p.created||0,chars:String(p.content||'').length,excerpt:String(p.content||'').replace(/\s+/g,' ').trim().slice(0,120)})}catch(e){}c.continue()};req.onerror=function(){res()}}catch(e){res()}});return out.sort(function(a,b){return (b.created||0)-(a.created||0)})}catch(e){return []}},
         get:async function(pid){try{var p=await dbGet('posts',pid);if(!p||isLockedPost(p))return null;return {id:p.id,title:p.title||'无标题',subtitle:p.subtitle||'',category:p.category||'',created:p.created||0,content:String(p.content||'')}}catch(e){return null}}},
       sys:{set:function(text,o){o=o||{};window._ibAppSysM={app:id,cfgId:String(o.cfgId||''),text:String(text||'').slice(0,4000),data:(o.data&&typeof o.data==='object')?o.data:null};return true},clear:function(){try{if(window._ibAppSysM&&window._ibAppSysM.app===id)window._ibAppSysM=null}catch(e){}return true}},/* 手机端：APP 会话期间的 System 常量块（人格收束之前），关 APP 自动摘除 */
       ai:{call:async function(prompt,o){o=o||{};var c=(o.cfgId&&(_cfgs||[]).find(function(a){return a.id===o.cfgId}))||((typeof _activeCfg!=='undefined'&&_activeCfg&&!_activeCfg._group)?_activeCfg:null)||(_cfgs||[]).find(function(a){return a.apiKey});
@@ -7893,6 +7894,7 @@ async function _favList(){try{var rows=(await dbGetRange('apiSettings','fav_','f
   return rows.map(function(r){return Object.assign({id:r.id},r.v)}).sort(function(a,b){return (b.ts||0)-(a.ts||0)})}catch(e){return []}}/* v198-p：只取 fav_ 区间，不再整表扫 apiSettings */
 function _favRowM(){}
 var _favAu=null;
+var _favPaintTok=0;/* v206-p：纸墙分批画的作废令牌 */
 async function _favOpen(startCid){var old=document.getElementById('fav-ov');if(old)old.remove();
   var all=await _favList();var cs=(Array.isArray(_cfgs)?_cfgs:[]).filter(function(c){return c&&c.id});var ids=[];cs.forEach(function(c){ids.push(c.id)});all.forEach(function(f){if(f.cfgId&&ids.indexOf(f.cfgId)<0)ids.push(f.cfgId)});
   if(!ids.length){toast('还没有好友，也没有收藏');return}
@@ -7913,20 +7915,21 @@ async function _favOpen(startCid){var old=document.getElementById('fav-ov');if(o
     card.querySelector('#fav-prev').addEventListener('click',function(){step(-1)});card.querySelector('#fav-next').addEventListener('click',function(){step(1)});
     var wall=ov.querySelector('.fav-wall');wall.innerHTML='';wall.classList.toggle('has',!!list.length);/* v197-p：有纸才画牵线 */
     if(!list.length){wall.innerHTML='<div class="fav-empty">这里还是空的。长按一条消息选「收藏」。</div>';return}
-    list.forEach(function(f){var c=document.createElement('div');c.className='fav-paper';var d=new Date(f.ts||f.created||0);var ds=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')+'  '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+    var tok=++_favPaintTok,io=null;try{io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(en){en.target.classList.toggle('bf',en.isIntersecting)})},{root:ov.querySelector('.fav-body'),rootMargin:'260px 0px'}):null}catch(e){io=null}/* v206-p：玻璃只给视口附近的纸 */
+    var mkPaper=function(f){var c=document.createElement('div');c.className='fav-paper'+(io?'':' bf');var d=new Date(f.ts||f.created||0);var ds=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')+'  '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
       var body='',_ft=f.text;try{if(f.kind==='voice'&&f.voice&&String(f.voice.transcript||'').trim()&&String(f.voice.transcript||'').trim()===String(f.text||'').trim())_ft=''}catch(e){}try{body=_ft?(typeof mdRenderHtml==='function'?mdRenderHtml(_ft):esc(_ft)):''}catch(e){body=esc(_ft||'')}/* v197-p：语音纸条的正文若与文字稿相同只显一次 */
       c.innerHTML='<span class="fav-clip"><svg viewBox="0 0 24 40"><path d="M8 10v17a4 4 0 0 0 8 0V7a2.5 2.5 0 0 0-5 0v18a1 1 0 0 0 2 0V10"/></svg></span><button class="fav-x" type="button" aria-label="移除">×</button>'
         +'<div class="fav-media"></div>'+(body?'<div class="fav-tx mdr">'+body+'</div>':'')+'<div class="fav-ft"><span>'+esc(f.who||'')+'</span><time>'+ds+'</time></div><span class="fav-fold" title="展开"></span><button class="fav-up" type="button" aria-label="收起"><svg viewBox="0 0 24 24"><path d="M6 14l6-6 6 6"/></svg></button>';/* v195-p：展开后右下角出现收起小箭头 */
-      wall.appendChild(c);
-      var tx=c.querySelector('.fav-tx');var long=!!(tx&&tx.scrollHeight>tx.clientHeight+4);if(!long)c.classList.add('short');
+
       c.querySelector('.fav-fold').addEventListener('click',function(ev){ev.stopPropagation();if(c.classList.contains('short'))return;c.classList.add('open')});c.querySelector('.fav-up').addEventListener('click',function(ev){ev.stopPropagation();c.classList.remove('open')});
       c.querySelector('.fav-x').addEventListener('click',async function(ev){ev.stopPropagation();if(!await confirmDlg('从收藏夹移除这条？','移除'))return;await _favDel(f.id);paint()});
       if(f.kind==='voice'||f.imgN){var md=c.querySelector('.fav-media');
         if(f.kind==='voice'){md.innerHTML='<div class="fav-voice"><button class="fav-play" type="button" aria-label="播放"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5z"/></svg></button><span class="fav-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><b>'+Math.max(1,Math.round((f.voice&&f.voice.duration)||1))+'″</b></div>'+(f.voice&&f.voice.transcript?'<div class="fav-vt">'+esc(f.voice.transcript)+'</div>':'');
           md.querySelector('.fav-play').addEventListener('click',async function(ev){ev.stopPropagation();var btn=this;try{if(_favAu){_favAu.pause();_favAu=null}var m9=await dbGet('chatMessages',f.msgId);var u=m9&&m9.voice&&m9.voice.dataUrl;if(!u){toast('这条语音已随原消息删除，只剩文字稿');return}var au=new Audio(u);_favAu=au;btn.classList.add('on');au.addEventListener('ended',function(){btn.classList.remove('on')});au.play().catch(function(){btn.classList.remove('on');toast('播放失败')})}catch(e){btn.classList.remove('on');toast('播放失败')}})}
-        if(f.imgN){dbGet('chatMessages',f.msgId).then(function(m9){var ims=(m9&&Array.isArray(m9.images))?m9.images.map(function(im){return im&&(im.dataUrl||im.url||'')}).filter(Boolean).slice(0,3):[];if(!ims.length)return;var w=document.createElement('div');w.className='fav-imgs';ims.forEach(function(u){var i=document.createElement('img');i.src=u;i.alt='';w.appendChild(i)});md.insertBefore(w,md.firstChild)}).catch(function(){})}
+        if(f.imgN){dbGet('chatMessages',f.msgId).then(function(m9){var ims=(m9&&Array.isArray(m9.images))?m9.images.map(function(im){return im&&(im.dataUrl||im.url||'')}).filter(Boolean).slice(0,3):[];if(!ims.length)return;var w=document.createElement('div');w.className='fav-imgs';ims.forEach(function(u){var i=document.createElement('img');i.loading='lazy';i.decoding='async';i.src=u;i.alt='';w.appendChild(i)});md.insertBefore(w,md.firstChild)}).catch(function(){})}
       }
-    })}
+      return c};
+    var k=0;(function step(){if(tok!==_favPaintTok||!wall.isConnected)return;var frag=document.createDocumentFragment(),batch=[],end=Math.min(list.length,k+(k?16:12));for(;k<end;k++){var c=mkPaper(list[k]);batch.push(c);frag.appendChild(c)}wall.appendChild(frag);batch.forEach(function(c){var tx=c.querySelector('.fav-tx');var long=!!(tx&&tx.scrollHeight>tx.clientHeight+4);if(!long)c.classList.add('short');if(io)io.observe(c)});if(k<list.length)setTimeout(step,16)})()/* v206-p：纸墙分批画（首批 12、之后每 16ms 16 张），每批只量一次高度；重画作废前一轮 */}
   /* 左右滑换好友（名片与纸墙都认） */
   (function(){var x0=null,y0=null;var body=ov.querySelector('.fav-body');body.addEventListener('touchstart',function(ev){var t=ev.touches[0];x0=t.clientX;y0=t.clientY},{passive:true});body.addEventListener('touchend',function(ev){if(x0===null)return;var t=ev.changedTouches[0];var dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Math.abs(dx)>70&&Math.abs(dy)<40)step(dx<0?1:-1)},{passive:true})})();
   paint()}
@@ -9063,7 +9066,7 @@ async function genReply(cfg,internalCtx){
     if(!_quietM&&await _askGlobalGetM())parts.push(_ASK_INSTR_BLOCK);/* v66-m：与电脑端共用 askGlobal */
     try{const _advI=await _ibAdvGet();if(!_quietM&&_advI.memSearch)parts.push(_MEMSEARCH_INSTR_BLOCK.replace(/^\n+/,''));if(!_quietM&&_advI.calWrite)parts.push(_CALWRITE_INSTR_BLOCK.replace(/^\n+/,''));if(!_quietM&&_advI.blogWrite)parts.push(_BLOGWRITE_INSTR_BLOCK.replace(/^\n+/,''));if(cfg&&cfg.memWrite)parts.push(_MEMWRITE_INSTR_BLOCK.replace(/^\n+/,''))}catch(e){}
     if(!_quietM&&_mp.imggen&&_mp.imggen.on&&_igOK(cfg))parts.push(_IMGGEN_INSTR_BLOCK);
-    try{if(!_quietM&&_mp.musicAi&&_mp.musicAi.ctl)parts.push(_MUSIC_INSTR_BLOCK_M+((typeof _ncmInstrM==='function')?_ncmInstrM():''))}catch(e){}/* v88-m 第二刀①：播放器协议上移 System *//* v204-p：网易云模式下追加逐项开放的网易云指令块 */
+    try{if(!_quietM&&_mp.musicAi&&_mp.musicAi.ctl)parts.push(_MUSIC_INSTR_BLOCK_M+((typeof _ncmInstrM==='function')?_ncmInstrM():'')+((typeof _qqmInstrM==='function')?_qqmInstrM():''))}catch(e){}/* v88-m 第二刀①：播放器协议上移 System *//* v204-p：网易云模式下追加逐项开放的网易云指令块 */
     try{if(!_quietM&&cfg&&cfg.beyond&&cfg.beyond.on&&await _ibfMaster())parts.push(await _ibBeyondInstrM(cfg))}catch(e){}/* v88-m 第二刀②：Beyond 操作协议上移 System，Tail 只留动态与签名数据 */
     /* v89-m：联网搜索使用边界已按用户决定移除（不再注入任何"何时不该搜"说明） */
     try{if(window._ibAppSysM&&window._ibAppSysM.text&&(!window._ibAppSysM.cfgId||window._ibAppSysM.cfgId===cfg.id))parts.push(String(window._ibAppSysM.text).slice(0,4000))}catch(e){}/* v189-p：桌面 APP 常驻说明（随 ctx.sys.set 整块进 System，切换即重建一次缓存） */
@@ -12450,7 +12453,7 @@ function _orientApply(){try{
   setTimeout(function(){try{if(window.IBNative&&window.IBNative.available){var _bg=$('pres-bg');var _row=_bg&&_bg.closest('.tog');if(_row)_row.style.display=''}}catch(e){}},1200);/* v116-p：壳内显露「后台 Presence（系统级）」开关（桥在文末激活，故延时探测；浏览器 / PWA 保持隐藏） */
 })();
 function _vidQNormM(v){v=String(v==null?'m':v);if(v==='384')return 'l';if(v==='768')return 'h';if(v==='512')return 'm';return (v==='l'||v==='h')?v:'m'}/* 画质档位兼容电脑端备份里的 384/512/768 写法 */
-var IB_VER='v205-p',IB_VER_DATE='2026-09-03';
+var IB_VER='v207-p',IB_VER_DATE='2026-09-03';
 (function _appVerDraw(){var e=document.getElementById('app-ver');if(e)e.textContent='InternalBeyond Mobile '+IB_VER+'（'+IB_VER_DATE+'）'})();
 function _lkVeilOff(){try{var v=document.getElementById('lk-preveil');if(v){v.classList.add('off');setTimeout(function(){try{v.remove()}catch(e){}},420)}}catch(e){}}/* fix-r4：预遮罩揭幕（任务 8） */
 async function _lkBoot(){try{await loadBgs()}catch(e){}var lk=_lkCfg();try{localStorage.setItem('ib_lockOn',lk&&lk.on?'1':'0')}catch(e){}/* v101-m：启动后把 DB 真值回写同步镜像 */if(lk&&lk.on)_lkShow();else _lkVeilOff()}
@@ -12955,9 +12958,15 @@ async function blogRender(){migrateLegacyDiary();
   const _bt=$('blog-hero-t');if(_bt)_bt.innerHTML=bDiaryMode?'Password Diary<span class="ph-cn">密码日记本</span>':'Blog<span class="ph-cn">日志</span>';/* v81-m r5：双态都带中字（任务 6） */
   await blogLoadCats();await blogLoadPosts();await blogStats();
 }
+
+var _bLiteCache={q:null,at:0,list:null};
+async function _postsLiteM(q){q=String(q||'');var now=Date.now();if(_bLiteCache.list&&_bLiteCache.q===q&&now-_bLiteCache.at<800)return _bLiteCache.list;
+  var out=[];await new Promise(function(res){try{var req=db.transaction('posts').objectStore('posts').openCursor();req.onsuccess=function(){var c=req.result;if(!c){res();return}var p=c.value;try{if(p&&typeof p.id!=='undefined'){var ct=typeof p.content==='string'?p.content:'';if(!q||((p.title||'')+' '+(p.subtitle||'')+' '+(p.category||'')+' '+ct).toLowerCase().indexOf(q)>=0){var lite={};for(var k in p){if(k!=='content')lite[k]=p[k]}lite.content=ct?'\u200b':'';lite._len=ct.length;lite._ex=_mdStrip(ct.slice(0,4000)).slice(0,150);lite._sz=estimateSizeM(p);lite._lite=true;out.push(lite)}}}catch(e){}c.continue()};req.onerror=function(){res()}}catch(e){res()}});
+  _bLiteCache={q:q,at:Date.now(),list:out};return out}
+function _bLiteDrop(){_bLiteCache={q:null,at:0,list:null}}
 async function blogLoadCats(){
   let cats=[];try{cats=await dbGetAll('categories')}catch(e){}
-  let posts=[];try{posts=await dbGetAll('posts')}catch(e){}
+  let posts=[];try{posts=await _postsLiteM('')}catch(e){}
   const scope=posts.filter(pp=>pp&&typeof pp.content==='string'&&(bDiaryMode?isLockedPost(pp):!isLockedPost(pp)));
   const cnt={};scope.forEach(pp=>{const k=pp.category||'';cnt[k]=(cnt[k]||0)+1});
   const bar=$('m-cat-bar');if(!bar)return;bar.innerHTML='';
@@ -12981,14 +12990,14 @@ async function blogLoadCats(){
   cats.forEach(c=>mk(c.name,c.name,cnt[c.name]||0,true));
 }
 async function blogStats(){
-  let posts=[];try{posts=await dbGetAll('posts')}catch(e){}
+  let posts=[];try{posts=await _postsLiteM('')}catch(e){}
   const scope=(bDiaryMode&&!bDiaryUnlocked)?[]:posts.filter(pp=>bDiaryMode?isLockedPost(pp):!isLockedPost(pp));/* v58-m 锁定态不暴露篇数与体积 */
-  let sz=0;scope.forEach(pp=>sz+=estimateSizeM(pp));
+  let sz=0;scope.forEach(pp=>sz+=(pp._lite?(pp._sz||0):estimateSizeM(pp)));
   const _bs=$('m-blog-stats');if(_bs)_bs.textContent=(bDiaryMode?'密码日记本 · ':'')+scope.length+' 篇 · '+(sz/1024).toFixed(1)+' KB';
   const _dk=$('m-diary-keys');if(_dk)_dk.style.display=(bDiaryMode&&bDiaryUnlocked)?'':'none';
 }
 async function blogLoadPosts(){
-  let posts=[];try{posts=await dbGetAll('posts')}catch(e){}
+  let posts=[];try{posts=await _postsLiteM(bSearchQ)}catch(e){}
   posts.sort((a,b)=>(b.created||0)-(a.created||0));
   /* 公开 Blog 与密码日记本完全隔离（电脑端同口径） */
   if(bDiaryMode){
@@ -12999,7 +13008,7 @@ async function blogLoadPosts(){
     posts=posts.filter(pp=>!isLockedPost(pp));
     if(bActiveCat!=='all')posts=posts.filter(pp=>_bCatHitM(pp));
   }
-  if(bSearchQ){const q=bSearchQ;posts=posts.filter(pp=>((pp.title||'')+' '+(pp.subtitle||'')+' '+(pp.category||'')+' '+(pp.content||'')).toLowerCase().includes(q))}
+  if(bSearchQ){const q=bSearchQ;posts=posts.filter(pp=>pp._lite||((pp.title||'')+' '+(pp.subtitle||'')+' '+(pp.category||'')+' '+(pp.content||'')).toLowerCase().includes(q))}/* 游标里已按 q 筛过 */
   const c=$('m-posts');
   if(!posts.length){c.innerHTML='<div class="empty">'+(bSearchQ?'没有找到匹配的日志':(bDiaryMode?'密码日记本中暂无记录。点击"写日志"开始记录，Tea 和 Story 的存档也会自动保存至此。':'还没有日志，点击"写日志"开始记录'))+'</div>';return}
   const MON3=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
@@ -13010,10 +13019,10 @@ async function blogLoadPosts(){
     +'<div class="pc-date"><b>'+(dOK?dt.getDate():'—')+'</b><small>'+(dOK?MON3[dt.getMonth()]+' '+String(dt.getFullYear()).slice(2):'')+'</small></div>'
     +'<div class="pc-main"><div class="post-card-title">'+esc(pp.title||'无标题')+'</div>'
     +(pp.subtitle?'<div class="post-card-sub">'+esc(pp.subtitle)+'</div>':'')
-    +'<div class="post-card-preview">'+esc(_mdStrip(pp.content).slice(0,150))+'</div>'
+    +'<div class="post-card-preview">'+esc(pp._lite?(pp._ex||''):_mdStrip(pp.content).slice(0,150))+'</div>'
     +'<div class="post-card-meta">'
     +(pp.aiWritten?'<span class="pc-cat">✎ '+esc(pp.authorName||'TA')+' 写的</span>':(pp.category?'<span class="pc-cat">'+esc(pp.category)+'</span>':''))/* v189-p */
-    +'<span>'+(estimateSizeM(pp)/1024).toFixed(1)+' KB</span>'
+    +'<span>'+((pp._lite?(pp._sz||0):estimateSizeM(pp))/1024).toFixed(1)+' KB</span>'
     +(pp.doc?'<span class="pc-dot">·</span><span>只读文档</span>':'')+'</div></div></div>';
   }).join('');
   c.querySelectorAll('[data-pid]').forEach(el=>el.addEventListener('click',()=>viewPostM(el.dataset.pid)));
@@ -13031,7 +13040,7 @@ var _bSearchTmr=null;/* v53-m 性能：全文搜索去抖，敲键不再每击�
 $('m-blog-search').addEventListener('input',function(){const v=this.value;clearTimeout(_bSearchTmr);_bSearchTmr=setTimeout(()=>{bSearchQ=v.trim().toLowerCase();blogLoadPosts()},160)});
 /* v48 阅读页：上一篇/下一篇按当前列表口径取相邻两篇 */
 async function _bSiblings(id){
-  let posts=[];try{posts=await dbGetAll('posts')}catch(e){}
+  let posts=[];try{posts=await _postsLiteM('')}catch(e){}
   posts.sort((a,b)=>(b.created||0)-(a.created||0));
   posts=posts.filter(pp=>bDiaryMode?isLockedPost(pp):!isLockedPost(pp));
   if(bActiveCat!=='all')posts=posts.filter(pp=>(pp.category||'')===bActiveCat);
@@ -13054,6 +13063,7 @@ async function viewPostM(id){
   const host=$('m-post-view');
   const _sib=await _bSiblings(id);
   let bodyHTML='';
+  try{var _bigL=String(pp.content||'').length;if(_bigL>200000){host.innerHTML='<div class="pv-title">'+esc(pp.title||'无标题')+'</div><div class="empty" style="padding:28px 0">正在排版 '+(_bigL/1048576).toFixed(1)+' MB 的正文…</div>';toast('正在排版 '+(_bigL/1048576).toFixed(1)+' MB 的正文，稍等');await new Promise(r=>setTimeout(r,40))}}catch(e){}/* v241-a / v207-p：大文本先给提示再排版（排版本身是同步的，先让这一帧画出来） */
   if(pp.format==='md'){/* v54-m 正文按块包 pv-para：批注定位与文内搜索共用 */
     const _tmp=document.createElement('div');_tmp.innerHTML=mdRenderHtml(String(pp.content||''));
     let _bi=0,_acc='';
@@ -17393,6 +17403,7 @@ body.ib-reduce #fav-ov .fav-paper,body.ib-reduce #fav-ov .fav-card{background:#f
 #fav-ov .fav-x{position:absolute;right:8px;top:6px;width:26px;height:26px;border:none;background:none;color:var(--tx3);opacity:0.45;font-size:1rem;line-height:1;cursor:pointer;padding:0}
 #fav-ov .fav-tx{font-family:'Noto Serif SC',var(--serif),serif;font-size:0.9rem;line-height:1.85;color:var(--tx);word-break:break-word;max-height:9.3em;overflow:hidden;position:relative;letter-spacing:0.01em}#fav-ov .fav-paper.open .fav-tx,#fav-ov .fav-paper.short .fav-tx{max-height:none}#fav-ov .fav-tx p{margin:0 0 0.5em}#fav-ov .fav-tx>*:last-child{margin-bottom:0}#fav-ov .fav-tx pre,#fav-ov .fav-tx code{font-family:ui-monospace,Menlo,monospace;font-size:0.82em}
 #fav-ov .fav-paper:not(.open):not(.short) .fav-tx{-webkit-mask-image:linear-gradient(#000 calc(100% - 2.6em),transparent);mask-image:linear-gradient(#000 calc(100% - 2.6em),transparent)}
+#fav-ov .fav-paper{-webkit-backdrop-filter:none;backdrop-filter:none}#fav-ov .fav-paper.bf{-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2)}
 #fav-ov .fav-ft{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:10px;padding-right:36px;font-family:var(--disp);font-size:0.6rem;letter-spacing:0.16em;color:var(--tx3);text-transform:uppercase}#fav-ov .fav-ft time{font-variant-numeric:tabular-nums}
 #fav-ov .fav-imgs{display:flex;gap:6px;margin-bottom:10px}#fav-ov .fav-imgs img{flex:1;min-width:0;max-width:60%;aspect-ratio:4/3;object-fit:cover;border-radius:3px;border:1px solid rgba(120,150,200,0.2);display:block}
 #fav-ov .fav-voice{display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:8px 12px 8px 8px;border-radius:12px;background:rgba(114,168,216,0.1);border:1px solid rgba(114,168,216,0.24)}
@@ -18313,33 +18324,35 @@ body.vzs-full .sb-desk>[data-dk="sched"]{grid-column:1/-1}
 body.vzck-on .sb-desk>[data-dk="clock"]:not(.dk-hidden){display:flex}
 .sb-desk>[data-dk="tk"]{display:none}
 body.vztk-on .sb-desk>[data-dk="tk"]:not(.dk-hidden){display:flex}/* v142-p：#3 选款式即显示（照时钟挂件门控）；隐藏管理与拖排照常走 data-dk */
-.tk-w{flex-direction:column;min-height:118px;padding:13px 12px 12px}
+.tk-w{flex-direction:column;min-height:124px;padding:26px 14px 13px}
 .tk-w .tkw{flex:1;display:flex;align-items:center;justify-content:center;width:100%;min-height:0}
-.tkw .tkw-ring{display:flex;align-items:center;gap:12px;width:100%}
-.tkw .tkw-rc{position:relative;flex:none;width:74px;height:74px}
-.tkw .tkw-rc svg{width:74px;height:74px;transform:rotate(-90deg);display:block}
-.tkw .tkw-rc svg circle{fill:none;stroke-width:7;stroke-linecap:round}
-.tkw .tkw-rc .rg-bg{stroke:var(--soft)}
-.tkw .tkw-rc .rg-v{stroke:var(--acc);filter:drop-shadow(0 0 4px rgba(114,168,216,.35));transition:stroke-dashoffset .6s ease}
+.tkw .tkw-ring{display:flex;align-items:center;gap:14px;width:100%}
+.tkw .tkw-rc{position:relative;flex:none;width:78px;height:78px;border-radius:50%;background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.55),rgba(255,255,255,0) 68%)}
+body.theme-infernal .tkw .tkw-rc{background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.07),rgba(255,255,255,0) 68%)}
+.tkw .tkw-rc svg{width:78px;height:78px;transform:rotate(-90deg);display:block}
+.tkw .tkw-rc svg circle{fill:none;stroke-width:6;stroke-linecap:round}
+.tkw .tkw-rc .rg-bg{stroke:color-mix(in srgb,var(--soft) 78%,transparent)}
+.tkw .tkw-rc .rg-v{stroke:var(--acc);filter:drop-shadow(0 0 3px rgba(114,168,216,.28))}
 .tkw .tkw-rc i{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-style:normal}
-.tkw .tkw-rc i b{font-family:var(--disp);font-weight:600;font-size:.94rem;color:var(--tx);font-variant-numeric:tabular-nums;line-height:1.1}
-.tkw .tkw-rc i span{font-size:.48rem;letter-spacing:.16em;color:var(--tx3);margin-top:2px}
-.tkw .tkw-side{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
-.tkw .tkw-side .r1{font-size:.6rem;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35}
-.tkw .tkw-side .r1 b{font-family:var(--disp);font-weight:600;color:var(--tx);font-variant-numeric:tabular-nums}
-.tkw .tkw-bars{width:100%;display:flex;flex-direction:column;gap:6px}
-.tkw .tkw-bh{display:flex;align-items:baseline;justify-content:space-between;font-size:.6rem;color:var(--tx3)}
-.tkw .tkw-bh b{font-family:var(--disp);font-weight:600;font-size:.96rem;color:var(--tx);font-variant-numeric:tabular-nums}
-.tkw .tkw-bx{display:flex;align-items:flex-end;gap:5px;height:44px}
-.tkw .tkw-bx i{flex:1;border-radius:4px 4px 2px 2px;background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 55%,white),var(--acc));opacity:.5;min-height:3px}
-.tkw .tkw-bx i.td{opacity:1;box-shadow:0 0 8px rgba(114,168,216,.35)}
-.tkw .tkw-bl{display:flex;gap:5px;font-size:.48rem;color:var(--tx3)}
+.tkw .tkw-rc i b{font-family:var(--disp);font-weight:600;font-size:1rem;color:var(--tx);font-variant-numeric:tabular-nums;line-height:1.05;letter-spacing:.01em}
+.tkw .tkw-rc i span{font-size:.46rem;letter-spacing:.2em;color:var(--tx3);margin-top:3px}
+.tkw .tkw-side{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;padding-left:12px;border-left:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+.tkw .tkw-side .r1{font-size:.62rem;color:var(--tx3);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
+.tkw .tkw-side .r1 b{font-family:var(--disp);font-weight:600;font-size:.86rem;color:var(--tx);font-variant-numeric:tabular-nums;margin-right:2px}
+.tkw .tkw-bars{width:100%;display:flex;flex-direction:column;gap:7px}
+.tkw .tkw-bh{display:flex;align-items:baseline;justify-content:space-between;font-size:.58rem;color:var(--tx3);letter-spacing:.04em}
+.tkw .tkw-bh b{font-family:var(--disp);font-weight:600;font-size:1.04rem;color:var(--tx);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.tkw .tkw-bx{display:flex;align-items:flex-end;gap:6px;height:46px;padding-bottom:1px;border-bottom:1px solid color-mix(in srgb,var(--line) 80%,transparent);background:repeating-linear-gradient(180deg,transparent 0 10px,color-mix(in srgb,var(--line) 45%,transparent) 10px 11px)}
+.tkw .tkw-bx i{flex:1;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 40%,white),color-mix(in srgb,var(--acc) 85%,var(--tx)));opacity:.42;min-height:3px}
+.tkw .tkw-bx i.td{opacity:1;box-shadow:0 0 0 1px rgba(255,255,255,.35) inset,0 2px 8px rgba(114,168,216,.25)}
+body.theme-infernal .tkw .tkw-bx i{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 70%,white),var(--acc))}
+.tkw .tkw-bl{display:flex;gap:6px;font-size:.46rem;letter-spacing:.06em;color:var(--tx3)}
 .tkw .tkw-bl span{flex:1;text-align:center}
 .tkw .tkw-mini{width:100%;text-align:center}
-.tkw .tkw-mini .mn{font-family:var(--disp);font-weight:600;font-size:1.85rem;color:var(--tx);font-variant-numeric:tabular-nums;line-height:1.12}
-.tkw .tkw-mini .ms{margin-top:5px;font-size:.6rem;color:var(--tx3);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tkw .tkw-mini .ms b{color:var(--tx2);font-weight:600;font-variant-numeric:tabular-nums}
-.tkw .tkw-mini .mt{margin-top:3px;font-size:.5rem;letter-spacing:.2em;color:var(--tx3)}
+.tkw .tkw-mini .mn{font-family:var(--disp);font-weight:600;font-size:2rem;color:var(--tx);font-variant-numeric:tabular-nums;line-height:1.05;letter-spacing:.01em}
+.tkw .tkw-mini .ms{margin-top:7px;font-size:.6rem;color:var(--tx3);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block;padding:3px 10px;border-radius:99px;border:1px solid color-mix(in srgb,var(--line) 80%,transparent);background:color-mix(in srgb,var(--soft) 55%,transparent)}
+.tkw .tkw-mini .ms b{color:var(--tx);font-weight:600;font-variant-numeric:tabular-nums}
+.tkw .tkw-mini .mt{margin-top:6px;font-size:.46rem;letter-spacing:.24em;color:var(--tx3)}
 body.theme-infernal .tkw .tkw-bx i{opacity:.55}
 .clock-w{flex-direction:column;align-items:center;justify-content:center;min-height:104px;padding:16px 10px 13px}
 .clock-w .cw-t{font-family:var(--sys);font-weight:600;font-size:clamp(1.9rem,9.5vw,2.6rem);letter-spacing:-0.02em;line-height:1;font-variant-numeric:tabular-nums;color:var(--tx);text-shadow:0 1px 2px rgba(20,35,70,0.14)}
@@ -18403,8 +18416,9 @@ body.theme-infernal #music-app,body.theme-infernal #cal-app{background:#12182c}
 #music-app.has-cover .ma-cover{display:block}
 #music-app.has-cover .ma-vinyl{display:none}
 .ma-info{flex:none;text-align:center;margin-top:14px;max-width:88%}
-.ma-t{font-family:var(--sys);font-weight:650;font-size:1.06rem;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ma-s{margin-top:3px;font-size:0.7rem;letter-spacing:0.06em;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ma-t{font-family:var(--sys);font-weight:650;font-size:1.06rem;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 -1px 0 rgba(255,255,255,0.75),0 1px 0 rgba(24,44,84,0.22),0 2px 0 rgba(24,44,84,0.10)}
+.ma-s{margin-top:3px;font-size:0.72rem;letter-spacing:0.06em;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 -1px 0 rgba(255,255,255,0.6),0 1px 0 rgba(24,44,84,0.16)}
+body.theme-infernal #music-app .ma-t{text-shadow:0 -1px 0 rgba(255,255,255,0.12),0 1px 0 rgba(0,0,0,0.7),0 2px 0 rgba(0,0,0,0.35)}body.theme-infernal #music-app .ma-s{text-shadow:0 -1px 0 rgba(255,255,255,0.08),0 1px 0 rgba(0,0,0,0.6)}
 .ma-lyr{position:relative;flex:1;min-height:88px;width:100%;max-width:520px;margin-top:10px;overflow-y:auto;text-align:center;scrollbar-width:none;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%);padding:22px 6px}
 .ma-lyr::-webkit-scrollbar{display:none}
 .ma-ln{padding:6px 4px;font-size:0.85rem;line-height:1.55;color:var(--tx3);transition:color 0.25s,transform 0.25s,opacity 0.25s;opacity:0.8;cursor:pointer}
@@ -22262,7 +22276,7 @@ try{var _cso9=$('call-set-open');if(_cso9)_cso9.addEventListener('click',functio
     return e;
   }
   function ensure(k){while(starts.length<=k+1&&!done){var s=starts[starts.length-1];var e=nextEnd(s);est=Math.max(80,e-s);if(e>=T.length){done=true;break}starts.push(e)}}
-  function bg(){clearTimeout(bgT);if(done||!host)return;bgT=setTimeout(function(){if(!host||!probe)return;var c=0;while(!done&&c<10){ensure(starts.length);c++}paintPg();bg()},60)}
+  function bg(){clearTimeout(bgT);if(done||!host)return;bgT=setTimeout(function(){if(!host||!probe)return;if(document.hidden){bg();return}var c=0;while(!done&&c<10){ensure(starts.length);c++}paintPg();bg()},document.hidden?1500:60)}/* v206-p：退到后台不再后台排版（省 CPU，也不给系统杀后台的理由） */
   async function relayout(keepOff){
     if(!probe||busyLayout)return;busyLayout=true;var off=typeof keepOff==='number'?keepOff:(starts[pi]||0);
     starts=[0];done=false;pi=0;
@@ -22434,6 +22448,7 @@ try{var _cso9=$('call-set-open');if(_cso9)_cso9.addEventListener('click',functio
     else if(pos&&pos.cfgId&&aiList.some(function(a){return a.id===pos.cfgId}))aiId=pos.cfgId;/* 上次和谁读的就接着和谁读 */
     if(!host||!B)return;
     imm=false;notesOpen=false;paintReader();
+    try{if(T.length>200000){toast('正在排版 '+(T.length/1048576).toFixed(1)+' MB 的书，稍等');if(pageEl)pageEl.innerHTML='<div style="padding:32px 0;text-align:center;color:var(--tx3);font-size:.8rem">正在排版 '+(T.length/1048576).toFixed(1)+' MB…</div>';await new Promise(function(r){setTimeout(r,40)})}}catch(e){}/* v241-a / v207-p：大书先给提示 */
     var pb=(aiId&&posBy[aiId])||pos;/* v203-p：进度按这位 TA 取；没和 TA 读过就从最近一次接着 */
     await relayout((pb&&pb.off)|0);
     if(!host||!B)return;
@@ -22656,7 +22671,8 @@ async function req(path,opt){opt=opt||{};
   }
   if(!j)throw new Error('HTTP '+st+'：响应无法解析'+(N?'':'（中转是不是旧版代码？）'));
   try{Object.defineProperty(j,'_hd',{value:hd2,enumerable:false})}catch(e){}
-  if(!opt.raw&&j.code!==undefined&&j.code!==200){var er=new Error(msgOf(j));er.code=j.code;er.json=j;throw er}
+  if(!opt.raw&&j.code===-462&&!opt._w&&path.indexOf('/api/')===0){try{var p2=path.split('?')[0].replace(/^\/api\//,'/weapi/'),d2={};if(opt.data)Object.keys(opt.data).forEach(function(k){d2[k]=opt.data[k]});else if(path.indexOf('?')>0)path.split('?')[1].split('&').forEach(function(kv){var q=kv.indexOf('=');if(q>0)d2[decodeURIComponent(kv.slice(0,q))]=decodeURIComponent(kv.slice(q+1))});return await wreq(p2,d2,Object.assign({},opt,{_w:true}))}catch(e2){if(!(e2&&e2.code===-462))throw e2}}
+  if(!opt.raw&&j.code!==undefined&&j.code!==200){var er=new Error(msgOf(j)+(j.code===-462?'（网易云风控 -462：不是登录失效，不用重新登录；过几分钟或换个网络再试）':''));er.code=j.code;er.json=j;throw er}
   return j;
 }
 /* ── weapi 加密（与网易云网页端同算法：AES-CBC 两轮 + RSA 无填充） ── */
@@ -22708,7 +22724,7 @@ async function plDesc(pid,desc){await req('/api/playlist/desc/update?csrf_token=
 async function coverData(rec){if(!rec.cover||rec.coverData)return;var N=nat();if(!N)return;try{var r=await N.request({url:rec.cover.replace(/\?param=.*$/,'?param=300y300'),method:'GET',headers:{'Referer':'https://music.163.com/','User-Agent':UA},responseType:'blob',connectTimeout:15000,readTimeout:20000});var b=(r&&typeof r.data==='string')?r.data.replace(/[\r\n\s]/g,''):'';if(b&&b.length<400000){var ct='image/jpeg';try{var H=(r&&r.headers)||{};Object.keys(H).forEach(function(k){if(String(k).toLowerCase()==='content-type'&&/image\//i.test(String(H[k])))ct=String(H[k]).split(';')[0]})}catch(e){}rec.coverData='data:'+ct+';base64,'+b}}catch(e){}}
 /* ── 模式切换 ── */
 function stopAudio(){try{var a=_pwA();a.pause();a.removeAttribute('src');a.load()}catch(e){}try{if(_pw.url){URL.revokeObjectURL(_pw.url);_pw.url=''}}catch(e){}}
-async function setMode(m){if(S.mode===m)return;S.mode=m;save();stopAudio();_pw.idx=-1;await _pwLoad();_pwPaint();_pwListDraw();try{if(window._maRefreshMusicM)window._maRefreshMusicM()}catch(e){}paintSrc();T(m==='ncm'?'已切到网易云音乐':'已回到本地音乐')}
+async function setMode(m){if(S.mode===m)return;S.mode=m;save();stopAudio();_pw.idx=-1;await _pwLoad();_pwPaint();_pwListDraw();try{if(window._maRefreshMusicM)window._maRefreshMusicM()}catch(e){}paintSrc();T(m==='ncm'?'已切到网易云音乐':(m==='qqm'?'已切到 QQ 音乐':'已回到本地音乐'))}
 window._ncmSetMode=setMode;
 function setQueue(list,pl,playFrom){S.q=list.slice();S.pl=pl||{id:0,name:''};save();_pw.list=S.q;_pw.idx=-1;if(S.q.length&&playFrom!==false)_pwPlayIdx(0);else{_pwPaint();_pwListDraw()}}
 /* ── 播放内核挂钩（只在网易云模式下生效，本地模式一字不变） ── */
@@ -22776,7 +22792,7 @@ var NCM_OPS={search:1,playlist:1,like:1,unlike:1,add:1,remove:1,create:1,desc:1,
 var _mtExec1=_mtExec;_mtExec=async function(op,q,ext){if(on()&&NCM_OPS[op]){var r=await exec(op,q,ext);if(r)return r}return _mtExec1(op,q)};
 var _bmt1=buildMusicTail;buildMusicTail=function(userMsg,fid){var s=_bmt1(userMsg,fid)||'';try{var ma=(_mp&&_mp.musicAi)||{};if(on()&&logged()&&ma.ctl&&S.ai&&S.ai.playlist&&typeof _musicRelatedM==='function'&&_musicRelatedM(userMsg,cur())&&S.pls.length){s+=(s?'\n\n':'')+'【网易云歌单】'+(S.pl.name?'当前：「'+S.pl.name+'」；':'')+'用户的歌单：'+S.pls.slice(0,30).map(function(p){return '「'+p.name+'」'}).join(' ')}}catch(e){}return s};
 /* ── UI：音源切换 sheet ── */
-function paintSrc(){var a=$i('masrc-local'),b=$i('masrc-ncm');if(a)a.classList.toggle('on',!on());if(b)b.classList.toggle('on',on());var st=$i('masrc-ncm-s');if(st)st.textContent=logged()?(S.nick+(S.pl.name?' · '+S.pl.name:'')):'登录账号，听自己的歌单'}
+function paintSrc(){var a=$i('masrc-local'),b=$i('masrc-ncm');if(a)a.classList.toggle('on',S.mode!=='ncm'&&S.mode!=='qqm');if(b)b.classList.toggle('on',on());try{if(window._qqmPaintSrc)window._qqmPaintSrc()}catch(e){}var st=$i('masrc-ncm-s');if(st)st.textContent=logged()?(S.nick+(S.pl.name?' · '+S.pl.name:'')):'登录账号，听自己的歌单'}
 function openSrc(){paintSrc();openSheet('sheet-masrc')}
 window._ncmOpenSrc=openSrc;
 /* ── UI：网易云 sheet ── */
@@ -22843,9 +22859,271 @@ async function finishLogin(u,c){S.cookie=u;S.csrf=c||S.csrf||'';save();try{await
 function bind(){
   var at=$i('ma-addtop');if(at)at.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();openSrc()},true);
   var a2=$i('pw-add2');if(a2){var n2=a2.cloneNode(true);a2.parentNode.replaceChild(n2,a2);n2.addEventListener('click',function(e){e.stopPropagation();if(on())openNcm();else if(window._pwPickFiles)window._pwPickFiles('audio')})}
-  var ml=$i('masrc-local');if(ml)ml.addEventListener('click',async function(){if(on()){await setMode('local');closeSheets();return}closeSheets();if(window._pwPickFiles)window._pwPickFiles('audio')});
+  var ml=$i('masrc-local');if(ml)ml.addEventListener('click',async function(){if(S.mode&&S.mode!=='local'){await setMode('local');closeSheets();return}closeSheets();if(window._pwPickFiles)window._pwPickFiles('audio')});
   var mn=$i('masrc-ncm');if(mn)mn.addEventListener('click',async function(){if(!canGo())T(NO_TRANSPORT);if(!on())await setMode('ncm');openNcm()});
   var tl=$i('ncm-tolocal');if(tl)tl.addEventListener('click',async function(){await setMode('local');closeSheets()});
+  paintSrc();
+  if(on()){_pw.list=S.q;try{_pwPaint()}catch(e){}}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+})();
+</script>
+<script id="ib-qqm">
+
+(function(){
+'use strict';
+var LS='ib_qqm';
+var S={uin:'',key:'',lt:0,euin:'',openid:'',rt:'',at:'',rk:'',exp:0,unionid:'',strUin:'',nick:'',ava:'',vip:'',q:[],pl:{id:0,dirid:0,name:''},lv:'hq',ai:{search:true,playlist:true,like:false,edit:false,create:false},pls:[],plsAt:0,proxy:'',guid:''};
+function load(){try{var j=JSON.parse(localStorage.getItem(LS)||'null');if(j&&typeof j==='object'){Object.keys(j).forEach(function(k){S[k]=j[k]});if(!S.ai||typeof S.ai!=='object')S.ai={search:true,playlist:true,like:false,edit:false,create:false};if(!Array.isArray(S.q))S.q=[];if(!S.pl)S.pl={id:0,dirid:0,name:''};if(!Array.isArray(S.pls))S.pls=[]}}catch(e){}}
+function save(){try{localStorage.setItem(LS,JSON.stringify(S,function(k,v){if(k==='lyrics'||k==='coverData'||k==='_hd')return undefined;return v}))}catch(e){}}
+function rndHex(n){var s='';for(var i=0;i<n;i++)s+=Math.floor(Math.random()*16).toString(16);return s}
+load();if(!S.guid){S.guid=rndHex(32);save()}
+window._qqm=S;
+function N_(){return (typeof _ncm!=='undefined'&&_ncm)?_ncm:null}
+function on(){var n=N_();return !!(n&&n.mode==='qqm')}
+window._qqmOn=on;
+function logged(){return !!(S.key&&S.uin)}
+function $i(x){return document.getElementById(x)}
+function T(x){try{toast(x)}catch(e){}}
+function fmtDur(s){s=Math.max(0,Math.round(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function form(o){return Object.keys(o).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(o[k]==null?'':o[k])}).join('&')}
+function hash33(t,h){h=h|0;for(var i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))|0;return h&2147483647}
+function b64utf8(b){try{var s=atob(String(b||'').replace(/\s/g,''));var u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return new TextDecoder('utf-8').decode(u)}catch(e){return ''}}
+/* ── 传输 ── */
+var UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+function nat(){return null}/* 浏览器版：接口走 JSONP 直连，只有扫码登录经跨域中转 */
+function proxyFor(u){var p=String(S.proxy||'').trim();if(!p){try{p=String((N_()&&N_().proxy)||'').trim()}catch(e){}}if(!p){try{p=String((_mp&&_mp.mcp&&_mp.mcp.proxy)||'').trim()}catch(e){}}if(!p)return '';return p.indexOf('{url}')>=0?p.replace('{url}',encodeURIComponent(u)):(p+encodeURIComponent(u))}/* QQ 音乐页自己填的中转 → 网易云页填的 → MCP 卡；拼法同一套。只有扫码登录用得到 */
+var NO_PROXY='扫码登录要先在 DIY → MCP 卡（或网易云登录页）填「跨域中转」；粘贴凭证不需要';
+var QIMEI='cc8d07a748d4be0a8b91eafa100014a1730e';
+function comm(extra){var c={ct:'11',cv:'13020508',v:'13020508',tmeAppID:'qqmusic',QIMEI36:QIMEI,uid:'3931641530',format:'json',inCharset:'utf-8',outCharset:'utf-8'};if(logged()){c.qq=String(S.uin);c.authst=S.key;c.tmeLoginType=String(S.lt||2)}if(extra)Object.keys(extra).forEach(function(k){c[k]=extra[k]});return c}
+function cookieStr(){if(!logged())return '';return 'uin='+S.uin+'; qqmusic_uin='+S.uin+'; qqmusic_key='+S.key+'; qm_keyst='+S.key+'; tmeLoginType='+(S.lt||2)}
+var jpN=0;
+function jsonp(url,tmo){return new Promise(function(res,rej){var cb='_ibqq'+(++jpN)+'_'+rndHex(6),sc=document.createElement('script'),done=false;var tm=setTimeout(function(){fin();rej(new Error('QQ 音乐请求超时'))},tmo||20000);function fin(){if(done)return;done=true;clearTimeout(tm);try{delete window[cb]}catch(e){window[cb]=undefined}try{sc.remove()}catch(e){}}window[cb]=function(j){fin();res(j)};sc.onerror=function(){fin();rej(new Error('网络错误：QQ 音乐接口不可达'))};sc.src=url+(url.indexOf('?')<0?'?':'&')+'callback='+cb;document.head.appendChild(sc)})}
+function isAuthErr(code){return code===1000||code===104401||code===104400}
+async function cgi(mod,meth,param,opt){opt=opt||{};var body={comm:comm(opt.comm),req_1:{module:mod,method:meth,param:param||{}}};var N=nat(),j=null;
+  if(N){var hd={'Referer':'https://y.qq.com/','User-Agent':UA,'Accept':'application/json, text/plain, */*','Content-Type':'application/json'};var ck=cookieStr();if(ck)hd['Cookie']=ck;
+    var r;try{r=await N.request({url:'https://u.y.qq.com/cgi-bin/musicu.fcg',method:'POST',headers:hd,data:JSON.stringify(body),responseType:'text',connectTimeout:15000,readTimeout:20000})}catch(e){throw new Error('网络错误：'+String((e&&e.message)||e).slice(0,100))}
+    if(r&&typeof r.data==='string'){try{j=JSON.parse(r.data)}catch(e){}}else if(r&&r.data&&typeof r.data==='object')j=r.data;
+  }else{j=await jsonp('https://u.y.qq.com/cgi-bin/musicu.fcg?data='+encodeURIComponent(JSON.stringify(body)))}
+  var rq=j&&j.req_1;if(!rq)throw new Error('QQ 音乐响应无法解析');
+  var code=rq.code|0;
+  if(!opt.raw&&code!==0){if(isAuthErr(code)&&logged()&&!opt._retried&&S.rk){var ok=false;try{ok=await refresh()}catch(e){}if(ok)return cgi(mod,meth,param,Object.assign({},opt,{_retried:true}))}var er=new Error(isAuthErr(code)?'登录已失效，重新登录':('QQ 音乐返回 code '+code+(rq.data&&rq.data.msg?'：'+rq.data.msg:'')));er.code=code;er.json=rq;throw er}
+  return opt.raw?rq:(rq.data||{})}
+async function fetchRaw(url,opt){opt=opt||{};var N=nat();
+  if(N){var hd={'User-Agent':UA};if(opt.referer)hd['Referer']=opt.referer;if(opt.cookie)hd['Cookie']=opt.cookie;if(opt.form!=null)hd['Content-Type']='application/x-www-form-urlencoded';
+    var r;try{r=await N.request({url:url,method:opt.method||(opt.form!=null?'POST':'GET'),headers:hd,data:opt.form!=null?opt.form:undefined,responseType:opt.blob?'blob':'text',connectTimeout:15000,readTimeout:opt.timeout||20000,disableRedirects:!!opt.noRedirect})}catch(e){throw new Error('网络错误：'+String((e&&e.message)||e).slice(0,100))}
+    var H={};try{Object.keys((r&&r.headers)||{}).forEach(function(k){H[String(k).toLowerCase()]=r.headers[k]})}catch(e){}
+    var txt=(r&&typeof r.data==='string')?r.data:((r&&r.data&&typeof r.data==='object')?JSON.stringify(r.data):'');
+    return{status:(r&&r.status)|0,text:opt.blob?'':txt,b64:opt.blob?txt.replace(/[\r\n\s]/g,''):'',setCookie:String(H['set-cookie']||''),location:String(H['location']||'')}}
+  var px=proxyFor(url);if(!px)throw new Error(NO_PROXY);
+  var hb={'X-IB-UA':UA};if(opt.referer)hb['X-IB-Referer']=opt.referer;if(opt.cookie)hb['X-IB-Cookie']=opt.cookie;if(opt.noRedirect)hb['X-IB-Redirect']='manual';if(opt.form!=null)hb['Content-Type']='application/x-www-form-urlencoded';
+  var ac=new AbortController(),tmo=setTimeout(function(){try{ac.abort()}catch(e){}},opt.timeout||20000),rb;
+  try{rb=await fetch(px,{method:opt.method||(opt.form!=null?'POST':'GET'),headers:hb,body:opt.form!=null?opt.form:undefined,signal:ac.signal})}catch(e){clearTimeout(tmo);throw new Error(e&&e.name==='AbortError'?'中转超时':'网络错误：跨域中转不可达，或它没放行这个主机')}
+  clearTimeout(tmo);var st=parseInt(rb.headers.get('x-ib-status')||'',10)||(rb.status|0);
+  var out={status:st,text:'',b64:'',blobUrl:'',setCookie:rb.headers.get('x-ib-set-cookie')||'',location:rb.headers.get('x-ib-location')||''};
+  if(opt.noRedirect&&!rb.headers.get('x-ib-status'))out.oldWorker=true;
+  if(opt.blob){try{out.blobUrl=URL.createObjectURL(await rb.blob())}catch(e){}}else{try{out.text=await rb.text()}catch(e){}}
+  return out}
+function cookiesOf(sc){var m={},re=/(?:^|,\s*)([A-Za-z0-9_\-]+)=([^;,\s]*)/g,x;while((x=re.exec(String(sc||'')))){var k=x[1];if(/^(path|domain|expires|max-age|secure|httponly|samesite)$/i.test(k))continue;m[k]=x[2]}return m}
+/* ── 数据整形 ── */
+function cov(al,sg,w){var m=al&&al.mid;if(m)return 'https://y.gtimg.cn/music/photo_new/T002R'+w+'x'+w+'M000'+m+'.jpg';var s=sg&&sg[0]&&sg[0].mid;return s?('https://y.gtimg.cn/music/photo_new/T001R'+w+'x'+w+'M000'+s+'.jpg'):''}
+function mkRec(s){if(!s||!s.mid)return null;var sg=s.singer||s.singers||[],al=s.album||{};var ar=sg.map(function(a){return a&&(a.name||a.title)}).filter(Boolean).join(' / ');var dur=s.interval||0;var pay=s.pay||{};
+  return{id:'qqm_'+s.mid,qmid:s.mid,qid:s.id|0,qtype:(s.type|0)||0,qqm:true,name:String(s.title||s.name||''),title:String(s.title||s.name||''),artist:ar,album:String(al.title||al.name||''),cover:cov(al,sg,500),dur:dur,fee:pay.pay_play?1:0,mediaMid:(s.file&&s.file.media_mid)||'',metaScanned:true,analysis:{version:(window.IBMusicCore&&window.IBMusicCore.VERSION)||1,summary:'',duration:dur,qqm:true}}}
+function thumb(u){return String(u||'').replace('R500x500','R150x150')}
+function pickCred(txt){txt=String(txt||'').trim();var out={uin:'',key:''};var m=txt.match(/(?:^|[;\s])(?:qqmusic_key|qm_keyst)=([^;\s]+)/i);if(m)out.key=m[1];var m2=txt.match(/(?:^|[;\s])(?:uin|qqmusic_uin|wxuin)=o?([0-9]+)/i);if(m2)out.uin=m2[1];if(!out.key){var m3=txt.match(/\b(W_X_[A-Za-z0-9_\-]+|Q_H_L_[A-Za-z0-9_\-]+)/);if(m3)out.key=m3[1]}if(!out.uin){var m4=txt.match(/\b([0-9]{5,20})\b/);if(m4)out.uin=m4[1]}return out}
+function ltOf(key){return /^W_X/.test(String(key||''))?1:2}
+/* ── 账号 ── */
+function setCred(d){S.uin=String(d.musicid||d.str_musicid||S.uin||'');S.strUin=String(d.str_musicid||'');S.key=String(d.musickey||'');S.lt=d.loginType||d.login_type||ltOf(S.key);S.euin=String(d.encryptUin||d.encrypt_uin||S.euin||'');S.openid=String(d.openid||'');S.rt=String(d.refresh_token||'');S.at=String(d.access_token||'');S.rk=String(d.refresh_key||'');S.exp=d.expired_at||0;S.unionid=String(d.unionid||'');save()}
+async function refresh(){if(!S.rk||!S.key)return false;var p={openid:S.openid,refresh_token:S.rt,access_token:S.at,expired_in:S.exp,musicid:parseInt(S.uin,10)||0,str_musicid:S.strUin||S.uin,musickey:S.key,unionid:S.unionid,refresh_key:S.rk,loginMode:2};var rq=await cgi('music.login.LoginServer','Login',p,{comm:{tmeLoginType:S.lt||2},raw:true,_retried:true});if(rq.code!==0||!rq.data||!rq.data.musickey)return false;setCred(rq.data);return true}/* musickey 有期限：过期时用 refresh_key 换一把新的（与 QQ 音乐客户端同一接口） */
+async function account(){var rq=await cgi('music.UserInfo.userInfoServer','GetLoginUserInfo',{},{raw:true});
+  if(isAuthErr(rq.code|0)){var ok=false;if(S.rk){try{ok=await refresh()}catch(e){}}if(ok)rq=await cgi('music.UserInfo.userInfoServer','GetLoginUserInfo',{},{raw:true});if(isAuthErr(rq.code|0)){var er=new Error('凭证无效或已过期');er.code=301;throw er}}
+  var d=rq.data||{};var f=function(o,ks){for(var i=0;i<ks.length;i++){var v=o&&o[ks[i]];if(v)return String(v)}return ''};
+  S.nick=f(d,['nick','nickname','Nick','NickName','name','Name']);S.ava=f(d,['headurl','headUrl','HeadUrl','avatar','Avatar','head']);var eu=f(d,['encryptUin','encrypt_uin','EncryptUin','euin']);if(eu)S.euin=eu;
+  if((!S.nick||!S.ava)&&S.euin){try{var h=await cgi('music.UnifiedHomepage.UnifiedHomepageSrv','GetHomepageHeader',{uin:S.euin,IsQueryTabDetail:1});var bi=(h&&h.Info&&h.Info.BaseInfo)||{};if(!S.nick&&bi.Name)S.nick=String(bi.Name);if(!S.ava&&bi.Avatar)S.ava=String(bi.Avatar);if(!S.euin&&bi.EncryptedUin)S.euin=String(bi.EncryptedUin)}catch(e){}}
+  if(!S.nick)S.nick='用户 '+S.uin;
+  try{var v=await cgi('VipLogin.VipLoginInter','vip_login_base',{});var id=(v&&v.identity)||{};S.vip=id.HugeVip?'豪华绿钻':(v&&v.svip?'SVIP':(id.vip?'绿钻':'普通账号'))}catch(e){S.vip=''}
+  save();return S}
+async function playlists(force){if(!force&&S.pls.length&&Date.now()-S.plsAt<600000)return S.pls;var out=[];
+  var j=await cgi('music.musicasset.PlaylistBaseRead','GetPlaylistByUin',{uin:String(S.uin)});
+  (j.v_playlist||[]).forEach(function(p){if(!p)return;var dir=(p.dirid!=null?p.dirid:p.dirId)|0;out.push({id:(p.tid||p.id||p.dissid)|0,dirid:dir,name:String(p.dirName||p.title||p.dissname||p.name||''),n:(p.songnum||p.songNum||p.song_cnt)|0,pic:String(p.picurl||p.picUrl||p.cover||p.logo||''),mine:true,liked:dir===201})});
+  if(!out.some(function(p){return p.liked}))out.unshift({id:0,dirid:201,name:'我喜欢',n:0,pic:'',mine:true,liked:true});
+  else out.sort(function(a,b){return (b.liked?1:0)-(a.liked?1:0)});
+  if(S.euin){try{var f=await cgi('music.musicasset.PlaylistFavRead','CgiGetPlaylistFavInfo',{uin:S.euin,offset:0,size:60});(f.v_list||[]).forEach(function(p){if(!p)return;out.push({id:(p.dissid||p.tid||p.id)|0,dirid:0,name:String(p.dissname||p.title||p.name||''),n:(p.songnum||p.songNum)|0,pic:String(p.logo||p.picurl||p.cover||''),mine:false,by:String(p.nickname||p.nick||'')})})}catch(e){}}
+  S.pls=out;S.plsAt=Date.now();save();return out}
+async function tracksOf(pl,cap){cap=cap||500;var p={disstid:pl.liked?0:(pl.id|0),dirid:pl.liked?201:(pl.dirid|0),tag:true,song_begin:0,song_num:cap,userinfo:true,orderlist:true};if(pl.liked&&S.euin)p.enc_host_uin=S.euin;
+  var j=await cgi('music.srfDissInfo.DissInfo','CgiGetDiss',p);var list=(j.songlist||[]).map(mkRec).filter(Boolean);var di=j.dirinfo||{};
+  return{name:String(di.title||pl.name||''),list:list,total:(j.total_song_num|0)||list.length}}
+async function radio(){var j=await cgi('music.radioProxy.MbTrackRadioSvr','get_radio_track',{id:99,num:20,from:0,scene:0,song_ids:[]});return (j.tracks||[]).map(mkRec).filter(Boolean)}
+async function radar(){var j=await cgi('music.recommend.TrackRelationServer','GetRadarSong',{Page:1,ReqType:0,FavSongs:[],EntranceSongs:[]});return (j.VecSongs||[]).map(function(x){return mkRec(x&&(x.Track||x.track||x))}).filter(Boolean)}
+async function top(id){var j=await cgi('music.musicToplist.Toplist','GetDetail',{topId:id,offset:0,num:100,period:''});return (j.songInfoList||[]).map(mkRec).filter(Boolean)}
+async function search(q,n){var j=await cgi('music.search.SearchCgiService','DoSearchForQQMusicDesktop',{query:String(q||''),num_per_page:n||12,page_num:1,search_type:0});return (((j.body||{}).song||{}).list||[]).map(mkRec).filter(Boolean)}
+async function lyric(rec){var j=await cgi('music.musichallSong.PlayLyricInfo','GetPlayLyricInfo',{songMid:rec.qmid,songId:rec.qid,qrc:0,trans:1,roma:0});var lrc=b64utf8(j.lyric||''),tl=b64utf8(j.trans||'');if(!lrc)return null;var ly=window.IBMusicCore.parseLyrics(lrc,'qqm.lrc');ly.timed=!!(ly.segments&&ly.segments.length);ly.source='lrc';if(tl)ly.translation=tl;return ly}
+var LV=[['sq','F000','.flac'],['hq','M800','.mp3'],['std','M500','.mp3'],['low','C400','.m4a']];
+async function songUrl(rec){var from=LV.findIndex(function(x){return x[0]===(S.lv||'hq')});if(from<0)from=1;var ladder=LV.slice(from);var mid=rec.qmid;
+  var j=await cgi('music.vkey.GetVkey','UrlGetVkey',{guid:S.guid,songmid:ladder.map(function(){return mid}),songtype:ladder.map(function(){return rec.qtype||0}),uin:String(S.uin||'0'),loginflag:1,platform:'20',filename:ladder.map(function(l){return l[1]+mid+mid+l[2]})});
+  var infos=j.midurlinfo||[],u='',got='';for(var i=0;i<infos.length&&!u;i++){var pu=infos[i]&&infos[i].purl;if(pu){u='https://dl.stream.qqmusic.qq.com/'+pu;got=ladder[i][0]}}
+  if(!u)throw new Error(rec.fee?'这首歌当前账号没有播放权限（需要绿钻，或版权限制）':'没取到播放地址（版权限制，或登录已失效）');
+  rec._lv=got;rec._lowered=(got!==(S.lv||'hq'));return u}/* 一次请求带整条音质阶梯（无损 → 高品 → 标准 → 流畅），取第一个有地址的档 */
+async function plWrite(pl,rec,add){var j=await cgi('music.musicasset.PlaylistDetailWrite',add?'AddSonglist':'DelSonglist',{dirId:pl.dirid|0,tid:pl.id|0,bFmtUtf8:true,v_songInfo:[{songId:rec.qid|0,songType:rec.qtype|0}]},{raw:true});if(j.code!==0){if(j.code===80092&&add)throw new Error('这首歌已经在歌单里了');var er=new Error('QQ 音乐返回 code '+j.code);er.code=j.code;throw er}return true}
+async function like(rec,yes){return plWrite({id:0,dirid:201},rec,yes)}
+async function plCreate(name){var j=await cgi('music.musicasset.PlaylistBaseWrite','AddPlaylist',{dirName:String(name||'')});var r=(j&&j.result)||j||{};S.plsAt=0;return{id:(r.tid|0),dirid:(r.dirId|0),name:String(r.dirName||name||'')}}
+async function coverData(rec){if(!rec.cover||rec.coverData)return;var N=nat();if(!N)return;try{var r=await N.request({url:rec.cover.replace('R500x500','R300x300'),method:'GET',headers:{'User-Agent':UA},responseType:'blob',connectTimeout:15000,readTimeout:20000});var b=(r&&typeof r.data==='string')?r.data.replace(/[\r\n\s]/g,''):'';if(b&&b.length<400000)rec.coverData='data:image/jpeg;base64,'+b}catch(e){}}
+/* ── 模式切换（模式值与网易云共用 ib_ncm.mode） ── */
+function stopAudio(){try{var a=_pwA();a.pause();a.removeAttribute('src');a.load()}catch(e){}try{if(_pw.url){URL.revokeObjectURL(_pw.url);_pw.url=''}}catch(e){}}
+async function setMode(m){if(typeof _ncmSetMode==='function')return _ncmSetMode(m)}
+function setQueue(list,pl,playFrom){S.q=list.slice();S.pl=pl||{id:0,dirid:0,name:''};save();_pw.list=S.q;_pw.idx=-1;if(S.q.length&&playFrom!==false)_pwPlayIdx(0);else{_pwPaint();_pwListDraw()}}
+/* ── 播放内核挂钩（只在 QQ 音乐模式下生效；本地与网易云路径一字不变） ── */
+var _pwLoad2=_pwLoad;_pwLoad=async function(){if(!on())return _pwLoad2();_pw.list=S.q;if(_pw.idx>=_pw.list.length)_pw.idx=_pw.list.length?_pw.list.length-1:-1};
+var _pwPlayIdx2=_pwPlayIdx,playTok=0,failN=0;
+_pwPlayIdx=async function(i){if(!on())return _pwPlayIdx2(i);await _pwLoad();
+  if(!_pw.list.length){T('队列为空，先选一个歌单');_pwPaint();return}
+  if(!(_pw.list[0]&&_pw.list[0].qqm))return _pwPlayIdx2(i);
+  i=((i%_pw.list.length)+_pw.list.length)%_pw.list.length;_pw.idx=i;var rec=_pw.list[i],a=_pwA();var tok=++playTok;_pwPaint();_pwListDraw();
+  var url='';try{url=await songUrl(rec)}catch(e){T(String((e&&e.message)||e))}
+  if(tok!==playTok)return;
+  try{if(_pw.url){URL.revokeObjectURL(_pw.url);_pw.url=''}}catch(e){}
+  if(!url){failN++;if(failN>=3){failN=0;T('连续 3 首都取不到地址，已停下——检查账号或网络');return}if(_pw.list.length>1&&_pw.mode!=='one')setTimeout(function(){if(tok===playTok)_pwPlayIdx(i+1)},700);return}
+  a.src=url;ensure(rec);
+  try{await a.play();failN=0;if(rec._lowered)T('这一档音质没有权限，已降到'+({sq:'无损',hq:'高品质',std:'标准',low:'流畅'}[rec._lv]||rec._lv))}catch(e){if(tok!==playTok)return;failN++;T('播放失败');if(failN>=3){failN=0;T('连续 3 首都放不出来，已停下——检查网络或账号');return}if(_pw.list.length>1&&_pw.mode!=='one')setTimeout(function(){if(tok===playTok)_pwPlayIdx(i+1)},700);return}
+  _pwPaint();_pwListDraw();try{_musicSyncCardsM()}catch(e){}
+};
+var jobs={};
+function ensure(rec){if(!rec||!rec.qqm||jobs[rec.id])return;jobs[rec.id]=(async function(){try{if(!rec.lyrics){var ly=null;try{ly=await lyric(rec)}catch(e){}rec.lyrics=ly||{source:'lrc',segments:[],text:'',timed:false,at:Date.now(),none:true};try{if(window._maRefreshMusicM)window._maRefreshMusicM()}catch(e){}}await coverData(rec);_pwPaint()}catch(e){}finally{delete jobs[rec.id]}})()}
+var _pwAddFiles2=_pwAddFiles;_pwAddFiles=async function(files,ctx){if(on()){var fs=Array.prototype.slice.call(files||[]).filter(function(f){return f&&f.size});var C=window.IBMusicCore;var lyr=C?fs.filter(C.isLyricFile):[],aud=C?fs.filter(C.isAudioFile):fs;
+    if(lyr.length&&!aud.length){var rec=cur();if(!rec){T('先播放一首歌再导入歌词');return}try{var txt=(typeof _musicReadLyricsTextM==='function')?await _musicReadLyricsTextM(lyr[0]):await lyr[0].text();var ly=C.parseLyrics(txt,lyr[0].name);ly.timed=!!(ly.segments&&ly.segments.length);rec.lyrics=ly;T('歌词已绑定到当前歌曲（QQ 音乐曲目只保留本次）');try{if(window._maRefreshMusicM)window._maRefreshMusicM()}catch(e){}}catch(e){T('歌词解析失败')}return}
+    await setMode('local')}return _pwAddFiles2(files,ctx)};
+var drawTok=0;
+var _pwListDraw2=_pwListDraw;_pwListDraw=function(){if(!on())return _pwListDraw2();try{var b2=$i('pw-add2');if(b2)b2.textContent='QQ 音乐歌单'}catch(e){}var box=$i('pw-list'),sh=$i('sheet-music');if(!box||!sh||!sh.classList.contains('open'))return;box.innerHTML='';
+  var hd=document.createElement('div');hd.className='pwl-hd';hd.textContent=S.pl.name?('QQ 音乐 · '+S.pl.name):'QQ 音乐';box.appendChild(hd);
+  if(!_pw.list.length){var em=document.createElement('div');em.className='empty';em.textContent='队列为空。点下方「QQ 音乐歌单」选一个歌单或搜歌。';box.appendChild(em);return}
+  var tok=++drawTok,list=_pw.list;function mk(r,i){var row=document.createElement('div');row.className='pwl-row'+(i===_pw.idx?' on':'');row.innerHTML='<span class="pwl-n">'+(i+1)+'</span><span class="pwl-t">'+esc(r.title||r.name)+(r.artist?' <i class="pwl-ar">'+esc(r.artist)+'</i>':'')+'</span><span class="pwl-d">'+fmtDur(r.dur)+'</span><button class="pwl-x" title="移出队列"><svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></button>';
+    row.addEventListener('click',function(){_pwPlayIdx(i)});row.querySelector('.pwl-x').addEventListener('click',function(e){e.stopPropagation();var was=(i===_pw.idx);S.q.splice(i,1);save();_pw.list=S.q;if(was){stopAudio();_pw.idx=S.q.length?Math.min(i,S.q.length-1):-1;if(_pw.idx>=0)_pwPlayIdx(_pw.idx)}else if(i<_pw.idx)_pw.idx--;_pwPaint();_pwListDraw()});return row}
+  var i=0;function step(){if(tok!==drawTok||!box.isConnected)return;var frag=document.createDocumentFragment(),end=Math.min(list.length,i+(i?80:60));for(;i<end;i++)frag.appendChild(mk(list[i],i));box.appendChild(frag);if(i<list.length)setTimeout(step,16)}step()};
+/* 「一起听」上下文：QQ 音乐曲目没有本机结构分析，按歌名 / 歌手 / 专辑 / 歌词组织 */
+(function(){var C=window.IBMusicCore;if(!C)return;var ctx0=C.context;C.context=function(rec,sec,dur,fid,ma){if(!(rec&&rec.qqm))return ctx0.apply(this,arguments);ma=ma||{};var out=['【一起听歌】','正在播放：《'+(rec.title||rec.name)+'》'+(rec.artist?' · '+rec.artist:'')+(rec.album?'（专辑《'+rec.album+'》）':'')+'（QQ 音乐，用户自己账号的歌单）'+((fid&&ma.mate===fid)?'（'+_amUserName()+'此刻正和你一起听这首歌）':'')];
+  if(isFinite(sec))out.push('当前进度：'+C.fmt(sec)+(isFinite(dur)&&dur>0?' / '+C.fmt(dur):''));
+  var near=C.nearLyrics(rec.lyrics,sec,12);if(near.length)out.push('当前附近歌词：\n'+near.map(function(s){return C.fmt(s.start)+' '+s.text}).join('\n'));else if(rec.lyrics&&rec.lyrics.text)out.push('这首歌有歌词但没有时间轴，无法定位当前一句。');else out.push('这首歌没有取到歌词。');
+  out.push('以上是程序实际取得的曲目 / 歌词参考。没有提供的具体旋律、编曲或细节不要假装听见；可以基于这些事实自然陪对方听。');return out.join('\n\n')}})();
+/* ── AI 控制：协议块与执行器扩展（受 Presence「允许 AI 控制播放器」总开关） ── */
+function aiLines(){if(!on()||!logged())return[];var ai=S.ai||{},L=[];
+  if(ai.search)L.push('<ws_music op="search" q="歌名 或 歌手 歌名"/> 点歌——在 QQ 音乐搜索、把第一首匹配加进队列并播放');
+  if(ai.playlist)L.push('<ws_music op="playlist" q="歌单名"/> 切到用户的某个歌单（模糊匹配；q="我喜欢" 播放红心歌单，q="猜你喜欢" 播放个性电台，q="雷达" 播放雷达推荐，q="热歌榜" / "新歌榜" 播放榜单）');
+  if(ai.like)L.push('<ws_music op="like"/> 红心当前曲（加进「我喜欢」）　<ws_music op="unlike"/> 取消红心');
+  if(ai.edit)L.push('<ws_music op="add" q="歌名" to="歌单名"/> 把歌加进用户自建的歌单（q 省略＝当前曲）　<ws_music op="remove" q="歌名" to="歌单名"/> 从歌单移除');
+  if(ai.create)L.push('<ws_music op="create" q="歌单名"/> 在用户账号里新建歌单');
+  L.push('<ws_music op="mode" q="loop|one|rand"/> 播放模式：列表循环 / 单曲循环 / 随机');return L}
+window._qqmInstrM=function(){var L=aiLines();if(!L.length)return'';return '\n【QQ 音乐】播放器已切到 QQ 音乐模式，放的是用户自己账号里的歌。除上面的播放器指令外，还可用：\n'+L.join('\n')+'\n仍是每条回复最多 1 个播放器指令，执行结果会回传。红心 / 加歌 / 删歌 / 建歌单会真实改动用户的 QQ 音乐账号，只在用户明确要求时做；用户的歌单名单会在聊到音乐时作为参考资料提供。'};
+function fuzzy(list,key,q){q=String(q||'').trim().toLowerCase();if(!q)return -1;var i=list.findIndex(function(x){return String(x[key]||'').toLowerCase()===q});if(i<0)i=list.findIndex(function(x){return String(x[key]||'').toLowerCase().indexOf(q)>=0});if(i<0)i=list.findIndex(function(x){return q.indexOf(String(x[key]||'').toLowerCase())>=0&&String(x[key]||'').length>=2});return i}
+function cur(){return (_pw.idx>=0&&_pw.list)?_pw.list[_pw.idx]:null}
+async function findPl(q,mineOnly){var pls=(await playlists()).filter(function(p){return !mineOnly||p.mine});var i=fuzzy(pls,'name',q);if(i<0)throw new Error('用户的歌单里没有「'+q+'」。可用歌单：'+pls.slice(0,20).map(function(p){return p.name}).join(' / '));return pls[i]}
+async function pickSong(q){if(!q){var c=cur();if(!c)throw new Error('没有正在播放的歌，也没有指定歌名');return c}var i=fuzzy(_pw.list||[],'title',q);if(i>=0)return _pw.list[i];var rs=await search(q,3);if(!rs.length)throw new Error('QQ 音乐搜不到「'+q+'」');return rs[0]}
+async function exec(op,q,ext){ext=ext||{};var ai=S.ai||{};
+  if(!logged())return{ok:false,label:'QQ 音乐',detail:'用户还没登录 QQ 音乐'};
+  try{
+    if(op==='search'){if(!ai.search)return{ok:false,label:'点歌',detail:'用户未开放「点歌」'};var rs=await search(q,5);if(!rs.length)return{ok:false,label:'点歌',detail:'QQ 音乐搜不到「'+q+'」'};var r=rs[0];var j=S.q.findIndex(function(x){return x.qmid===r.qmid});if(j<0){var at=_pw.idx>=0?_pw.idx+1:S.q.length;S.q.splice(at,0,r);save();_pw.list=S.q;j=at}await _pwPlayIdx(j);return{ok:true,label:'点歌',detail:'《'+r.title+'》'+(r.artist?' · '+r.artist:'')+(r.fee?'（VIP 曲目，按用户账号权限播放）':'')}}
+    if(op==='playlist'){if(!ai.playlist)return{ok:false,label:'切歌单',detail:'用户未开放「切换歌单」'};var qq=String(q||'').replace(/\s+/g,'');
+      if(/猜你喜欢|电台|私人|fm|radio/i.test(qq)){var d=await radio();if(!d.length)return{ok:false,label:'猜你喜欢',detail:'电台没有返回歌曲'};setQueue(d,{id:'radio',dirid:0,name:'猜你喜欢'});return{ok:true,label:'猜你喜欢',detail:d.length+' 首，已从第一首开始'}}
+      if(/雷达|radar/i.test(qq)){var rd=await radar();if(!rd.length)return{ok:false,label:'雷达推荐',detail:'雷达没有返回歌曲'};setQueue(rd,{id:'radar',dirid:0,name:'雷达推荐'});return{ok:true,label:'雷达推荐',detail:rd.length+' 首，已从第一首开始'}}
+      if(/热歌|新歌|飙升|榜/i.test(qq)){var tid=/新歌/.test(qq)?27:(/飙升/.test(qq)?62:26),tn={27:'新歌榜',62:'飙升榜',26:'热歌榜'}[tid];var tp=await top(tid);if(!tp.length)return{ok:false,label:tn,detail:'榜单没有返回歌曲'};setQueue(tp,{id:'top'+tid,dirid:0,name:tn});return{ok:true,label:tn,detail:tp.length+' 首，已从第一首开始'}}
+      var p=/我喜欢|红心|喜欢的|like/i.test(qq)?(await playlists()).filter(function(x){return x.liked})[0]:await findPl(q);if(!p)return{ok:false,label:'切歌单',detail:'没有找到「我喜欢」'};var t=await tracksOf(p);if(!t.list.length)return{ok:false,label:'切歌单',detail:'歌单「'+p.name+'」是空的'};setQueue(t.list,{id:p.id,dirid:p.dirid,name:p.name});return{ok:true,label:'切歌单',detail:'「'+p.name+'」'+t.list.length+' 首'+(t.total>t.list.length?'（歌单共 '+t.total+' 首，只载入前 '+t.list.length+' 首）':'')+'，已从第一首开始'}}
+    if(op==='like'||op==='unlike'){if(!ai.like)return{ok:false,label:'红心',detail:'用户未开放「红心」'};var s=await pickSong(q);await like(s,op==='like');S.plsAt=0;return{ok:true,label:op==='like'?'红心':'取消红心',detail:'《'+s.title+'》'}}
+    if(op==='add'||op==='remove'){if(!ai.edit)return{ok:false,label:'歌单',detail:'用户未开放「加进 · 移出歌单」'};if(!ext.to)return{ok:false,label:'歌单',detail:'缺少 to="歌单名"'};var s2=await pickSong(q);var pl=await findPl(ext.to,true);await plWrite(pl,s2,op==='add');S.plsAt=0;return{ok:true,label:op==='add'?'加进歌单':'移出歌单',detail:'《'+s2.title+'》→「'+pl.name+'」'}}
+    if(op==='create'){if(!ai.create)return{ok:false,label:'新建歌单',detail:'用户未开放「新建歌单」'};if(!q)return{ok:false,label:'新建歌单',detail:'缺少歌单名'};var np=await plCreate(String(q).slice(0,40));return{ok:true,label:'新建歌单',detail:'「'+(np.name||q)+'」'+(np.id?'（id '+np.id+'）':'')}}
+    if(op==='mode'){var m=String(q||'').toLowerCase();m=/one|单曲/.test(m)?'one':(/rand|随机|shuffle/.test(m)?'rand':'loop');_pw.mode=m;_pwPaint();try{await loadMP();_mp.ui=_mp.ui||{};_mp.ui.musicMode=m;await saveMP()}catch(e){}try{if(window._maRefreshMusicM)window._maRefreshMusicM()}catch(e){}return{ok:true,label:'播放模式',detail:m==='one'?'单曲循环':(m==='rand'?'随机播放':'列表循环')}}
+  }catch(e){return{ok:false,label:'QQ 音乐',detail:String((e&&e.message)||e).slice(0,160)}}
+  return null}
+var QQ_OPS={search:1,playlist:1,like:1,unlike:1,add:1,remove:1,create:1,mode:1};
+var _mtExec2=_mtExec;_mtExec=async function(op,q,ext){if(on()&&QQ_OPS[op]){var r=await exec(op,q,ext);if(r)return r}return _mtExec2(op,q,ext)};
+var _bmt2=buildMusicTail;buildMusicTail=function(userMsg,fid){var s=_bmt2(userMsg,fid)||'';try{var ma=(_mp&&_mp.musicAi)||{};if(on()&&logged()&&ma.ctl&&S.ai&&S.ai.playlist&&typeof _musicRelatedM==='function'&&_musicRelatedM(userMsg,cur())&&S.pls.length){s+=(s?'\n\n':'')+'【QQ 音乐歌单】'+(S.pl.name?'当前：「'+S.pl.name+'」；':'')+'用户的歌单：'+S.pls.slice(0,30).map(function(p){return '「'+p.name+'」'}).join(' ')}}catch(e){}return s};
+/* ── UI：音源行 ── */
+function paintSrc(){var b=$i('masrc-qqm');if(b)b.classList.toggle('on',on());var st=$i('masrc-qqm-s');if(st)st.textContent=logged()?(S.nick+(S.pl.name?' · '+S.pl.name:'')):'登录账号，听自己的歌单'}
+window._qqmPaintSrc=paintSrc;
+/* ── UI：QQ 音乐 sheet ── */
+var qrTmr=null,qrKey='',qrAlive=false;
+function stopQr(){qrAlive=false;if(qrTmr){clearTimeout(qrTmr);qrTmr=null}qrKey=''}
+function sheetOpen(){var sh=$i('sheet-qqm');return !!(sh&&sh.classList.contains('open'))}
+function openQqm(){paint();openSheet('sheet-qqm')}
+window._qqmOpen=openQqm;
+function paint(){var b=$i('qqm-body');if(!b)return;stopQr();
+  if(!logged())return paintLogin(b);
+  b.innerHTML='<div class="ncm-acc"><div class="ma-ava ncm-ava" id="qqm-ava"></div><div class="ncm-accm"><b>'+esc(S.nick||'—')+'</b><small>'+esc(S.vip||'')+(S.uin?(S.vip?' · ':'')+S.uin:'')+'</small></div><button class="btn ncm-out" id="qqm-logout" type="button">退出</button></div>'
+    +'<label class="spill ncm-spill"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="qqm-q" placeholder="搜歌 · 歌名 / 歌手" autocomplete="off" enterkeyhint="search"></label><div id="qqm-res"></div>'
+    +'<div class="sec-label ncm-sl">歌单</div><div id="qqm-pls"><div class="empty" style="padding:14px">正在读取歌单…</div></div>'
+    +'<div class="sec-label ncm-sl">播放</div><div class="f-group"><label>音质</label><div class="sel"><select id="qqm-lv"><option value="low">流畅</option><option value="std">标准</option><option value="hq">高品质</option><option value="sq">无损</option></select></div></div><p class="hint" style="margin:-2px 0 0">选的那一档没权限时自动往下降一档。</p>'
+    +'<div class="sec-label ncm-sl">AI 控制</div><p class="hint" style="margin:0 0 4px">受 Presence「允许 AI 控制播放器」总开关约束；开着的项会写进 TA 的系统能力行，切换后 TA 的下一条消息重建一次提示缓存。</p>'
+    +tog('search','点歌','按歌名或歌手搜索，把第一首匹配加进队列并播放。')+tog('playlist','切换歌单','切到你的某个歌单、我喜欢、猜你喜欢、雷达推荐或榜单；聊到音乐时你的歌单名单会作为参考资料提供。')+tog('like','红心','把当前曲或指定歌曲加进「我喜欢」，或移出。')+tog('edit','加进 · 移出歌单','把歌加进你自建的歌单，或从歌单移除。')+tog('create','新建歌单','在你的账号里新建歌单。');
+  try{var av=$i('qqm-ava');if(S.ava){av.style.backgroundImage='url("'+S.ava+'")';av.style.backgroundSize='cover';av.textContent=''}else av.textContent=(S.nick||'?').slice(0,1)}catch(e){}
+  $i('qqm-logout').addEventListener('click',async function(){if(!await confirmDlg('退出 QQ 音乐账号？队列会清空。','退出'))return;S.uin='';S.key='';S.lt=0;S.euin='';S.openid='';S.rt='';S.at='';S.rk='';S.exp=0;S.unionid='';S.strUin='';S.nick='';S.ava='';S.vip='';S.pls=[];S.plsAt=0;S.q=[];S.pl={id:0,dirid:0,name:''};save();stopAudio();_pw.idx=-1;_pw.list=S.q;_pwPaint();_pwListDraw();paint();paintSrc()});
+  var lv=$i('qqm-lv');lv.value=S.lv||'hq';lv.addEventListener('change',function(){S.lv=lv.value;save()});
+  b.querySelectorAll('.sw2[data-ai]').forEach(function(el){var k=el.getAttribute('data-ai');sw2(el,!!(S.ai&&S.ai[k]));el.addEventListener('click',function(){S.ai=S.ai||{};S.ai[k]=!S.ai[k];save();sw2(el,!!S.ai[k])})});
+  var qi=$i('qqm-q'),res=$i('qqm-res'),qt=null;
+  async function doSearch(){var q=String(qi.value||'').trim();if(!q){res.innerHTML='';return}res.innerHTML='<div class="empty" style="padding:12px">搜索中…</div>';try{var rs=await search(q,12);if(String(qi.value||'').trim()!==q)return;if(!rs.length){res.innerHTML='<div class="empty" style="padding:12px">没有找到「'+esc(q)+'」</div>';return}res.innerHTML='';rs.forEach(function(r){var row=document.createElement('div');row.className='mate-row ncm-row';row.innerHTML='<div class="ma-ava ncm-cv"'+(r.cover?' style="background-image:url(&quot;'+esc(thumb(r.cover))+'&quot;)"':'')+'></div><div class="ncm-rm"><b>'+esc(r.title)+(r.fee?' <i class="ncm-vip">VIP</i>':'')+'</b><small>'+esc(r.artist||'')+(r.album?' · '+esc(r.album):'')+'</small></div><span class="pwl-d">'+fmtDur(r.dur)+'</span>';row.addEventListener('click',function(){var j=S.q.findIndex(function(x){return x.qmid===r.qmid});if(j<0){var at=_pw.idx>=0?_pw.idx+1:S.q.length;S.q.splice(at,0,r);save();_pw.list=S.q;j=at}closeSheets();_pwPlayIdx(j)});res.appendChild(row)})}catch(e){res.innerHTML='<div class="empty" style="padding:12px">'+esc(String((e&&e.message)||e))+'</div>'}}
+  qi.addEventListener('input',function(){clearTimeout(qt);qt=setTimeout(doSearch,500)});qi.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();clearTimeout(qt);doSearch();try{qi.blur()}catch(x){}}});
+  paintPls();
+}
+function tog(k,t,s){return '<div class="tog nb ncm-tog"><div class="tog-m"><div class="tog-t">'+t+'</div><div class="tog-s">'+s+'</div></div><div class="sw2" data-ai="'+k+'"></div></div>'}
+var SYS=[{id:'radio',name:'猜你喜欢',sub:'按你的口味挑的个性电台',tag:'猜'},{id:'radar',name:'雷达推荐',sub:'算法给你挑的下一批',tag:'雷'},{id:'top26',name:'热歌榜',sub:'站内播放热度前 300',tag:'热'},{id:'top27',name:'新歌榜',sub:'新歌里的热门',tag:'新'}];
+async function sysList(id){if(id==='radio')return radio();if(id==='radar')return radar();var m=/^top(\d+)$/.exec(id);if(m)return top(parseInt(m[1],10));return[]}
+async function paintPls(force){var box=$i('qqm-pls');if(!box)return;try{var pls=await playlists(force);if(!$i('qqm-pls'))return;box.innerHTML='';
+    var rows=[];pls.filter(function(p){return p.liked}).forEach(function(p){rows.push(p)});SYS.forEach(function(x){rows.push({id:x.id,dirid:0,name:x.name,n:0,pic:'',sys:true,sub:x.sub,tag:x.tag})});pls.filter(function(p){return !p.liked}).forEach(function(p){rows.push(p)});
+    rows.forEach(function(p){var row=document.createElement('div');row.className='mate-row ncm-row'+(String(S.pl.id)===String(p.id)&&(p.sys||S.pl.dirid===p.dirid)?' on':'');row.innerHTML='<div class="ma-ava ncm-cv'+(p.sys||p.liked?' sys':'')+'"'+(p.pic&&!p.liked?' style="background-image:url(&quot;'+esc(p.pic)+'&quot;)"':'')+'>'+(p.sys?(p.tag||''):(p.liked?'♥':''))+'</div><div class="ncm-rm"><b>'+esc(p.name)+'</b><small>'+(p.sys?esc(p.sub||''):(p.liked?'红心歌单':(p.n+' 首'+(p.mine?'':' · 收藏的'+(p.by?' · '+esc(p.by):'')))))+'</small></div>';
+      row.addEventListener('click',async function(){try{row.classList.add('busy');var t;if(p.sys){var l=await sysList(p.id);t={name:p.name,list:l,total:l.length}}else t=await tracksOf(p);if(!t.list.length){T('这个歌单是空的');row.classList.remove('busy');return}setQueue(t.list,{id:p.id,dirid:p.dirid|0,name:t.name||p.name});closeSheets();if(t.total>t.list.length)T('歌单共 '+t.total+' 首，载入前 '+t.list.length+' 首')}catch(e){row.classList.remove('busy');T(String((e&&e.message)||e))}});box.appendChild(row)});
+    var rf=document.createElement('button');rf.type='button';rf.className='btn ncm-refresh';rf.textContent='刷新歌单';rf.addEventListener('click',function(){box.innerHTML='<div class="empty" style="padding:14px">正在读取歌单…</div>';paintPls(true)});box.appendChild(rf);
+  }catch(e){box.innerHTML='<div class="empty" style="padding:14px">'+esc(String((e&&e.message)||e))+'</div>';if(e&&(e.code===301||isAuthErr(e.code))){S.key='';save();paint()}}}
+function paintLogin(b){
+  b.innerHTML='<div class="ncm-tabs"><button class="btn on" type="button" data-t="wx">微信扫码</button><button class="btn" type="button" data-t="qq">QQ 扫码</button><button class="btn" type="button" data-t="cred">粘贴凭证</button></div>'
+    +'<div class="ncm-pane" data-p="wx"><div class="qqm-qr" id="qqm-wxbox"><img id="qqm-wxqr" alt="" hidden></div><div class="ncm-st" id="qqm-wxst">正在获取二维码…</div><p class="hint" style="text-align:center">用微信「扫一扫」；只有这一台手机时，截图后在微信扫一扫右上角选相册。二维码约 5 分钟内有效，过期点一下刷新。</p></div>'
+    +'<div class="ncm-pane" data-p="qq" hidden><div class="qqm-qr" id="qqm-qqbox"><img id="qqm-qqqr" alt="" hidden></div><div class="ncm-st" id="qqm-qqst">正在获取二维码…</div><p class="hint" style="text-align:center">用 QQ「扫一扫」；只有这一台手机时，截图后在 QQ 扫一扫里选相册。QQ 扫码要中转是 GUIDE → DIY 里的 v4 版代码（比 v3 多认一个 X-IB-Redirect 头）；旧版只能微信扫码或粘贴凭证。</p></div>'
+    +'<div class="ncm-pane" data-p="cred" hidden><div class="f-group"><label>凭证</label><textarea id="qqm-cred" rows="3" placeholder="uin=…; qqmusic_key=… 或整段 Cookie"></textarea></div><p class="hint">电脑浏览器登录 y.qq.com → F12 → Application → Cookies，复制 uin 与 qqmusic_key（或 qm_keyst）两项，整段粘贴也行。凭证有期限，失效后再粘一次。</p><button class="btn primary" type="button" id="qqm-login-cred" style="width:100%">登录</button></div>'
+    +(nat()?'':('<div class="f-group" style="margin-top:14px"><label>跨域中转 <span class="lb-note">（只有扫码登录用；留空沿用网易云页 / MCP 卡填的那条）</span></label><input id="qqm-proxy" autocomplete="off" placeholder="https://你的名字.workers.dev/?u=" value="'+esc(S.proxy||'')+'"></div><p class="hint" style="margin:-4px 0 8px">当前生效：'+(proxyFor('https://open.weixin.qq.com/')?'已配置':'未配置')+'</p>'))
+    +'<p class="hint" style="margin-top:12px">账号只存在本机，不进备份，不发给任何 AI；听歌、搜歌、歌单请求由浏览器直接发往 QQ 音乐（不经中转）。绿钻曲目能不能完整播放取决于这个账号。</p>';
+  b.querySelectorAll('.ncm-tabs .btn').forEach(function(bt){bt.addEventListener('click',function(){b.querySelectorAll('.ncm-tabs .btn').forEach(function(x){x.classList.toggle('on',x===bt)});var t=bt.getAttribute('data-t');b.querySelectorAll('.ncm-pane').forEach(function(p){p.hidden=p.getAttribute('data-p')!==t});stopQr();if(t==='wx')startWx();else if(t==='qq')startQq()})});
+  var pxi=$i('qqm-proxy');if(pxi)pxi.addEventListener('change',function(){S.proxy=String(pxi.value||'').trim();save();T(S.proxy?'QQ 音乐中转已保存':'已清空，沿用网易云页 / MCP 卡的中转');paint()});
+  $i('qqm-login-cred').addEventListener('click',async function(){var c=pickCred($i('qqm-cred').value);if(!c.key||!c.uin){T('没识别到 uin 与 qqmusic_key');return}var bt=this;bt.disabled=true;try{await finishLogin({musicid:c.uin,musickey:c.key,loginType:ltOf(c.key)})}finally{bt.disabled=false}});
+  startWx();
+}
+function qrImg(imgId,boxId,src,fallbackText){var img=$i(imgId);if(!img)return;img.hidden=false;img.onerror=function(){try{var box=$i(boxId);if(!box||!fallbackText)return;img.hidden=true;var cv=document.createElement('canvas');cv.width=200;cv.height=200;box.appendChild(cv);var dark=document.body.classList.contains('theme-infernal');IBQR.draw(cv,fallbackText,200,dark?'#e6eefb':'#1a2740',dark?'#111b30':'#ffffff')}catch(e){}};img.src=src}
+function wxPoll(uuid){var url='https://lp.open.weixin.qq.com/connect/l/qrconnect?uuid='+encodeURIComponent(uuid)+'&_='+Date.now();
+  if(nat())return fetchRaw(url,{referer:'https://open.weixin.qq.com/',timeout:45000}).then(function(r){var m=/wx_errcode=(\d+);window\.wx_code='([^']*)'/.exec(r.text||'');return m?{code:parseInt(m[1],10),wx:m[2]}:{code:0,wx:''}});
+  return new Promise(function(res,rej){var sc=document.createElement('script'),done=false;var tm=setTimeout(function(){fin();res({code:408,wx:''})},45000);function fin(){if(done)return;done=true;clearTimeout(tm);try{sc.remove()}catch(e){}}sc.onload=function(){var c=parseInt(window.wx_errcode,10)||0,w=String(window.wx_code||'');try{window.wx_code=''}catch(e){}fin();res({code:c,wx:w})};sc.onerror=function(){fin();rej(new Error('网络错误：微信接口不可达'))};sc.src=url;document.head.appendChild(sc)})}/* 这条轮询接口本来就是给 script 标签用的（返回 window.wx_errcode=…），浏览器直连即可 */
+async function startWx(){stopQr();var st=$i('qqm-wxst');if(!st)return;var img=$i('qqm-wxqr');if(img){img.hidden=true;img.removeAttribute('src')}try{var box=$i('qqm-wxbox');box&&box.querySelectorAll('canvas').forEach(function(c){c.remove()})}catch(e){}
+  if(!nat()&&!proxyFor('https://open.weixin.qq.com/')){st.textContent=NO_PROXY;st.onclick=function(){startWx()};return}
+  st.textContent='正在获取二维码…';var key=rndHex(8);qrKey=key;qrAlive=true;
+  try{var page=await fetchRaw('https://open.weixin.qq.com/connect/qrconnect?'+form({appid:'wx48db31d50e334801',redirect_uri:'https://y.qq.com/portal/wx_redirect.html?login_type=2&surl=https://y.qq.com/',response_type:'code',scope:'snsapi_login',state:'STATE',href:'https://y.qq.com/mediastyle/music_v17/src/css/popup_wechat.css#wechat_redirect'}),{timeout:20000});
+    var m=/\/connect\/qrcode\/([A-Za-z0-9_\-]+)/.exec(page.text||'')||/uuid=([A-Za-z0-9_\-]+)"/.exec(page.text||'');if(!m)throw new Error('没拿到微信登录 uuid');var uuid=m[1];if(qrKey!==key||!$i('qqm-wxst'))return;
+    qrImg('qqm-wxqr','qqm-wxbox','https://open.weixin.qq.com/connect/qrcode/'+uuid,'https://open.weixin.qq.com/connect/confirm?uuid='+uuid);st.textContent='等待扫码';var since=Date.now();
+    (async function loop(){while(qrAlive&&qrKey===key&&$i('qqm-wxst')&&sheetOpen()){if(Date.now()-since>330000){st.textContent='二维码已过期，点击刷新';stopQr();return}var r;try{r=await wxPoll(uuid)}catch(e){st.textContent=String((e&&e.message)||e)+'，点击重试';stopQr();return}if(!qrAlive||qrKey!==key)return;
+        if(r.code===404)st.textContent='已扫码，在微信里点确认';else if(r.code===403){st.textContent='已在微信里取消，点击重新生成';stopQr();return}else if(r.code===402){st.textContent='二维码已过期，点击刷新';stopQr();return}else if(r.code===405&&r.wx){stopQr();st.textContent='登录中…';try{var rq=await cgi('music.login.LoginServer','Login',{code:r.wx,strAppid:'wx48db31d50e334801'},{comm:{tmeLoginType:1},raw:true});if(rq.code!==0||!rq.data||!rq.data.musickey)throw new Error(loginErr(rq.code));await finishLogin(rq.data)}catch(e){st.textContent='登录失败：'+String((e&&e.message)||e)+'，点击重试'}return}else st.textContent='等待扫码';
+        if(nat())await new Promise(function(r2){qrTmr=setTimeout(r2,1200)})}})();
+  }catch(e){st.textContent='二维码获取失败：'+String((e&&e.message)||e)+'，点击重试';stopQr()}
+  st.onclick=function(){if(!qrAlive)startWx()}}
+async function startQq(){stopQr();var st=$i('qqm-qqst');if(!st)return;var img=$i('qqm-qqqr');if(img){img.hidden=true;img.removeAttribute('src')}
+  if(!nat()&&!proxyFor('https://ssl.ptlogin2.qq.com/')){st.textContent=NO_PROXY;st.onclick=function(){startQq()};return}
+  st.textContent='正在获取二维码…';var key=rndHex(8);qrKey=key;qrAlive=true;
+  try{var r0=await fetchRaw('https://ssl.ptlogin2.qq.com/ptqrshow?'+form({appid:'716027609',e:'2',l:'M',s:'3',d:'72',v:'4',t:String(Math.random()),daid:'383',pt_3rd_aid:'100497308'}),{referer:'https://xui.ptlogin2.qq.com/',blob:true});
+    var qrsig=(cookiesOf(r0.setCookie).qrsig)||'';if(!qrsig)throw new Error(nat()?'没拿到 qrsig':'没拿到 qrsig（中转是不是旧版代码？QQ 扫码要 GUIDE 里的 v4 版）');if(qrKey!==key||!$i('qqm-qqst'))return;
+    qrImg('qqm-qqqr','qqm-qqbox',r0.blobUrl||('data:image/png;base64,'+r0.b64),'');st.textContent='等待扫码';var since=Date.now(),tok=hash33(qrsig);
+    (async function loop(){while(qrAlive&&qrKey===key&&$i('qqm-qqst')&&sheetOpen()){if(Date.now()-since>330000){st.textContent='二维码已过期，点击刷新';stopQr();return}var r;
+        try{r=await fetchRaw('https://ssl.ptlogin2.qq.com/ptqrlogin?'+form({u1:'https://graph.qq.com/oauth2.0/login_jump',ptqrtoken:String(tok),ptredirect:'0',h:'1',t:'1',g:'1',from_ui:'1',ptlang:'2052',action:'0-0-'+Date.now(),js_ver:'20102616',js_type:'1',pt_uistyle:'40',aid:'716027609',daid:'383',pt_3rd_aid:'100497308',has_onekey:'1'}),{referer:'https://xui.ptlogin2.qq.com/',cookie:'qrsig='+qrsig})}catch(e){st.textContent=String((e&&e.message)||e)+'，点击重试';stopQr();return}
+        if(!qrAlive||qrKey!==key)return;var mm=/ptuiCB\(([\s\S]*?)\)/.exec(r.text||'');var args=mm?mm[1].split(',').map(function(x){return x.trim().replace(/^'|'$/g,'')}):[];var code=parseInt(args[0],10);
+        if(code===66)st.textContent='等待扫码';else if(code===67)st.textContent='已扫码，在 QQ 里点确认';else if(code===65){st.textContent='二维码已过期，点击刷新';stopQr();return}else if(code===68){st.textContent='已在 QQ 里取消，点击重新生成';stopQr();return}
+        else if(code===0){stopQr();st.textContent='登录中…';try{var u=args[2]||'';var uin=(/[?&]uin=(\d+)/.exec(u)||[])[1],sigx=(/[?&]ptsigx=([0-9a-fA-F]+)/.exec(u)||[])[1];if(!uin||!sigx)throw new Error('没拿到登录参数');await qqAuthorize(uin,sigx)}catch(e){st.textContent='登录失败：'+String((e&&e.message)||e)+'，点击重试'}return}
+        else if(!isNaN(code)&&args[4]){st.textContent=args[4]}
+        await new Promise(function(r2){qrTmr=setTimeout(r2,2500)})}})();
+  }catch(e){st.textContent='二维码获取失败：'+String((e&&e.message)||e)+'，点击重试';stopQr()}
+  st.onclick=function(){if(!qrAlive)startQq()}}
+async function qqAuthorize(uin,sigx){var r1=await fetchRaw('https://ssl.ptlogin2.graph.qq.com/check_sig?'+form({uin:uin,pttype:'1',service:'ptqrlogin',nodirect:'0',ptsigx:sigx,s_url:'https://graph.qq.com/oauth2.0/login_jump',ptlang:'2052',ptredirect:'100',aid:'716027609',daid:'383',j_later:'0',low_login_hour:'0',regmaster:'0',pt_login_type:'3',pt_aid:'0',pt_aaid:'16',pt_light:'0',pt_3rd_aid:'100497308'}),{referer:'https://xui.ptlogin2.qq.com/',noRedirect:true});
+  if(r1.oldWorker)throw new Error('中转是旧版代码：QQ 扫码要换成 GUIDE → DIY 里的 v4 版');var ck=cookiesOf(r1.setCookie);if(!ck.p_skey)throw new Error('没拿到 p_skey');var cookie=Object.keys(ck).map(function(k){return k+'='+ck[k]}).join('; ');
+  var r2=await fetchRaw('https://graph.qq.com/oauth2.0/authorize',{form:form({response_type:'code',client_id:'100497308',redirect_uri:'https://y.qq.com/portal/wx_redirect.html?login_type=1&surl=https://y.qq.com/',scope:'get_user_info,get_app_friends',state:'state',switch:'',from_ptlogin:'1',src:'1',update_auth:'1',openapi:'1010_1030',g_tk:String(hash33(ck.p_skey,5381)),auth_time:String(Date.now()),ui:rndHex(8)+'-'+rndHex(4)+'-'+rndHex(4)+'-'+rndHex(4)+'-'+rndHex(12)}),cookie:cookie,referer:'https://graph.qq.com/',noRedirect:true});
+  var code=(/[?&]code=([^&]+)/.exec(r2.location||'')||[])[1];if(!code)throw new Error('没拿到授权 code');
+  var rq=await cgi('QQConnectLogin.LoginServer','QQLogin',{code:code},{comm:{tmeLoginType:2},raw:true});if(rq.code!==0||!rq.data||!rq.data.musickey)throw new Error(loginErr(rq.code));await finishLogin(rq.data)}
+function loginErr(code){return ({1000:'登录参数无效或已过期',104401:'登录参数无效或已过期',104400:'登录参数无效或已过期',20261:'登录参数错误',20271:'验证码错误',20272:'账号绑定异常',20274:'账号绑定缺失',20277:'账号受限',20278:'账号受限',20279:'登录设备数量超限',20450:'账号已被封禁',104604:'操作过于频繁，稍后再试'}[code])||('QQ 音乐返回 code '+code)}
+async function finishLogin(d){setCred(d);try{await account();S.plsAt=0;save();T('已登录：'+S.nick);if(!on()){await setMode('qqm')}paint();paintSrc()}catch(e){S.key='';S.uin='';save();T('登录无效：'+String((e&&e.message)||e));paint()}}
+/* ── 绑定 ── */
+function bind(){
+  var a2=$i('pw-add2');if(a2)a2.addEventListener('click',function(e){if(!on())return;e.preventDefault();e.stopImmediatePropagation();e.stopPropagation();openQqm()},true);
+  var mq=$i('masrc-qqm');if(mq)mq.addEventListener('click',async function(){if(!on())await setMode('qqm');openQqm()});
+  var tl=$i('qqm-tolocal');if(tl)tl.addEventListener('click',async function(){await setMode('local');closeSheets()});
   paintSrc();
   if(on()){_pw.list=S.q;try{_pwPaint()}catch(e){}}
 }
@@ -22861,6 +23139,8 @@ function el(){return document.getElementById('mini-pw')}
 function btn(){return document.getElementById('ma-minipw')}
 function isOn(){try{return !!(typeof _mp!=='undefined'&&_mp&&_mp.ui&&_mp.ui.miniPw)}catch(e){return false}}
 function cur(){try{return (typeof _pw!=='undefined'&&_pw&&_pw.idx>=0&&_pw.list&&_pw.list[_pw.idx])||null}catch(e){return null}}
+function escT(x){return String(x).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function setTx(el,txt,speed){txt=String(txt||'');if(!el)return;if(el._mqT===txt)return;el._mqT=txt;el.classList.remove('mq');el.style.removeProperty('--mqw');el.style.removeProperty('--mqd');el.textContent=txt;if(!txt||document.body.classList.contains('ib-reduce'))return;var w=el.scrollWidth,cw=el.clientWidth;if(!cw||w-cw<=2)return;var gap=28;el.innerHTML='<span class="mq-tr"><span>'+escT(txt)+'</span><span aria-hidden="true">'+escT(txt)+'</span></span>';el.style.setProperty('--mqw',(w+gap)+'px');el.style.setProperty('--mqd',Math.max(5,Math.round((w+gap)/(speed||24)))+'s');el.classList.add('mq')}/* v206-p：超长就整段滚动循环（文字 + 28px 空隙接着再来一遍，线性匀速）；减少动效下保持省略号 */
 function line(rec,sec){var L=rec&&rec.lyrics,segs=L&&L.segments;if(!segs||!segs.length)return '';var t='';for(var i=0;i<segs.length;i++){var st=segs[i]&&segs[i].start;if(st==null)break;if(st<=sec)t=segs[i].text||'';else break}return String(t||'').replace(/\s+/g,' ').trim()}
 function musicOpen(){var m=document.getElementById('music-app');return !!(m&&m.classList.contains('open'))}
 function locked(){var lk=document.getElementById('lockscr');return !!(lk&&lk.offsetParent!==null)}
@@ -22871,9 +23151,9 @@ function paint(){var b=el();if(!b)return;var onn=isOn();if(onn&&!tmr)start();var
   var a=null;try{a=_pwA()}catch(e){}var playing=!!(a&&!a.paused&&!a.ended);b.classList.toggle('playing',playing);
   var t=document.getElementById('mpw-t'),s=document.getElementById('mpw-s'),l=document.getElementById('mpw-l');
   var tt=String(rec.title||rec.name||'—'),ss=String(rec.artist||rec.album||'');
-  if(t&&t.textContent!==tt)t.textContent=tt;if(s&&s.textContent!==ss)s.textContent=ss;
+  setTx(t,tt);setTx(s,ss);
   var cv=b.querySelector('.mpw-disc b');if(cv){var c=String(rec.cover||'');if(cv.getAttribute('data-c')!==c){cv.setAttribute('data-c',c);cv.style.backgroundImage=c?('url("'+c.replace(/"/g,'%22')+'")'):'';b.classList.toggle('cov',!!c)}}
-  var ly=line(rec,(a&&a.currentTime)||0);if(l&&l.textContent!==ly){l.textContent=ly;l.classList.toggle('none',!ly)}
+  var ly=line(rec,(a&&a.currentTime)||0);if(l&&l._mqT!==ly){setTx(l,ly,36);l.classList.toggle('none',!ly)}
 }
 function start(){if(tmr)return;tmr=setInterval(paint,600)}
 function stop(){if(tmr){clearInterval(tmr);tmr=null}var b=el();if(b)b.hidden=true}
